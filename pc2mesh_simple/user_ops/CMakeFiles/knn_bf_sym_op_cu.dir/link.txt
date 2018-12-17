@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -march=native -fopenmp -O3 -D_GLIBCXX_USE_CXX11_ABI=1  -shared -Wl,-soname,knn_bf_sym_op_cu.so -o knn_bf_sym_op_cu.so CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/lib64/libcudart_static.a -lpthread -ldl -lrt 

@@ -21,8 +21,9 @@ import re as re
 
 MODEL40PATH = '/graphics/scratch/students/heid/pointcloud_data/ModelNet40/'
 
+tti={}
 
-#Probably dont need this anymore
+
 def progress(count, total, suffix=''):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
@@ -41,10 +42,25 @@ class PointCloudFromFile():
         data = np.loadtxt(path, delimiter=',', dtype=np.float32 )[:,0:3].T
         return data[np.newaxis]
 
+def object_type_to_id(object_string):
+    return tti[object_string]
+
+def prepare_type_to_id_dict(directory):
+    path = os.path.join(directory,"modelnet40_shape_names.txt")
+    with open(path, 'r') as f:
+        counter = 0
+        for line in f:
+            line = line.rstrip()
+            if line == '':
+                continue
+            tti[line]=counter
+            counter = counter + 1
+    return tti
+
+
 class PointCloudDataFlow(RNGDataFlow):
     """
-    produces [x y z nx ny nz] as point cloud data
-    To calculate LMDB file
+    produces [label_id x y z nx ny nz] as point cloud data
     """
     PC_PATH = '/graphics/scratch/students/heid/pointcloud_data/ModelNet40/modelnet40_normal_resampled/'
     MODEL40 = 'modelnet40_'
@@ -52,9 +68,15 @@ class PointCloudDataFlow(RNGDataFlow):
     MODEL0  = 'modelnet0_'
     MODEL   = 'modelnet'
 
-    def __init__(self, train_or_test,num_points=1024, load_ram=True, shuffle=False, directory=None, normals=False,model_ver="10" ):
+    def __init__(self, train_or_test,num_points=1024, load_ram=True, shuffle=False, directory=None, normals=True,model_ver="40" ):
         assert train_or_test in ['train', 'val', 'test']
-        self.shape = [1,3,num_points]
+        if normals:
+            self.shape = [1,6,num_points]
+        else:
+            self.shape = [1, 3, num_points]
+
+        self.type_to_id = prepare_type_to_id_dict(self.PC_PATH)
+
         self.load_ram = load_ram
         file_name = self.MODEL+model_ver+"_" + train_or_test + '.txt'
         file_name = os.path.join(self.PC_PATH,file_name)
@@ -70,6 +92,7 @@ class PointCloudDataFlow(RNGDataFlow):
             logger.info("Loading Dataset into RAM")
 
         self.ds = np.zeros(self.shape)
+        self.type_indices = []
         progress(0,num_lines)
         counter = 0
         while True:
@@ -77,8 +100,9 @@ class PointCloudDataFlow(RNGDataFlow):
             line = line.strip()
             if not line:
                 break
-            folder = "_".join(line.split("_")[0:-1])
-            folder = os.path.join(self.PC_PATH,folder)
+            object_type = "_".join(line.split("_")[0:-1])
+            o_id = object_type_to_id(object_type)
+            folder = os.path.join(self.PC_PATH,object_type)
             file_name = os.path.join(folder,line)
 
             path = os.path.join(folder,file_name)
@@ -88,9 +112,11 @@ class PointCloudDataFlow(RNGDataFlow):
                 if not normals:
                     data = np.loadtxt(path, delimiter=',', dtype=np.float32, skiprows=(10000-self.num_points))[:,0:3]
                 else:
-                    data = np.loadtxt(path, delimiter=',', dtype=np.float32, skiprows=(10000-self.num_points))[:,3:]
+                    data = np.loadtxt(path, delimiter=',', dtype=np.float32, skiprows=(10000-self.num_points))
                 #data = np.genfromtxt(path, delimiter=',', dtype=np.float32,skip_header=(10000-self.num_points))
                 self.ds = np.append(self.ds,data.T[np.newaxis,:,:],axis=0)
+
+                self.type_indices.append(o_id)
                 counter += 1
                 progress(counter,num_lines)
 
@@ -111,7 +137,7 @@ class PointCloudDataFlow(RNGDataFlow):
                 ds = np.loadtxt(f,delimiter=',')[ : , :self.num_points]
             else:
                 ds = self.ds[self.idx,:,:]
-            ds = [ds]
+            ds = [self.type_indices[self.idx],ds]
             yield ds
         self.finished = True
 
@@ -130,11 +156,9 @@ def get_point_cloud_dataflow(
     assert num_points in [1024, 10000]
     isTrain = name == 'train'
     normals_str =""
-    if normals:
-        normals_str = "normals"
-    else:
-        normals_str = "positions"
-    file_name = "model"+model_ver+"-"+name+"-"+normals_str+"-"+str(num_points)+".lmdb"
+    if not normals:
+        normals_str = "-positions"
+    file_name = "model"+model_ver+"-"+name+normals_str+"-"+str(num_points)+".lmdb"
     path = os.path.join(MODEL40PATH,file_name) 
     if parallel is None:
         parallel = min(40, multiprocessing.cpu_count() // 2)
@@ -158,19 +182,20 @@ def get_point_cloud_dataflow(
         
 
 if __name__ == '__main__':
-    #df = PointCloudDataFlow('train',model_ver="40")
+    #prepare_type_to_id_dict("/graphics/scratch/students/heid/pointcloud_data/ModelNet40/modelnet40_normal_resampled/")
+    #df = PointCloudDataFlow('test',model_ver="10")
     #df = BatchData(df, 64)
     #TestDataSpeed(df,2000).start()
     # Test LMDB
-    df = get_point_cloud_dataflow('train', batch_size=8, num_points=1024,model_ver="10")
+    df = get_point_cloud_dataflow('train', batch_size=8, num_points=1024,model_ver="10", normals=True)
     #print len(df)
-    #TestDataSpeed(df, 2000).start()
-  #  mnist_data = dataset.Mnist('train',shuffle=False)
+    TestDataSpeed(df, 2000).start()
+    #mnist_data = dataset.Mnist('train',shuffle=False)
 
     #df_mnist = BatchData(mnist_data, 8)
-    for data in df:
-        print " "
-        print data[0].shape
-        print " "
+    #for data in df:
+    #    print " "
+    #    print data[1].shape
+    #    print " "
 
 

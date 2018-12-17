@@ -29,34 +29,32 @@ class Model(ModelDesc):
         #return [tf.placeholder(tf.float32, (PC['num'], PC['dp'], None), 'positions')]
         return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), 'positions')]
                 
-    def build_graph(self, positions):
+    def _build_graph(self, positions):
         """
         Autoencoder
         """
+
         net = positions
         pos = positions
         neighbors = knn_bruteforce( pos, K=8 )
-        #flat = tf.layers.flatten(x)
-        ### Encoding
-        #encoding = tf.layers.dense(flat, units=100) 
-        #decoding = tf.layers.dense(encoding, units=flat.shape[-1]) 
-        #total_cost = tf.reduce_sum(tf.square(tf.subtract(flat,decoding,name="difference")))
-        #return total_cost
 
         def subsample(x):
+            """
+            Simple subsampling.
+            """
             n = x.shape.as_list()[-1]
             return x[: , :,  : n // 2]
         def upsample (x):
             """
             Super simple upsampling
             """
-            return tf.concat([x,x], axis = 2)
+            # Upsampling
+            # Unsolved, Fabi has some basic ideas
+            # Knn, interpolate?
+            double_tensor = lambda x: tf.concat([x,x], axis=1)
+            return tf.map_fn(double_tensor, x)
+
         
-        net = flex_convolution(net, pos, neighbors, 32, name ="Conv32", activation=tf.nn.relu)
-        net = flex_convolution(net, pos, neighbors, 16, name ="Conv16", activation=tf.nn.relu)
-        net = flex_convolution(net, pos, neighbors, 8, name="Conv8", activation=tf.nn.relu)
-        net = flex_convolution(net, pos, neighbors, 3, name='reconstructed_points')
-        '''
         with tf.name_scope("Encoder"):
             net = flex_convolution(net, pos, neighbors, 8, name="Conv8", activation=tf.nn.relu)
             net = flex_pooling(net, neighbors)
@@ -82,8 +80,7 @@ class Model(ModelDesc):
             pos = upsample(pos)
             neighbors = knn_bruteforce(pos, K=8)
 
-            net = flex_convolution_transpose(net, pos, neighbors, 3, name='reconstructed_points')
-'''
+        net = flex_convolution_transpose(net, pos, neighbors, 3, name='reconstructed_points')
         total_cost = tf.reduce_mean(tf.square(tf.subtract(net,positions)),name="square_difference")
         summary.add_moving_summary(total_cost)
         return total_cost
@@ -92,6 +89,15 @@ class Model(ModelDesc):
     def optimizer(self):
         return tf.train.AdamOptimizer(1e-4)
 
+class ChildModel(Model):
+    def __init__(self, abc, **kwargs):
+        self.abc = abc
+        print self.abc
+    def build_graph(self, positions):
+
+        self.loss = self._build_graph(positions)
+
+        return self.loss
 
 if __name__ == '__main__':
 
@@ -112,7 +118,7 @@ if __name__ == '__main__':
     steps_per_epoch = len(df_train)
     #Setup training step
     config = TrainConfig(
-        model=Model(),
+        model=ChildModel(),
         #data=FeedInput(df_train),
         dataflow = df_train,
         callbacks=[
@@ -120,7 +126,7 @@ if __name__ == '__main__':
             InferenceRunner(df_test, ScalarStats(['square_difference'])),
             ],
         steps_per_epoch=steps_per_epoch,
-        max_epoch=10,
+        max_epoch=25,
         session_init=SaverRestore(args.load) if args.load else None
           )
     launch_train_with_config(config, SimpleTrainer())
