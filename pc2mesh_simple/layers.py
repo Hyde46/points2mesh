@@ -171,11 +171,20 @@ class GraphProjection(Layer):
 
     def __init__(self, placeholders, **kwargs):
         super(GraphProjection, self).__init__(**kwargs)
+        self.K = FLAGS.num_neighbors
 
         self.pc_feat = placeholders['pc_feature']
 
     def _call(self, inputs):
+
         coord = inputs
+        B = tf.shape(coord)[0]
+        Dp = tf.shape(coord)[1]
+        N = tf.constant(1,dtype=tf.int32)
+        #N = tf.shape(coord)[2]
+
+        coord_expanded = tf.expand_dims( coord, -1)
+            
 
         #transform PC feature to usable format
         # placeholder['pc_feature'] in [x0, x1, x2, x3]
@@ -183,13 +192,25 @@ class GraphProjection(Layer):
         # x1 [B,  32,  256]
         # x2 [B,  64,   64]
         # x3 [B, 128,   16]
+        # TODO: At the moment stage0 is just the point cloud [B, Dp, N]
         stage_0 = self.pc_feat[0]
+        pc_data = tf.transpose(stage_0,[0, 2, 1])
+        ellipsoid = tf.transpose(coord_expanded,[0, 2, 1])
 
         # Neighbors: [B, K, N]
         # Distances: [B, K, N]
-        neighbors = knn_bf_sym(stage_0, coord, K=1)
-        stage_0 = neighbors
+        knn,_,_ = knn_bf_sym(stage_0, ellipsoid, K=self.K)
 
+        knnr = tf.reshape(knn, [1, B * N * self.K])
+
+        bv = tf.ones([B, N * self.K], dtype = tf.int32) * tf.expand_dims(tf.range(0,B), -1)
+        #bv = tf.ones([B,N*self.K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
+        
+        knnr = tf.stack([tf.reshape(bv,[1,B*N*self.K]), tf.reshape(knn,[1,B*N*self.K])],-1)
+
+        knnY = tf.reshape(tf.gather_nd(ellipsoid, knnr), [B, N, self.K, Dp])
+
+        stage_0 = tf.reshape(tf.reduce_mean(knnY, axis=2), [B, Dp])
         #For now only stage 1
         stage_1 = 0
         stage_2 = 0
@@ -197,6 +218,6 @@ class GraphProjection(Layer):
         stage_4 = 0
         # Return [B, 12]
         # With 12 made out of 4 times [x,y,z]
-        outputs = tf.concat([coord, stage_0,stage_0, stage_0, stage_0], 1)
+        outputs = tf.concat([coord, stage_0 ,stage_0, stage_0, stage_0], 1)
         return outputs
 

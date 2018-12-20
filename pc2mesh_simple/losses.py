@@ -3,7 +3,7 @@ from cd_dist import *
 from user_ops import knn_bruteforce as _knn_bruteforce
 
 def laplace_coord(pred, placeholders, block_id):
-    vertex = tf.concat([pred, tf.zeros[1, 3])], 0)
+    vertex = tf.concat([pred, tf.zeros([1, 3])], 0)
     indices = placeholders['lape_idx'][block_id - 1][:, :8]
     weights = tf.cast(placeholders['lape_idx'][block_id - 1][:, -1], tf.float32)
 
@@ -28,8 +28,8 @@ def unit(tensor):
     return tf.nn.l2_normalize(tensor, dim=1)
 
 def mesh_loss(pred, placeholders, block_id):
-    gt_pt = placeholders['labels'][:, :3] #gt points
-    gt_nm = placeholders['labels'][:, 3:] #gt normals
+    gt_pt = placeholders['positions'] #gt points
+    gt_nm = placeholders['vertex_normals'] #gt normals
 
     # edge in graph
     nod1 = tf.gather(pred, placeholders['edges'][block_id - 1][:, 0])

@@ -7,6 +7,7 @@ import cv2
 from tensorpack import *
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce
 from layers import *
+from losses import *
 
 enable_argscope_for_module(tf.layers)
 
@@ -15,7 +16,6 @@ FLAGS = flags.FLAGS
 
 
 class pc2MeshModel(ModelDesc):
-
     def __init__(self, placeholders, **kwargs):
         allowed_kwargs = {'name', 'logging'}
         for kwarg in kwargs.keys():
@@ -41,21 +41,22 @@ class pc2MeshModel(ModelDesc):
         self.output_stage_2 = None
         
         self.loss = 0
-        
+        self.input = placeholders['features']
+        self.cost = 0
 
     def inputs(self):
         # May be as big of a list as i wish it to be
         # TODO all placeholders here ? What about placeholders for layers
-        return [self.placeholders['positions'],
-                self.placeholders['labels']]
+        return [tf.placeholder(tf.float32, (None, 3, 1024), "positions"),
+                tf.placeholder(tf.float32, (None, 3, 1024), "vertex_normals")]
 
-    def build_graph(self, positions, label):
+    def build_graph(self, positions, vertex_normals):
 
         # Build graphs
-        with tf.variable_scope("Pointcloud Features"):
-            self.cost += build_flex_graph()
+        with tf.variable_scope("pointcloud_features"):
+            self.cost += self.build_flex_graph(positions)
 
-        build_gcn_graph()
+        self.build_gcn_graph()
         #build sequential resnet model
 
         #connect graph and get cost
@@ -65,9 +66,9 @@ class pc2MeshModel(ModelDesc):
         #shortcuts
         #concat = [15, 31]
         concat = []
-        self.activations.append(self.inputs)
+        self.activations.append(self.input)
         
-        with tf.name_scope("Mesh Deformation"):
+        with tf.name_scope("mesh_deformation"):
             # Iterate over GCN layers and connect them
             for idx, layer in enumerate(self.layers):
                 hidden = layer (self.activations[-1])
@@ -77,7 +78,7 @@ class pc2MeshModel(ModelDesc):
                     hidden = tf.concat([hidden, self.activations[-2]], 1)
                 self.activations.append(hidden)
 
-        with tf.name_scope("Mesh outputs"):
+        with tf.name_scope("mesh_outputs"):
             #define outputs for multi stage mesh views
             self.output1 = self.activations[15]
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id=1)
@@ -99,7 +100,7 @@ class pc2MeshModel(ModelDesc):
         summary.add_moving_summary(self.cost)
         return self.cost
 
-    def build_flex_graph(positions, pc_input):
+    def build_flex_graph(self, positions):
 
         def subsample(x,factor=4):
             # Number of samples
@@ -122,7 +123,7 @@ class pc2MeshModel(ModelDesc):
         # x0 = x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
-        positions = subsample(positiosn)
+        positions = subsample(positions)
         neighbors = knn_bruteforce(positions, K=8)
         x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
@@ -132,7 +133,7 @@ class pc2MeshModel(ModelDesc):
         x1=x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
-        positions = subsample(positiosn)
+        positions = subsample(positions)
         neighbors = knn_bruteforce(positions, K=8)
         x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
@@ -142,7 +143,7 @@ class pc2MeshModel(ModelDesc):
         x2 = x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
-        positions = subsample(positiosn)
+        positions = subsample(positions)
         neighbors = knn_bruteforce(positions, K=8)
         x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
@@ -153,14 +154,14 @@ class pc2MeshModel(ModelDesc):
 
         #Get output stages
         #TODO:here
-        self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)])
+        self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
         #self.placeholders.update({'pc_feature' : [tf.squeeze(features)]})
         #TODO
         #Loss L2 Maybe working, definitely check:
         loss = xr
         return loss
 
-    def build_gcn_graph():
+    def build_gcn_graph(self):
         self.layers.append(GraphProjection(placeholders=self.placeholders))
         self.layers.append(GraphConvolution(input_dim=FLAGS.feat_dim,
                                             output_dim=FLAGS.hidden,
@@ -216,20 +217,20 @@ class pc2MeshModel(ModelDesc):
                                             gcn_block_id=3,
                                              placeholders=self.placeholders, logging=self.logging))
 
-    def get_loss():
+    def get_loss(self):
 
         loss =  mesh_loss(self.output1, self.placeholders, 1)
         #loss += mesh_loss(self.output2, self.placeholders, 2)
         #loss += mesh_loss(self.output3, self.placeholders, 3)
-        #loss += .3 * laplace_loss(self.inputs, self.output1, self.placeholders, 1)
-        loss += laplace_loss(self.inputs, self.output1, self.placeholders, 1)
+        #loss += .3 * laplace_loss(self.input, self.output1, self.placeholders, 1)
+        loss += laplace_loss(self.input, self.output1, self.placeholders, 1)
         #loss += laplace_loss(self.output_stage_1, self.output2, self.placeholders, 2)
        # loss += laplace_loss(self.output_stage_2, self.output3, self.placeholders, 3)
         
         # GCN loss
         conv_layers = range(1, 15) #+ range(17, 31) + range(33, 48)
         for layer_id in conv_layers:
-            for var in self.layers[layer_id].vars.vales():
+            for var in self.layers[layer_id].vars.values():
                 loss += FLAGS.weight_decay * tf.nn.l2_loss(var)
 
         return loss
