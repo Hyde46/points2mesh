@@ -1,6 +1,6 @@
 from pixel2mesh.inits import *
 import tensorflow as tf
-from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce, knn_bf_sm
+from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce, knn_bf_sym
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -172,18 +172,31 @@ class GraphProjection(Layer):
     def __init__(self, placeholders, **kwargs):
         super(GraphProjection, self).__init__(**kwargs)
 
-        self.img_feat = placeholders['pc_feature']
+        self.pc_feat = placeholders['pc_feature']
 
     def _call(self, inputs):
         coord = inputs
-        neighbors = knn_bruteforce(placeholders['pc_feature'], K=1)
 
+        #transform PC feature to usable format
+        # placeholder['pc_feature'] in [x0, x1, x2, x3]
+        # x0 [B,  16, 1024]
+        # x1 [B,  32,  256]
+        # x2 [B,  64,   64]
+        # x3 [B, 128,   16]
+        stage_0 = self.pc_feat[0]
+
+        # Neighbors: [B, K, N]
+        # Distances: [B, K, N]
+        neighbors = knn_bf_sym(stage_0, coord, K=1)
+        stage_0 = neighbors
+
+        #For now only stage 1
         stage_1 = 0
         stage_2 = 0
         stage_3 = 0
         stage_4 = 0
         # Return [B, 12]
         # With 12 made out of 4 times [x,y,z]
-        outputs = tf.concat([coord, stage_1,stage_2, stage_3, stage_4], 1)
+        outputs = tf.concat([coord, stage_0,stage_0, stage_0, stage_0], 1)
         return outputs
 

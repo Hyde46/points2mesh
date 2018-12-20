@@ -45,7 +45,7 @@ class pc2MeshModel(ModelDesc):
 
     def inputs(self):
         # May be as big of a list as i wish it to be
-        # TODO all placeholders here
+        # TODO all placeholders here ? What about placeholders for layers
         return [self.placeholders['positions'],
                 self.placeholders['labels']]
 
@@ -60,9 +60,11 @@ class pc2MeshModel(ModelDesc):
 
         #connect graph and get cost
         #TODO: Potentially find a different way to build the network
-        eltwise = [3, 5, 7, 9, 11, 13, 19, 21, 23, 25, 27, 29, 35, 37, 39, 41, 43, 45]
+        #eltwise = [3, 5, 7, 9, 11, 13, 19, 21, 23, 25, 27, 29, 35, 37, 39, 41, 43, 45]
+        eltwise = [3, 5, 7, 9, 11, 13]
         #shortcuts
-        concat = [15, 31]
+        #concat = [15, 31]
+        concat = []
         self.activations.append(self.inputs)
         
         with tf.name_scope("Mesh Deformation"):
@@ -81,11 +83,13 @@ class pc2MeshModel(ModelDesc):
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
+            '''
             self.output2 = self.activations[31]
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id = 2)
             self.output_stage_2 = unpool_layer(self.output2)
 
             self.output3 = activations[-1]
+            '''
 
         variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope = self.name)
         self.vars = {var.name: var for var in variables}
@@ -97,7 +101,7 @@ class pc2MeshModel(ModelDesc):
 
     def build_flex_graph(positions, pc_input):
 
-        def subsample(x,factor=2):
+        def subsample(x,factor=4):
             # Number of samples
             n = x.shape.as_list()[-1]
             return x[:, :, :n // factor]
@@ -108,13 +112,14 @@ class pc2MeshModel(ModelDesc):
 
         # 3 x 1024
         x = features
+        x0 = x
         #Build layers
         x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
         x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
         xr += 0.001 * tf.nn.l2_loss(x)
         # 16 x 1024
-        x0=x
+        # x0 = x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
         positions = subsample(positiosn)
@@ -123,7 +128,7 @@ class pc2MeshModel(ModelDesc):
         xr = 0.001 * tf.nn.l2_loss(x)
         x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
-        # 32 x 512
+        # 32 x 256
         x1=x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
@@ -133,7 +138,7 @@ class pc2MeshModel(ModelDesc):
         xr = 0.001 * tf.nn.l2_loss(x)
         x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
-        # 64 x 256
+        # 64 x 64
         x2 = x
         x = flex_pooling(x, neighbors)
         x = subsample(x)
@@ -143,7 +148,7 @@ class pc2MeshModel(ModelDesc):
         xr = 0.001 * tf.nn.l2_loss(x)
         x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
         xr = 0.001 * tf.nn.l2_loss(x)
-        # 128 x 128
+        # 128 x 16
         x3 = x
 
         #Get output stages
@@ -172,6 +177,8 @@ class pc2MeshModel(ModelDesc):
                                             act=lambda x: x,
                                             gcn_block_id=1,
                                             placeholders=self.placeholders, logging=self.logging))
+        # TODO: Temporarly only use one step. Dont unpool Graph
+        return
         # second project block
         self.layers.append(GraphProjection(placeholders=self.placeholders))
         self.layers.append(GraphPooling(placeholders=self.placeholders, pool_id=1))  # unpooling
@@ -212,14 +219,15 @@ class pc2MeshModel(ModelDesc):
     def get_loss():
 
         loss =  mesh_loss(self.output1, self.placeholders, 1)
-        loss += mesh_loss(self.output2, self.placeholders, 2)
-        loss += mesh_loss(self.output3, self.placeholders, 3)
-        loss += .3 * laplace_loss(self.inputs, self.output1, self.placeholders, 1)
-        loss += laplace_loss(self.output_stage_1, self.output2, self.placeholders, 2)
-        loss += laplace_loss(self.output_stage_2, self.output3, self.placeholders, 3)
+        #loss += mesh_loss(self.output2, self.placeholders, 2)
+        #loss += mesh_loss(self.output3, self.placeholders, 3)
+        #loss += .3 * laplace_loss(self.inputs, self.output1, self.placeholders, 1)
+        loss += laplace_loss(self.inputs, self.output1, self.placeholders, 1)
+        #loss += laplace_loss(self.output_stage_1, self.output2, self.placeholders, 2)
+       # loss += laplace_loss(self.output_stage_2, self.output3, self.placeholders, 3)
         
         # GCN loss
-        conv_layers = range(1, 15) + range(17, 31) + range(33, 48)
+        conv_layers = range(1, 15) #+ range(17, 31) + range(33, 48)
         for layer_id in conv_layers:
             for var in self.layers[layer_id].vars.vales():
                 loss += FLAGS.weight_decay * tf.nn.l2_loss(var)

@@ -17,9 +17,9 @@ from __init__ import knn_bf_sym
 #os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
 with tf.device('/device:GPU:0'):
-    B = 8
-    N = 32
-    M = 64
+    B = 2
+    N = 5
+    M = 5
     DP = 3
     K = 8
     # position = np.zeros((B, 2, N), dtype=np.float32)
@@ -44,8 +44,9 @@ with tf.device('/device:GPU:0'):
     # print 'nbs: ', nbs
 
     ret = sess.run(actual_op)
-    # for i in ret:
-    #     print i
+    print np.shape(ret[0])
+    for i in ret:
+        print i
 
 
     # ## timings

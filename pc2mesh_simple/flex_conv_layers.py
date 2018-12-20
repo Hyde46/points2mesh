@@ -21,7 +21,7 @@ import tensorflow as tf
 from user_ops import flex_convolution as _flex_convolution
 from user_ops import flex_pooling as _flex_pooling
 from user_ops import knn_bruteforce as _knn_bruteforce
-from user_ops import knn_bf_sym
+from user_ops import knn_bf_sym as _knn_bf_sym
 from user_ops import flex_convolution_transpose as _flex_convolution_transpose
 
 from tensorflow.python.keras import activations
@@ -38,6 +38,48 @@ all = ['FlexPooling', 'FlexConvolution', 'FlexConvolutionTranspose',
 
 def _remove_dim(x, axis=2):
   return tf.squeeze(x, axis=axis)
+
+class KnnBfSym(Layer):
+    def __init__(self,
+                K,
+                data_format='simple',
+                name=None):
+        super(KnnBfSym, self).__init__(name=name)
+        assert K > 0
+        assert data_format in ['simple', 'expanded']
+        self.K = K
+        self.data_format = data_format
+
+    def compute_output_shape(self, input_shape):
+        output_shape = input_shapes[0]
+        output_shape[1] = self.K
+        return output_shape
+
+    def call(self, inputs, to_compare ):
+        
+        positions = ops.convert_to_tensor(inputs, dtype=self.dtype)
+        to_compare = ops.convert_to_tensor(to_compare, dtype=self.dtype)
+
+        if self.data_format == 'expanded':
+            positions = _remove_dim(positions, 2)
+
+        NN, dist, _ = _knn_bf_sym(positions, to_compare, K=self.K)
+        NN = tf.transpose(NN, [0, 2, 1])
+
+        if self.data_format == 'expanded':
+            NN = tf.expand_dims(NN, axis=2)
+
+        return NN
+
+def knn_bf_sym(positions, to_compare,
+                K,
+                data_format='simple',
+                name=None):
+    layer = KnnBfSym(K, data_format=data_format, name=name)
+
+    return layer.apply(positions, to_compare)
+
+        
 
 
 class KnnBruteforce(Layer):
