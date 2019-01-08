@@ -9,6 +9,8 @@ from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce
 from layers import *
 from losses import *
 
+PC = {'num': 1024, 'dp':3, 'ver':"40"}
+
 enable_argscope_for_module(tf.layers)
 
 flags = tf.app.flags
@@ -47,8 +49,12 @@ class pc2MeshModel(ModelDesc):
     def inputs(self):
         # May be as big of a list as i wish it to be
         # TODO all placeholders here ? What about placeholders for layers
+        '''
         return [tf.placeholder(tf.float32, (None, 3, 1024), "positions"),
                 tf.placeholder(tf.float32, (None, 3, 1024), "vertex_normals")]
+                '''
+        return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "positions"),
+                tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "vertex_normals")]
 
     def build_graph(self, positions, vertex_normals):
 
@@ -96,7 +102,7 @@ class pc2MeshModel(ModelDesc):
         self.vars = {var.name: var for var in variables}
         
         #return cost of graph
-        self.cost += self.get_loss() 
+        self.cost += self.get_loss(positions,vertex_normals) 
         summary.add_moving_summary(self.cost)
         return self.cost
 
@@ -110,7 +116,6 @@ class pc2MeshModel(ModelDesc):
         # Features for each point is its own position in space
         features = positions
         neighbors = knn_bruteforce(positions, K = 8 )
-
         # 3 x 1024
         x = features
         x0 = x
@@ -217,9 +222,9 @@ class pc2MeshModel(ModelDesc):
                                             gcn_block_id=3,
                                              placeholders=self.placeholders, logging=self.logging))
 
-    def get_loss(self):
+    def get_loss(self,positions,vertex_normals):
 
-        loss =  mesh_loss(self.output1, self.placeholders, 1)
+        loss =  mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
         #loss += mesh_loss(self.output2, self.placeholders, 2)
         #loss += mesh_loss(self.output3, self.placeholders, 3)
         #loss += .3 * laplace_loss(self.input, self.output1, self.placeholders, 1)

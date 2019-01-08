@@ -93,7 +93,7 @@ def get_modelnet_dataflow(
 
     if batch_size == 1:
         logger.warn("Batch size is 1. Data will not be batched.")
-        df = BatchData(df, batch_size)
+    df = BatchData(df, batch_size)
     df = PrintData(df)
     
     return df
@@ -103,12 +103,15 @@ if __name__ == '__main__':
     # Testing LMDB dataflow object
     # Load all different dataflow object types
 
-    df = get_modelnet_dataflow('train', batch_size=64, num_points=10000, model_ver="40", normals=True,prefetch_data=True)
+    df = get_modelnet_dataflow('train', batch_size=2, num_points=1024, model_ver="40", normals=True,prefetch_data=False)
 
-    #for d in df:
-    #    print d[0].shape
+
+    for d in df:
+        print " "
+        print d[1].shape
+        break
     # Test speed!
-    TestDataSpeed(df, 2000).start()
+    #TestDataSpeed(df, 2000).start()
 """
     df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="10", normals=False)
     # Test speed!

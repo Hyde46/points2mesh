@@ -27,9 +27,12 @@ def laplace_loss(pred1, pred2, placeholders, block_id):
 def unit(tensor):
     return tf.nn.l2_normalize(tensor, dim=1)
 
-def mesh_loss(pred, placeholders, block_id):
-    gt_pt = placeholders['positions'] #gt points
-    gt_nm = placeholders['vertex_normals'] #gt normals
+def mesh_loss(pred, positions, vertex_normals,placeholders, block_id):
+    #gt_pt = placeholders['positions'] #gt points
+    #gt_nm = placeholders['vertex_normals'] #gt normals
+
+    gt_pt = tf.squeeze(positions)
+    gt_nm = tf.squeeze(vertex_normals)
 
     # edge in graph
     nod1 = tf.gather(pred, placeholders['edges'][block_id - 1][:, 0])
