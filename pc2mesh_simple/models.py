@@ -4,10 +4,13 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
+
 from tensorpack import *
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce
 from layers import *
 from losses import *
+
+from fetcher import *
 
 PC = {'num': 1024, 'dp':3, 'ver':"40"}
 
@@ -18,7 +21,7 @@ FLAGS = flags.FLAGS
 
 
 class pc2MeshModel(ModelDesc):
-    def __init__(self, placeholders, **kwargs):
+    def __init__(self, **kwargs):
         allowed_kwargs = {'name', 'logging'}
         for kwarg in kwargs.keys():
             assert kwarg in allowed_kwargs, 'Invalid keyword argument: ' + kwarg
@@ -31,7 +34,7 @@ class pc2MeshModel(ModelDesc):
         self.logging = logging
 
         self.vars = {}
-        self.placeholders = placeholders
+        self.placeholders = {}
 
         self.layers = []
         self.activations = []
@@ -42,20 +45,36 @@ class pc2MeshModel(ModelDesc):
         self.output_stage_1 = None
         self.output_stage_2 = None
         
+        self.load_ellipsoid_as_tensor()
+
         self.loss = 0
-        self.input = placeholders['features']
+        self.input = self.placeholders['features']
         self.cost = 0
+
+
 
     def inputs(self):
         # May be as big of a list as i wish it to be
         # TODO all placeholders here ? What about placeholders for layers
-        '''
-        return [tf.placeholder(tf.float32, (None, 3, 1024), "positions"),
-                tf.placeholder(tf.float32, (None, 3, 1024), "vertex_normals")]
-                '''
         return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "vertex_normals")]
+                tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "vertex_normals"),
+                ]
 
+        '''
+        return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "positions"),
+                tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "vertex_normals"),
+                #Placeholder for Ellipsoid
+                tf.placeholder(tf.float32,(None, PC['dp']), "features"),  # initial 3D coordinates of ellipsoids
+                tf.placeholder(tf.float32, (self.num_supports), 'support1'),
+                tf.placeholder(tf.float32, (self.num_supports), 'support2'),
+                tf.placeholder(tf.float32, (self.num_supports), 'support3'),
+                tf.placeholder(tf.int32, (None, 4, self.num_blocks),'faces'),
+                tf.placeholder(tf.int32, (None, 2, self.num_blocks),'edges'),
+                tf.placeholder(tf.int32, (None, 10, self.num_blocks),'lape_idx'),
+                #helper for laplacian regularizer
+                tf.placeholder(tf.int32, (None, 2, self.num_blocks-1),'pool_idx'),
+                ]
+        '''
     def build_graph(self, positions, vertex_normals):
 
         # Build graphs
@@ -115,6 +134,7 @@ class pc2MeshModel(ModelDesc):
 
         # Features for each point is its own position in space
         features = positions
+        '''
         neighbors = knn_bruteforce(positions, K = 8 )
         # 3 x 1024
         x = features
@@ -156,10 +176,18 @@ class pc2MeshModel(ModelDesc):
         xr = 0.001 * tf.nn.l2_loss(x)
         # 128 x 16
         x3 = x
+        '''
+        x = features
+        x0 = features
+        x1 = features
+        x2 = features
+        x3 = features
+        xr = 0.001 * tf.nn.l2_loss(x)
 
         #Get output stages
         #TODO:here
-        self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
+        #self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
+        self.placeholders.update({'pc_feature' : [x,tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
         #self.placeholders.update({'pc_feature' : [tf.squeeze(features)]})
         #TODO
         #Loss L2 Maybe working, definitely check:
@@ -242,6 +270,38 @@ class pc2MeshModel(ModelDesc):
 
     def optimizer(self):
         return tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate)
+
+   
+    def load_ellipsoid_as_tensor(self):
+        pkl = pickle.load(open('utils/ellipsoid/info_ellipsoid.dat', 'rb'))
+        coord = pkl[0]
+        pool_idx = pkl[4]
+        faces = pkl[5]
+        lape_idx = pkl[7]
+        edges = []
+        for i in range(1, 4):
+            adj = pkl[i][1]
+            edges.append(adj[0])
+
+        self.placeholders["features"] = tf.convert_to_tensor(coord, dtype = tf.float32)
+
+        self.placeholders["support1"] = [ self.convert_support_to_tensor(s) for s in pkl[1]] 
+        self.placeholders["support2"] = [ self.convert_support_to_tensor(s) for s in pkl[2]] 
+        self.placeholders["support3"] = [ self.convert_support_to_tensor(s) for s in pkl[3]] 
+
+        self.placeholders["faces"] = [tf.convert_to_tensor(f, dtype=tf.int32) for f in faces ]
+        self.placeholders["edges"] = [tf.convert_to_tensor(e, dtype=tf.int32) for e in edges ]
+        self.placeholders["lape_idx"] = [tf.convert_to_tensor(l, dtype = tf.int32) for l in lape_idx ]
+        self.placeholders["pool_idx"] = [tf.convert_to_tensor(p, dtype = tf.int32) for p in pool_idx ]
+
+        logger.info("Loaded Ellipsoid into Graph context")
+
+    def convert_support_to_tensor(self, to_convert):
+        indices = tf.convert_to_tensor(to_convert[0], dtype=tf.int64)
+        values = tf.convert_to_tensor(to_convert[1], dtype=tf.float32)
+        d_shape = tf.convert_to_tensor(to_convert[2], dtype=tf.int64)
+        return tf.SparseTensor(indices=indices, values=values, dense_shape=d_shape)
+
 
 if __name__ == '__main__':
     print "Here"

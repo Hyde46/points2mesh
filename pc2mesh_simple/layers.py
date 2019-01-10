@@ -1,5 +1,6 @@
 from pixel2mesh.inits import *
 import tensorflow as tf
+from tensorpack.utils import logger
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce, knn_bf_sym
 
 flags = tf.app.flags
@@ -178,13 +179,13 @@ class GraphProjection(Layer):
     def _call(self, inputs):
 
         coord = inputs
-        B = tf.shape(coord)[0]
-        Dp = tf.shape(coord)[1]
-        N = tf.constant(1,dtype=tf.int32)
-        #N = tf.shape(coord)[2]
+        #B = tf.shape(coord)[0]
+        B = FLAGS.batch_size
+        Dp = coord.shape.as_list()[1]
+        #N = tf.constant(1,dtype=tf.int32)
+        #N = coord.shape.as_list()[2]
 
         coord_expanded = tf.expand_dims( coord, -1)
-            
 
         #transform PC feature to usable format
         # placeholder['pc_feature'] in [x0, x1, x2, x3]
@@ -194,23 +195,31 @@ class GraphProjection(Layer):
         # x3 [B, 128,   16]
         # TODO: At the moment stage0 is just the point cloud [B, Dp, N]
         stage_0 = self.pc_feat[0]
-        pc_data = tf.transpose(stage_0,[0, 2, 1])
-        ellipsoid = tf.transpose(coord_expanded,[0, 2, 1])
+        #pc_data = tf.transpose(stage_0,[0, 2, 1])
+        pc_data = stage_0
+        ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
 
+        ellipsoid_N = ellipsoid.shape.as_list()[2]
+
+        Y = tf.transpose(pc_data, [0,2,1])
+
+        N = ellipsoid.shape.as_list()[2]
         # Neighbors: [B, K, N]
         # Distances: [B, K, N]
-        knn,_,_ = knn_bf_sym(stage_0, ellipsoid, K=self.K)
+        knn,_,_ = knn_bf_sym(ellipsoid, pc_data, K=self.K)
 
         knnr = tf.reshape(knn, [1, B * N * self.K])
 
-        bv = tf.ones([B, N * self.K], dtype = tf.int32) * tf.expand_dims(tf.range(0,B), -1)
-        #bv = tf.ones([B,N*self.K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
+        #bv = tf.ones([B, N * self.K], dtype = tf.int32) * tf.expand_dims(tf.range(0,B), -1)
+        bv = tf.ones([B,N*self.K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
         
         knnr = tf.stack([tf.reshape(bv,[1,B*N*self.K]), tf.reshape(knn,[1,B*N*self.K])],-1)
 
-        knnY = tf.reshape(tf.gather_nd(ellipsoid, knnr), [B, N, self.K, Dp])
+        knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
+        knnY_mean = tf.reduce_mean(knnY, axis = 2)
 
-        stage_0 = tf.reshape(tf.reduce_mean(knnY, axis=2), [B, Dp])
+        stage_0 = knnY_mean[0]
+        ellipsoid = ellipsoid[0]
         #For now only stage 1
         stage_1 = 0
         stage_2 = 0

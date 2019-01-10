@@ -31,8 +31,8 @@ def mesh_loss(pred, positions, vertex_normals,placeholders, block_id):
     #gt_pt = placeholders['positions'] #gt points
     #gt_nm = placeholders['vertex_normals'] #gt normals
 
-    gt_pt = tf.squeeze(positions)
-    gt_nm = tf.squeeze(vertex_normals)
+    gt_pt = tf.transpose(positions[0],[1,0])
+    gt_nm = tf.transpose(vertex_normals[0],[1,0])
 
     # edge in graph
     nod1 = tf.gather(pred, placeholders['edges'][block_id - 1][:, 0])
