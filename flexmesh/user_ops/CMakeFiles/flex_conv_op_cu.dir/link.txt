@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -march=native -fopenmp -O3 -D_GLIBCXX_USE_CXX11_ABI=1  -shared -Wl,-soname,flex_conv_op_cu.so -o flex_conv_op_cu.so CMakeFiles/flex_conv_op_cu.dir/kernels/flex_conv_op_cu_generated_flex_conv_kernel_gpu.cu.cc.o /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/lib64/libcudart_static.a -lpthread -ldl -lrt 
