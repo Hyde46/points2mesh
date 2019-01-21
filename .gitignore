@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Own directory stuff
+utils/examples/
+train_log/
+user_ops/
+
 # C extensions
 *.so
 
