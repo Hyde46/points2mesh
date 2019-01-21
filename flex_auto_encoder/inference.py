@@ -20,6 +20,7 @@ def predict():
     pcff = PointCloudFromFile()
     pc_data = pcff.load_pc(path=pc_path,num_points=1024)
     outputs = predictor(pc_data)[0].T[:,:,0]
+    print outputs.shape
     save_pc_to_file (outputs,'human.xyz','/home/heid/Documents/master/pc2mesh/point_cloud_data/')
     load_pc_meshlab('/home/heid/Documents/master/pc2mesh/point_cloud_data/human.xyz')
     

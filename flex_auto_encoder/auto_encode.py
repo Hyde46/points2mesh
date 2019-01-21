@@ -29,7 +29,7 @@ class Model(ModelDesc):
         #return [tf.placeholder(tf.float32, (PC['num'], PC['dp'], None), 'positions')]
         return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), 'positions')]
                 
-    def _build_graph(self, positions):
+    def build_graph(self, positions):
         """
         Autoencoder
         """
@@ -113,12 +113,14 @@ if __name__ == '__main__':
     logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
 
     #Loading Data
-    df_train = get_point_cloud_dataflow('train',batch_size=BATCH_SIZE,num_points=PC["num"], model_ver="10",shuffle=False, normals=False)
-    df_test = get_point_cloud_dataflow('test',batch_size=2*BATCH_SIZE,num_points=PC["num"], model_ver="10",shuffle=False, normals=False)
+    df_train = get_point_cloud_dataflow('train',batch_size=BATCH_SIZE,
+            num_points=PC["num"], model_ver="10",shuffle=False, normals=False)
+    df_test = get_point_cloud_dataflow('test',batch_size=2*BATCH_SIZE,
+            num_points=PC["num"], model_ver="10",shuffle=False, normals=False)
     steps_per_epoch = len(df_train)
     #Setup training step
     config = TrainConfig(
-        model=ChildModel(),
+        model=Model(),
         #data=FeedInput(df_train),
         dataflow = df_train,
         callbacks=[
