@@ -1,4 +1,4 @@
-# Install script for directory: /home/heid/Documents/master/Flex-Convolution/user_ops
+# Install script for directory: /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/heid/Documents/master/Flex-Convolution/user_ops/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

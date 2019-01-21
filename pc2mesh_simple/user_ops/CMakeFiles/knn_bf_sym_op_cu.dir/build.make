@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/heid/Documents/master/Flex-Convolution/user_ops
+CMAKE_SOURCE_DIR = /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/heid/Documents/master/Flex-Convolution/user_ops
+CMAKE_BINARY_DIR = /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops
 
 # Include any dependencies generated for this target.
 include CMakeFiles/knn_bf_sym_op_cu.dir/depend.make
@@ -241,8 +241,6 @@ CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_ke
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/vector_types.h
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/samples/common/inc/helper_cuda.h
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/samples/common/inc/helper_string.h
-CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_9.2/cuda/include/cuda.h
-CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_9.2/cuda/include/cuda_fp16.h
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/Eigen/Core
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/Eigen/src/Core/ArithmeticSequence.h
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/Eigen/src/Core/Array.h
@@ -958,23 +956,23 @@ CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_ke
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: /usr/lib/gcc/x86_64-linux-gnu/7/include/xmmintrin.h
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cmake
 CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o: kernels/knn_bf_sym_kernel.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building NVCC (Device) object CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o"
-	cd /home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels && /usr/bin/cmake -E make_directory /home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/.
-	cd /home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels && /usr/bin/cmake -D verbose:BOOL=$(VERBOSE) -D build_configuration:STRING= -D generated_file:STRING=/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o -D generated_cubin_file:STRING=/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cubin.txt -P /home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building NVCC (Device) object CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o"
+	cd /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels && /usr/bin/cmake -E make_directory /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/.
+	cd /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels && /usr/bin/cmake -D verbose:BOOL=$(VERBOSE) -D build_configuration:STRING= -D generated_file:STRING=/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o -D generated_cubin_file:STRING=/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cubin.txt -P /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cmake
 
 # Object files for target knn_bf_sym_op_cu
 knn_bf_sym_op_cu_OBJECTS =
 
 # External object files for target knn_bf_sym_op_cu
 knn_bf_sym_op_cu_EXTERNAL_OBJECTS = \
-"/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o"
+"/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o"
 
 knn_bf_sym_op_cu.so: CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o
 knn_bf_sym_op_cu.so: CMakeFiles/knn_bf_sym_op_cu.dir/build.make
 knn_bf_sym_op_cu.so: /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/lib64/libcudart_static.a
 knn_bf_sym_op_cu.so: /usr/lib/x86_64-linux-gnu/librt.so
 knn_bf_sym_op_cu.so: CMakeFiles/knn_bf_sym_op_cu.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX shared library knn_bf_sym_op_cu.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX shared library knn_bf_sym_op_cu.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/knn_bf_sym_op_cu.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -991,6 +989,6 @@ CMakeFiles/knn_bf_sym_op_cu.dir/clean:
 .PHONY : CMakeFiles/knn_bf_sym_op_cu.dir/clean
 
 CMakeFiles/knn_bf_sym_op_cu.dir/depend: CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o
-	cd /home/heid/Documents/master/Flex-Convolution/user_ops && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/heid/Documents/master/Flex-Convolution/user_ops /home/heid/Documents/master/Flex-Convolution/user_ops /home/heid/Documents/master/Flex-Convolution/user_ops /home/heid/Documents/master/Flex-Convolution/user_ops /home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/knn_bf_sym_op_cu.dir/depend
 

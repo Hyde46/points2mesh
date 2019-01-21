@@ -369,7 +369,6 @@ struct KNNBfSymFunctor<GPUDevice, Dtype, NBtype>
 			cudaEventDestroy(start);
 			cudaEventDestroy(stop);
 		}
-
 		cudaDeviceSynchronize();
 		getLastCudaError("KNNBFSym execution failed");
 		checkCudaErrors(cudaDeviceSynchronize());

@@ -58,18 +58,18 @@ endif()
 
 # Set these up as variables to make reading the generated file easier
 set(CMAKE_COMMAND "/usr/bin/cmake") # path
-set(source_file "/home/heid/Documents/master/Flex-Convolution/user_ops/kernels/flex_pool_kernel_gpu.cu.cc") # path
-set(NVCC_generated_dependency_file "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.NVCC-depend") # path
-set(cmake_dependency_file "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.depend") # path
+set(source_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/flex_pool_kernel_gpu.cu.cc") # path
+set(NVCC_generated_dependency_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.NVCC-depend") # path
+set(cmake_dependency_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.depend") # path
 set(CUDA_make2cmake "/usr/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
 set(CUDA_parse_cubin "/usr/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
 set(CUDA_HOST_COMPILER "/usr/bin/cc") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
-set(generated_file_path "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/.") # path
-set(generated_file_internal "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/./flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o") # path
-set(generated_cubin_file_internal "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/./flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.cubin.txt") # path
+set(generated_file_path "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/.") # path
+set(generated_file_internal "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/./flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o") # path
+set(generated_cubin_file_internal "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/flex_pool_op_cu.dir/kernels/./flex_pool_op_cu_generated_flex_pool_kernel_gpu.cu.cc.o.cubin.txt") # path
 
 set(CUDA_NVCC_EXECUTABLE "/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/bin/nvcc") # path
 set(CUDA_NVCC_FLAGS  -std=c++11 -O3 -Xptxas=-v --expt-relaxed-constexpr -D GOOGLE_CUDA=1 --gpu-architecture=sm_52 -D_GLIBCXX_USE_CXX11_ABI=1 ;; ) # list

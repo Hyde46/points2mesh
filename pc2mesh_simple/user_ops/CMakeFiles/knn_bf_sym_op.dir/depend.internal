@@ -458,8 +458,8 @@ CMakeFiles/knn_bf_sym_op.dir/kernels/knn_bf_sym_kernel.cc.o
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsImpl.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsPacketMath.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/arch/CUDA/CudaSpecialFunctions.h
- /home/heid/Documents/master/Flex-Convolution/user_ops/kernels/knn_bf_sym_kernel.cc
- /home/heid/Documents/master/Flex-Convolution/user_ops/kernels/knn_bf_sym_op.h
+ /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/knn_bf_sym_kernel.cc
+ /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/knn_bf_sym_op.h
 CMakeFiles/knn_bf_sym_op.dir/kernels/knn_bf_sym_op.cc.o
  /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/builtin_types.h
  /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/channel_descriptor.h
@@ -917,8 +917,8 @@ CMakeFiles/knn_bf_sym_op.dir/kernels/knn_bf_sym_op.cc.o
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsImpl.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsPacketMath.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/arch/CUDA/CudaSpecialFunctions.h
- /home/heid/Documents/master/Flex-Convolution/user_ops/kernels/knn_bf_sym_op.cc
- /home/heid/Documents/master/Flex-Convolution/user_ops/kernels/knn_bf_sym_op.h
+ /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/knn_bf_sym_op.cc
+ /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/knn_bf_sym_op.h
 CMakeFiles/knn_bf_sym_op.dir/ops/knn_bf_sym.cc.o
  /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/builtin_types.h
  /graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/channel_descriptor.h
@@ -1358,4 +1358,4 @@ CMakeFiles/knn_bf_sym_op.dir/ops/knn_bf_sym.cc.o
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsImpl.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsPacketMath.h
  /home/heid/.local/lib/python2.7/site-packages/tensorflow/include/unsupported/Eigen/src/SpecialFunctions/arch/CUDA/CudaSpecialFunctions.h
- /home/heid/Documents/master/Flex-Convolution/user_ops/ops/knn_bf_sym.cc
+ /home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/ops/knn_bf_sym.cc

@@ -18,12 +18,19 @@ def load_ellipsoid_as_tensor():
             adj = pkl[i][1]
             edges.append(adj[0])
 
-        print lape_idx[0][0]
+        #print lape_idx[0][0]
+        print "Indices:"
+        print np.max(np.array(lape_idx[0][:,:8]))
+    
+    
+        print np.max(np.array(lape_idx[1][:,:8]))
+        print np.max(np.array(lape_idx[2][:,:8]))
         #Coord
 
         #coord_ts = tf.convert_to_tensor(coord, dtype = tf.float32)
 
         #Support 1 - 3
+
         #print pkl[1][1][2]
         #print tf.convert_to_tensor_or_sparse_tensor(pkl[1][1])
        # s_1 = tf.convert_to_tensor(pkl[1][1][0], dtype=tf.int64)

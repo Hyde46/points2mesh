@@ -58,18 +58,18 @@ endif()
 
 # Set these up as variables to make reading the generated file easier
 set(CMAKE_COMMAND "/usr/bin/cmake") # path
-set(source_file "/home/heid/Documents/master/Flex-Convolution/user_ops/kernels/knn_bf_sym_kernel.cu") # path
-set(NVCC_generated_dependency_file "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.NVCC-depend") # path
-set(cmake_dependency_file "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.depend") # path
+set(source_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels/knn_bf_sym_kernel.cu") # path
+set(NVCC_generated_dependency_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.NVCC-depend") # path
+set(cmake_dependency_file "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.depend") # path
 set(CUDA_make2cmake "/usr/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
 set(CUDA_parse_cubin "/usr/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
 set(CUDA_HOST_COMPILER "/usr/bin/cc") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
-set(generated_file_path "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/.") # path
-set(generated_file_internal "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o") # path
-set(generated_cubin_file_internal "/home/heid/Documents/master/Flex-Convolution/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cubin.txt") # path
+set(generated_file_path "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/.") # path
+set(generated_file_internal "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o") # path
+set(generated_cubin_file_internal "/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/CMakeFiles/knn_bf_sym_op_cu.dir/kernels/./knn_bf_sym_op_cu_generated_knn_bf_sym_kernel.cu.o.cubin.txt") # path
 
 set(CUDA_NVCC_EXECUTABLE "/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/bin/nvcc") # path
 set(CUDA_NVCC_FLAGS  -std=c++11 -O3 -Xptxas=-v --expt-relaxed-constexpr -D GOOGLE_CUDA=1 --gpu-architecture=sm_52 -D_GLIBCXX_USE_CXX11_ABI=1 ;; ) # list
@@ -79,7 +79,7 @@ set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m64;-Dknn_bf_sym_op_cu_EXPORTS) # list
-set(CUDA_NVCC_INCLUDE_DIRS "/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include;/usr/local;/extra/samples/Common;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/samples/common/inc;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/../..;/graphics/opt/opt_Ubuntu18.04/cub/cub-1.8.0;/home/heid/.local/lib/python2.7/site-packages/tensorflow/include;/home/heid/Documents/master/Flex-Convolution/user_ops/kernels;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_INCLUDE_DIRS "/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include;/usr/local;/extra/samples/Common;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/samples/common/inc;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include/../..;/graphics/opt/opt_Ubuntu18.04/cub/cub-1.8.0;/home/heid/.local/lib/python2.7/site-packages/tensorflow/include;/home/heid/Documents/master/pc2mesh/pc2mesh_simple/user_ops/kernels;/graphics/opt/opt_Ubuntu18.04/cuda/toolkit_10.0/cuda/include") # list (needs to be in quotes to handle spaces properly).
 set(CUDA_NVCC_COMPILE_DEFINITIONS [==[NDEBUG=True]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string
 set(cuda_language_flag ) # list
