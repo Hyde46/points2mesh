@@ -13,7 +13,7 @@ tf.set_random_seed(seed)
 #settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
-flags.DEFINE_string('pc', 'utils/examples/airplane.txt', 'Test pointcloud')
+flags.DEFINE_string('pc', 'utils/examples/airplane_0627.txt', 'Test pointcloud')
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
@@ -42,13 +42,13 @@ def create_inference_mesh(vertices,num):
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
     mesh = np.vstack((vert, face))
-    pred_path = FLAGS.pc.replace('.txt', str(num)+'.obj')
-    np.savetxt(pred_path, mesh, fmt='%s', delimiter=' ')
-    load_pc_meshlab('/home/heid/Documents/master/pc2mesh/pc2mesh_simple/'+pred_path)
 
+    path_to_mesh = path.replace(".txt", str(num)+".obj")
+    np.savetxt(path_to_mesh, mesh, fmt='%s', delimiter=' ')
 
-def predict(data):
-    
+    #load_pc_meshlab(path_to_mesh)
+
+def predict(data,path):
     prediction = PredictConfig(
             session_init = get_model_loader("train_log/fusion_/checkpoint"),
             model = pc2MeshModel(name="Pc2Mesh"),
@@ -60,26 +60,22 @@ def predict(data):
 
     #predict mesh
     predictor = OfflinePredictor(prediction)
-    vertices_1 = predictor(data)[0]
-    vertices_2 = predictor(data)[1]
+    #vertices_1 = predictor(data)[0]
+    #vertices_2 = predictor(data)[1]
     vertices_3 = predictor(data)[2]
 
-    create_inference_mesh(vertices_1,1)
-    create_inference_mesh(vertices_2,2)
+    #create_inference_mesh(vertices_1,1)
+    #create_inference_mesh(vertices_2,2)
     create_inference_mesh(vertices_3,3)
-    '''
-    vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
-    face = np.loadtxt('utils/ellipsoid/face1.obj', dtype='|S32')
-    mesh = np.vstack((vert, face))
-    pred_path = FLAGS.pc.replace('.txt', '.obj')
-    np.savetxt(pred_path, mesh, fmt='%s', delimiter=' ')
-    load_pc_meshlab('/home/heid/Documents/master/pc2mesh/pc2mesh_simple/'+pred_path)
-    '''
-    #test_path = "testtest.xyz"
-    #save_pc_to_file(vertices,test_path, '/home/heid/Documents/master/pc2mesh/point_cloud_data/')
-    #load_pc_meshlab('/home/heid/Documents/master/pc2mesh/point_cloud_data/'+test_path)
 
-pc_inp = load_pc(FLAGS.pc, num_points=1024)
-predict(pc_inp)
+
+
+pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
+#for pc in pcs:
+pc = pcs[9]
+path = "/home/heid/Documents/master/pc2mesh/flexmesh/utils/examples/"
+path = path + pc
+pc_inp = load_pc(path, num_points=1024)
+predict(pc_inp,path)
 
 

@@ -87,6 +87,7 @@ class pc2MeshModel(ModelDesc):
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
+            # TODO: remove bad outputs
             #define outputs for multi stage mesh views
             self.output1 = self.activations[15]
             print self.output1
@@ -114,71 +115,58 @@ class pc2MeshModel(ModelDesc):
     def build_flex_graph(self, positions):
 
         def subsample(x,factor=4):
+            # TODO: build better supsampling (IDISS)
             # Number of samples
             n = x.shape.as_list()[-1]
             return x[:, :, :n // factor]
 
+        #xr = 0.001 * tf.nn.l2_loss(x)
         # Features for each point is its own position in space
         features = positions
         neighbors = knn_bruteforce(positions, K = 8 )
-        # 3 x 1024
         x = features
-        x0 = x
-        """
-        #Build layers
-        x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
-        xr += 0.001 * tf.nn.l2_loss(x)
-        # 16 x 1024
-        # x0 = x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 32 x 256
-        x1=x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 64 x 64
-        x2 = x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 128 x 16
-        x3 = x
-        """
-        x = features
-        #x0 = features
-        x1 = features
-        x2 = features
-        x3 = features
-        xr = 0.001 * tf.nn.l2_loss(x)
+        # Try not to use basic positions, but rather find important positions in pc
+        #x0 = [positions,features]
 
+        # feature 0 
+        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
+        
+        # Fully connected:
+        x1 = tf.layers.flatten(x)
+        x1 = tf.layers.dense(x1, 3 * FLAGS.pc_num, activation = tf.nn.relu)
+        x1 = tf.reshape(x1, [FLAGS.batch_size, 3, FLAGS.pc_num])
+        # Subsample!
+        x = subsample(x)
+        positions = subsample(positions)
+        neighbors = knn_bruteforce(positions, K = 8)
+
+        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
+        
+        # Fully connected:
+        x2 = tf.layers.flatten(x)
+        x2 = tf.layers.dense(x2, 3 * FLAGS.pc_num, activation = tf.nn.relu)
+        x2 = tf.reshape(x2, [FLAGS.batch_size, 3, FLAGS.pc_num])
+        #Subsample!
+        x = subsample(x)
+        positions = subsample(positions)
+        neighbors = knn_bruteforce(positions, K = 8)
+
+        x = flex_convolution(x, positions, neighbors, 256 , activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 256, activation = tf.nn.relu)
+        
+        # Fully connected
+        x3 = tf.layers.flatten(x)
+        x3 = tf.layers.dense(x3, 3 * FLAGS.pc_num, activation = tf.nn.relu)
+        x3 = tf.reshape(x3, [FLAGS.batch_size, 3, FLAGS.pc_num])
         #Get output stages
         #TODO:here
-        #self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
-        #self.placeholders.update({'pc_feature' : [x0,tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
-        self.placeholders.update({'pc_feature' : [x0, x0, x0, x0]})
-        #TODO
-        #Loss L2 Maybe working, definitely check:
-        loss = xr
-        return loss
+        #self.placeholders.update({'pc_feature' : [x0, x1, x2, x3]})
+        self.placeholders.update({'pc_feature' : [x1, x2, x3]})
+
+        return 0
 
     def build_gcn_graph(self):
         self.layers.append(GraphProjection(placeholders=self.placeholders))
@@ -238,7 +226,7 @@ class pc2MeshModel(ModelDesc):
 
     def get_loss(self,positions,vertex_normals):
 
-        mesh_loss_first_block  =  mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
+        mesh_loss_first_block  = mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
         mesh_loss_second_block = mesh_loss(self.output2, positions, vertex_normals, self.placeholders, 2)
         mesh_loss_third_block  = mesh_loss(self.output3, positions, vertex_normals, self.placeholders, 3)
 
@@ -251,7 +239,6 @@ class pc2MeshModel(ModelDesc):
             mesh_loss_second_block +\
             mesh_loss_third_block
 
-        #loss += .3 * laplace_loss(self.input, self.output1, self.placeholders, 1)
         l_loss_first = .3 * laplace_loss(self.input, self.output1, self.placeholders, 1)
         l_loss_second = laplace_loss(self.output_stage_1, self.output2, self.placeholders, 2)
         l_loss_third = laplace_loss(self.output_stage_2, self.output3, self.placeholders, 3)

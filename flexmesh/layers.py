@@ -166,19 +166,25 @@ class GraphPooling(Layer):
 
         return outputs
 
-
-""" Different name?"""
 class GraphProjection(Layer):
     """Graph Projection layer."""
 
     def __init__(self, placeholders, **kwargs):
         super(GraphProjection, self).__init__(**kwargs)
         self.K = FLAGS.num_neighbors
-
         self.pc_feat = placeholders['pc_feature']
 
     def _call(self, inputs):
+       # stage_0 = self.neighborhood(inputs,0) 
+        stage_1 = self.mean_neighborhood(inputs,0)
+        stage_2 = self.mean_neighborhood(inputs,1)
+        stage_3 = self.mean_neighborhood(inputs,2)
 
+        #outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
+        outputs = tf.concat([inputs, stage_1, stage_2, stage_3], 1)
+        return outputs
+
+    def mean_neighborhood(self, inputs, num_feature):
         coord = inputs
         #B = tf.shape(coord)[0]
         B = FLAGS.batch_size
@@ -189,25 +195,17 @@ class GraphProjection(Layer):
         coord_expanded = tf.expand_dims( coord, -1)
 
         #transform PC feature to usable format
-        # placeholder['pc_feature'] in [x0, x1, x2, x3]
-        # x0 [B,  16, 1024]
-        # x1 [B,  32,  256]
-        # x2 [B,  64,   64]
-        # x3 [B, 128,   16]
-        # TODO: At the moment stage0 is just the point cloud [B, Dp, N]
-        stage_0 = self.pc_feat[0]
-        #pc_data = tf.transpose(stage_0,[0, 2, 1])
-        pc_data = stage_0
+        pc_coords = self.pc_feat[num_feature]
         ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
 
         ellipsoid_N = ellipsoid.shape.as_list()[2]
 
-        Y = tf.transpose(pc_data, [0,2,1])
+        Y = tf.transpose(pc_coords, [0,2,1])
 
         N = ellipsoid.shape.as_list()[2]
         # Neighbors: [B, K, N]
         # Distances: [B, K, N]
-        knn,_,_ = knn_bf_sym(ellipsoid, pc_data, K=self.K)
+        knn,_,_ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
 
         knnr = tf.reshape(knn, [1, B * N * self.K])
 
@@ -219,15 +217,7 @@ class GraphProjection(Layer):
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
         knnY_mean = tf.reduce_mean(knnY, axis = 2)
 
-        stage_0 = knnY_mean[0]
-        ellipsoid = ellipsoid[0]
-        #For now only stage 1
-        stage_1 = 0
-        stage_2 = 0
-        stage_3 = 0
-        stage_4 = 0
-        # Return [B, 12]
-        # With 12 made out of 4 times [x,y,z]
-        outputs = tf.concat([coord, stage_0 ,stage_0, stage_0, stage_0], 1)
-        return outputs
+        #ellipsoid = ellipsoid[0]
+
+        return knnY_mean[0]
 
