@@ -14,6 +14,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
+PC = {'num': 1024, 'dp':3, 'ver':"40"}
 #settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -64,7 +65,7 @@ def predict(predictor, data, path):
 def loadModel():
     prediction = PredictConfig(
             session_init = get_model_loader("train_log/fusion_/checkpoint"),
-            model = FlexmeshModel(name="Flexmesh"),
+            model = FlexmeshModel(PC,name="Flexmesh"),
             input_names = ['positions'],
             output_names = ['mesh_outputs/output1',
                             'mesh_outputs/output2',

@@ -1,13 +1,11 @@
 import tensorflow as tf
 from cd_dist import *
 from user_ops import knn_bruteforce as _knn_bruteforce
+   
 
-def distance_density_loss(pred):
-    _, distances, _ = _knn_bruteforce(tf.expand_dims(tf.transpose(pred),0), K=8)
-    distances = distances[0]
-    mean_neighborhood = tf.reduce_mean(distances,1)
-    return tf.reduce_max(mean_neighborhood)
-    
+def point2triangle_loss(pred, placeholders, block_id):
+
+    pass
 
 def laplace_coord(pred, placeholders, block_id):
     vertex = tf.concat([pred, tf.zeros([1, 3])], 0)
@@ -31,7 +29,8 @@ def laplace_loss(pred1, pred2, placeholders, block_id):
     return laplace_loss + move_loss
 
 def unit(tensor):
-    return tf.nn.l2_normalize(tensor, dim=1)
+    #return tf.nn.l2_normalize(tensor, dim=1)
+    return tf.nn.l2_normalize(tensor, axis=1)
 
 def mesh_loss(pred, positions, vertex_normals,placeholders, block_id):
     chamfer_block_loss_metrics = [

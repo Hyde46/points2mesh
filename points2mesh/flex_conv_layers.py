@@ -21,7 +21,7 @@ import tensorflow as tf
 from user_ops import flex_convolution as _flex_convolution
 from user_ops import flex_pooling as _flex_pooling
 from user_ops import knn_bruteforce as _knn_bruteforce
-from user_ops import knn_bf_sym 
+from user_ops import knn_bf_sym
 from user_ops import flex_convolution_transpose as _flex_convolution_transpose
 
 from tensorflow.python.keras import activations
@@ -70,15 +70,14 @@ class KnnBfSym(Layer):
             NN = tf.expand_dims(NN, axis=2)
 
         return NN
-'''
-def knn_bf_sym(positions, to_compare,
+
+def no_knn_bf_sym(positions, to_compare,
                 K,
                 data_format='simple',
                 name=None):
     layer = KnnBfSym(K, data_format=data_format, name=name)
 
     return layer.apply(positions, to_compare)
-'''
         
 
 

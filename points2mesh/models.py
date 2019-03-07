@@ -12,8 +12,6 @@ from losses import *
 
 from fetcher import *
 
-PC = {'num': 1024, 'dp':3, 'ver':"40"}
-
 enable_argscope_for_module(tf.layers)
 
 flags = tf.app.flags
@@ -21,7 +19,7 @@ FLAGS = flags.FLAGS
 
 
 class FlexmeshModel(ModelDesc):
-    def __init__(self, **kwargs):
+    def __init__(self,PC, **kwargs):
         allowed_kwargs = {'name', 'logging'}
         for kwarg in kwargs.keys():
             assert kwarg in allowed_kwargs, 'Invalid keyword argument: ' + kwarg
@@ -50,11 +48,12 @@ class FlexmeshModel(ModelDesc):
 
         self.num_supports = 2
         self.num_blocks = 3
+        self.PC = PC
 
 
     def inputs(self):
-        return [tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, PC['dp'], PC['num']), "vertex_normals"),
+        return [tf.placeholder(tf.float32, (None,self.PC['dp'], self.PC['num']), "positions"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
                 ]
 
     def build_graph(self, positions, vertex_normals):
@@ -90,12 +89,12 @@ class FlexmeshModel(ModelDesc):
             #define outputs for multi stage mesh views
             #self.output1 = tf.identity(self.activations[15],name="output1")
             self.output1 = tf.identity(self.activations[16],name="output1")
-            unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id=1)
+            unpool_layer = GraphPooling(placeholders=self.placeholders,gt_pt=positions, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
             #self.output2 = tf.identity(self.activations[31],name="output2")
             self.output2 = tf.identity(self.activations[32],name="output2")
-            unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id = 2)
+            unpool_layer = GraphPooling(placeholders=self.placeholders,gt_pt=positions, pool_id = 2)
             self.output_stage_2 = unpool_layer(self.output2)
 
             self.output3 = tf.identity(self.activations[-1],name="output3")
@@ -181,7 +180,7 @@ class FlexmeshModel(ModelDesc):
 
         # second project block
         self.layers.append(GraphProjection(placeholders=self.placeholders))
-        self.layers.append(GraphPooling(placeholders=self.placeholders, pool_id=1))  # unpooling for higher detail
+        self.layers.append(GraphPooling(placeholders=self.placeholders,gt_pt=positions, pool_id=1))  # unpooling for higher detail
 
         self.layers.append(GraphConvolution(input_dim=FLAGS.feat_dim + FLAGS.hidden,
                                             output_dim=FLAGS.hidden,
@@ -200,7 +199,7 @@ class FlexmeshModel(ModelDesc):
                                             placeholders=self.placeholders, logging=self.logging))
         # third project block
         self.layers.append(GraphProjection(placeholders=self.placeholders))
-        self.layers.append(GraphPooling(placeholders=self.placeholders, pool_id=2))  # unpooling
+        self.layers.append(GraphPooling(placeholders=self.placeholders,gt_pt=positions, pool_id=2))  # unpooling
         self.layers.append(GraphConvolution(input_dim=FLAGS.feat_dim + FLAGS.hidden,
                                             output_dim=FLAGS.hidden,
                                             gcn_block_id=3,
@@ -251,6 +250,7 @@ class FlexmeshModel(ModelDesc):
         
         # GCN loss
         conv_layers = range(1, 15) + range(17, 31) + range(33, 48)
+        conv_layers = [e + 1 for e in conv_layers]
         for layer_id in conv_layers:
             for var in self.layers[layer_id].vars.values():
                 loss += FLAGS.weight_decay * tf.nn.l2_loss(var)

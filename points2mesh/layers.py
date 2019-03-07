@@ -153,22 +153,21 @@ class GraphConvolution(Layer):
 class GraphPooling(Layer):
     """Graph Pooling layer."""
 
-    def __init__(self, placeholders, pool_id=1, **kwargs):
+    def __init__(self, placeholders,gt_pt, pool_id=1, **kwargs):
         super(GraphPooling, self).__init__(**kwargs)
 
         self.pool_idx = placeholders['pool_idx'][pool_id - 1]
 
-        self.K = 8
+        self.gt_pt = gt_pt
+        self.K = 1
 
     def _call(self, inputs):
         X = inputs
 
         # Create vertices in the middle of each edge
         add_feat = (1 / 2.0) * tf.reduce_sum(tf.gather(X, self.pool_idx), 1)
-        
-        graph_tension = self.get_vertex_tension(X)
-        print "Graph tension:"
-        print graph_tension
+        ''' 
+        graph_tension = self.get_vertex_tension(self.gt_pt,X)
 
         # Move new point towards neighbors
         B = FLAGS.batch_size
@@ -193,29 +192,24 @@ class GraphPooling(Layer):
         # but they can be ignored as they cancel out each other
 
         knnY_mean = tf.reduce_mean(knnY, axis = 2)[0]
-        print "knnY_mean:"
-        print knnY_mean
 
         dir_knnY = tf.subtract(knnY_mean, add_feat) * ( 1.0 / 10.0 )
 
         # Normalize vector directions
         dir_knnY_norm = tf.nn.l2_normalize(dir_knnY,axis=1)
-        print "Normal direction"
-        print dir_knnY_norm
-
         # Add new feature towards that vector, dont move towards old neighbor vertices
 
         #dir_knnY = tf.norm(dir_knnY, axis=1) , tf.reduce_mean(distances[0],axis=1)
         #print dir_knnY
-
-        outputs = tf.concat([X, add_feat + dir_knnY], 0)
+        '''
+        outputs = tf.concat([X, add_feat], 0)
 
 
         # Move new vertex towards vertices with high tension
 
         return outputs
 
-    def get_vertex_tension(self,inputs):
+    def get_vertex_tension(self,inputs, to_compare):
         """
         Calculates local tension (gamma) for each vertex v in Graph G
         by adding up ||v - v_i|| where v_i is local neighborhood of v.
@@ -227,7 +221,8 @@ class GraphPooling(Layer):
         """
         inputs_exp = tf.expand_dims(tf.transpose(inputs),0)
 
-        nn,dist,_ = knn_bf_sym(inputs_exp,inputs_exp,K = 8)# (1, 156, 8)
+        nn,dist,_ = knn_bf_sym(inputs_exp,to_compare,K = 8)# (1, 156, 8)
+        
         tension = tf.reduce_sum(tf.abs(dist),2)[0]
         return tension
 
@@ -265,8 +260,16 @@ class GraphProjection(Layer):
         stage_1 = self.mean_neighborhood(inputs,1) 
         stage_2 = self.mean_neighborhood(inputs,2) 
         stage_3 = self.mean_neighborhood(inputs,3) 
-        
+        '''
+
+        stage_0 = self.tension_projection(inputs,0)
+        stage_1 = self.tension_projection(inputs,1) 
+        stage_2 = self.tension_projection(inputs,2) 
+        stage_3 = self.tension_projection(inputs,3) 
+
+        '''
         #outputs = tf.concat([inputs, stage_0, stage_1[0], stage_2[0], stage_3[0]], 1)
+        #outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
         outputs = tf.concat([inputs, stage_0,\
                 stage_1[0], stage_1[1],\
                 stage_2[0], stage_2[1],\
@@ -274,6 +277,116 @@ class GraphProjection(Layer):
                 ], 1)
         return outputs
 
+    def tension_projection(self,inputs, num_feature):
+        """
+        Calculates the tension for each vertex in ground truth point cloud
+        in regard to neighbors in ellipsoid point cloud
+        Then for each vertex in ellipsoid get K neighbors, calculate directional
+        vector pointing towards direction of neighbors with higher tension
+        """
+        coord = inputs
+
+        B = FLAGS.batch_size
+        Dp = coord.shape.as_list()[1]
+
+        coord_expanded = tf.expand_dims( coord, -1)
+        ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
+
+        # get tension for each vector in GT point cloud M
+        # GT to current ellipsoid
+        if num_feature > 0:
+            pc_coords = self.pc_feat[num_feature][0]
+        else:
+            pc_coords = self.pc_feat[num_feature]
+
+        Y = tf.transpose(pc_coords, [0,2,1])
+        N = ellipsoid.shape.as_list()[2]
+
+        knn, dist, _ = knn_bf_sym(pc_coords, ellipsoid, K=self.K)
+        #dist = tf.ones([B,N,6],dtype=tf.float32)
+
+        #feature_tension = tf.reduce_sum(tf.abs(dist),axis=2)[0]
+
+        # Get knn of each vertex in ellipsoiddist
+        ell_neighbor_vals, ell_neighbor_indices = self.knn_neighbors(inputs, num_feature)
+        
+        feature_tension = tf.reduce_sum(tf.abs(tf.norm(ell_neighbor_vals,axis=3)),axis=2)[0]
+
+        # Normalized vector to each neigbor
+        ellip_normalized_neighbors = tf.nn.l2_normalize(ell_neighbor_vals, axis=[3])[0]
+        
+        tension_neighbors = self.select_tension_neighbor(ell_neighbor_indices[0], feature_tension)
+        # scale directional neighbor vector with tension
+        max_tension = tf.reduce_max(tension_neighbors) * 0.25
+        scaled_tension_neighbors = tf.divide(tension_neighbors,max_tension)
+        scaled_tension_neighbors = tf.stack([scaled_tension_neighbors,scaled_tension_neighbors,scaled_tension_neighbors],axis=1)
+        scaled_tension_neighbors = tf.transpose(scaled_tension_neighbors,[0,2,1])
+        # scale vectors with scaled tension_neighbors, add to vertices
+
+        scaled_vector = tf.multiply(ellip_normalized_neighbors, scaled_tension_neighbors)
+
+        scaled_vector = tf.reduce_mean(scaled_vector, axis = 1)
+        #ret= ell_neighbor_vals[0] + scaled_vector 
+        return tf.add(inputs , scaled_vector )
+
+
+    def select_tension_neighbor(self, indices, data):
+        #N = data.shape.as_list()[0]
+        N = indices.shape.as_list()[0]
+
+        coords = tf.expand_dims(data, -1)
+
+        Y = tf.transpose(coords, [1,0])
+
+        knnr = tf.reshape(indices, [1, N * self.K])
+
+        bv = tf.ones([N*self.K],dtype=tf.int32) * tf.constant(np.arange(0),shape=[1],dtype=tf.int32)
+
+        knnr = tf.stack([tf.reshape(bv,[1,N*self.K]), tf.reshape(indices,[1,N*self.K])],-1)
+
+        knnY = tf.reshape(tf.gather_nd(Y, knnr), [N, self.K])
+
+        return knnY
+
+
+    def knn_neighbors(self, inputs, num_feature):
+        coord = inputs
+
+        B = FLAGS.batch_size
+        Dp = coord.shape.as_list()[1]
+
+        if num_feature > 0:
+            D_feature = FLAGS.feature_depth * pow(2,num_feature-1)
+
+        coord_expanded = tf.expand_dims( coord, -1)
+
+        #transform PC feature to usable format
+        if num_feature > 0:
+            pc_coords = self.pc_feat[num_feature][0]
+            pc_feature = self.pc_feat[num_feature][1]
+        else:
+            pc_coords = self.pc_feat[num_feature]
+
+        ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
+
+        Y = tf.transpose(pc_coords, [0,2,1])
+        if num_feature > 0:
+            Y_feature = tf.transpose(pc_feature, [0, 2, 1])
+
+        N = ellipsoid.shape.as_list()[2]
+        # Neighbors: [B, K, N]
+        # Distances: [B, K, N]
+        knn,_,_ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
+
+        # Easier shape to work on
+        knnr = tf.reshape(knn, [1, B * N * self.K])
+
+        bv = tf.ones([B,N*self.K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
+        knnr = tf.stack([tf.reshape(bv,[1,B*N*self.K]), tf.reshape(knn,[1,B*N*self.K])],-1)
+        knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
+        return knnY, knn
+
+        
     def mean_neighborhood(self, inputs, num_feature):
         coord = inputs
 
