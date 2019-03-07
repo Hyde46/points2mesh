@@ -13,6 +13,7 @@ import time
 from sklearn.neighbors import KDTree
 
 from __init__ import knn_bf_sym
+from __init__ import knn_bruteforce
 
 #os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
@@ -33,7 +34,8 @@ with tf.device('/device:GPU:0'):
     pos_y = tf.convert_to_tensor(position_y,tf.float32)
 
 
-    actual_op = knn_bf_sym(pos_x,pos_y,K)
+    #actual_op = knn_bf_sym(pos_x,pos_y,K)
+    actual_op = knn_bruteforce(pos_x, K)
 
     # Creates a session with log_device_placement set to True.
     # sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
@@ -44,10 +46,14 @@ with tf.device('/device:GPU:0'):
     # print 'nbs: ', nbs
 
     ret = sess.run(actual_op)
+    print ret
+    
+    '''
     print np.shape(ret[0])
     for i in ret:
         print i
 
+'''
 
     # ## timings
     # start = time.time()

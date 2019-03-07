@@ -228,6 +228,6 @@ class GraphProjection(Layer):
         stage_4 = 0
         # Return [B, 12]
         # With 12 made out of 4 times [x,y,z]
-        outputs = tf.concat([coord, stage_0 ,stage_0, stage_0, stage_0], 1)
+        outputs = tf.concat([coord, stage_0], 1)
         return outputs
 

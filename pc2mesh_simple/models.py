@@ -88,18 +88,15 @@ class pc2MeshModel(ModelDesc):
 
         with tf.name_scope("mesh_outputs"):
             #define outputs for multi stage mesh views
-            self.output1 = self.activations[15]
-            print self.output1
+            self.output1 = tf.identity(self.activations[15], name="output1")
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
-            self.output2 = self.activations[31]
-            print self.output2
+            self.output2 = tf.identity(self.activations[31], name="output2")
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id = 2)
             self.output_stage_2 = unpool_layer(self.output2)
 
-            self.output3 = self.activations[-1]
-            print self.output3
+            self.output3 = tf.identity(self.activations[-1], name="output3")
 
         variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope = self.name)
         self.vars = {var.name: var for var in variables}
@@ -124,60 +121,8 @@ class pc2MeshModel(ModelDesc):
         # 3 x 1024
         x = features
         x0 = x
-        """
-        #Build layers
-        x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 16, activation = tf.nn.relu)
-        xr += 0.001 * tf.nn.l2_loss(x)
-        # 16 x 1024
-        # x0 = x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 32 x 256
-        x1=x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 64 x 64
-        x2 = x
-        x = flex_pooling(x, neighbors)
-        x = subsample(x)
-        positions = subsample(positions)
-        neighbors = knn_bruteforce(positions, K=8)
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
-        xr = 0.001 * tf.nn.l2_loss(x)
-        # 128 x 16
-        x3 = x
-        """
-        x = features
-        #x0 = features
-        x1 = features
-        x2 = features
-        x3 = features
-        xr = 0.001 * tf.nn.l2_loss(x)
-
-        #Get output stages
-        #TODO:here
-        #self.placeholders.update({'pc_feature' : [tf.squeeze(x0),tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
-        #self.placeholders.update({'pc_feature' : [x0,tf.squeeze(x1),tf.squeeze(x2), tf.squeeze(x3)]})
-        self.placeholders.update({'pc_feature' : [x0, x0, x0, x0]})
-        #TODO
-        #Loss L2 Maybe working, definitely check:
-        loss = xr
+        self.placeholders.update({'pc_feature' : [x0]})
+        loss = 0
         return loss
 
     def build_gcn_graph(self):
@@ -238,7 +183,7 @@ class pc2MeshModel(ModelDesc):
 
     def get_loss(self,positions,vertex_normals):
 
-        mesh_loss_first_block  =  mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
+        mesh_loss_first_block  = mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
         mesh_loss_second_block = mesh_loss(self.output2, positions, vertex_normals, self.placeholders, 2)
         mesh_loss_third_block  = mesh_loss(self.output3, positions, vertex_normals, self.placeholders, 3)
 

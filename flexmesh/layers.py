@@ -175,18 +175,17 @@ class GraphProjection(Layer):
         self.pc_feat = placeholders['pc_feature']
 
     def _call(self, inputs):
-       # stage_0 = self.neighborhood(inputs,0) 
-        stage_1 = self.mean_neighborhood(inputs,0)
-        stage_2 = self.mean_neighborhood(inputs,1)
-        stage_3 = self.mean_neighborhood(inputs,2)
+        stage_0 = self.mean_neighborhood(inputs,0) 
+        stage_1 = self.mean_neighborhood(inputs,1)
+        stage_2 = self.mean_neighborhood(inputs,2)
+        stage_3 = self.mean_neighborhood(inputs,3)
 
-        #outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
-        outputs = tf.concat([inputs, stage_1, stage_2, stage_3], 1)
+        outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
         return outputs
 
     def mean_neighborhood(self, inputs, num_feature):
+
         coord = inputs
-        #B = tf.shape(coord)[0]
         B = FLAGS.batch_size
         Dp = coord.shape.as_list()[1]
         #N = tf.constant(1,dtype=tf.int32)
@@ -196,6 +195,7 @@ class GraphProjection(Layer):
 
         #transform PC feature to usable format
         pc_coords = self.pc_feat[num_feature]
+
         ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
 
         ellipsoid_N = ellipsoid.shape.as_list()[2]

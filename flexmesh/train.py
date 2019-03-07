@@ -16,7 +16,7 @@ enable_argscope_for_module(tf.layers)
 #TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 3
+NUM_EPOCH = 1
 
 PC = {'num': 1024, 'dp':3, 'ver':"40"}
 
@@ -30,7 +30,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 #flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
-flags.DEFINE_integer('feat_dim', 12, 'Number of units in FlexConv Feature layer')
+flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+    os.environ['CUDA_VISIBLE_DEVICES'] = "1" 
 
     logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
 
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     #Setup Model
     #Setup training step
     config = TrainConfig(
-            model = pc2MeshModel(name="Pc2Mesh"),
+            model = FlexmeshModel(name="Flexmesh"),
             data = QueueInput(df_train),
             #data = FeedInput(df_train),
             callbacks=[

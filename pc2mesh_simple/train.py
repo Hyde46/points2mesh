@@ -16,7 +16,7 @@ enable_argscope_for_module(tf.layers)
 #TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 600
+NUM_EPOCH = 25
 
 PC = {'num': 1024, 'dp':3, 'ver':"40"}
 
@@ -29,7 +29,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 #flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
-flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
+flags.DEFINE_integer('feat_dim', 6, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')

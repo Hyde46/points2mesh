@@ -1,8 +1,12 @@
 import tensorflow as tf
+import os
+from os import listdir
+from os.path import isfile, join
 import cv2
 from models import *
 from fetcher import * 
 from pc_meshlab_loader import *
+import re
 
 enable_argscope_for_module(tf.layers)
 
@@ -28,54 +32,64 @@ flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat', 'Pa
 num_blocks = 3
 num_supports = 2
 
-model = pc2MeshModel(logging = True)
-
 def load_pc(pc_path, num_points):
-    #load pc here
+    #Load pointcloud from file
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points,0:3].T
+    # Add single Batch [B,dp,N]
     data = data[np.newaxis,:,:]
     return data
 
-def create_inference_mesh(vertices,num):
+def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False):
+
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
     mesh = np.vstack((vert, face))
 
-    path_to_mesh = path.replace(".txt", str(num)+".obj")
+    result_name = pc.replace(".txt", "_result_p"+str(num)+".obj")
+    path_to_mesh = os.path.join(output, result_name)
     np.savetxt(path_to_mesh, mesh, fmt='%s', delimiter=' ')
 
-    #load_pc_meshlab(path_to_mesh)
+    if display_mesh:
+        load_pc_meshlab(path_to_mesh)
 
-def predict(data,path):
+def predict(predictor, data, path):
+    vertices_1 = predictor(data)[0]
+    vertices_2 = predictor(data)[1]
+    vertices_3 = predictor(data)[2]
+    return [vertices_1, vertices_2, vertices_3]
+
+def loadModel():
     prediction = PredictConfig(
             session_init = get_model_loader("train_log/fusion_/checkpoint"),
-            model = pc2MeshModel(name="Pc2Mesh"),
-            input_names = ['positions'],#vertex normals are for validation. only need positions
-            output_names = ['mesh_deformation/graphconvolution_14/add',
-                            'mesh_deformation/graphconvolution_28/add',
-                            'mesh_deformation/graphconvolution_43/add'] #[output1,output2,output3]
+            model = FlexmeshModel(name="Flexmesh"),
+            input_names = ['positions'],
+            output_names = ['mesh_outputs/output1',
+                            'mesh_outputs/output2',
+                            'mesh_outputs/output3'] 
             )
-
     #predict mesh
     predictor = OfflinePredictor(prediction)
-    #vertices_1 = predictor(data)[0]
-    #vertices_2 = predictor(data)[1]
-    vertices_3 = predictor(data)[2]
-
-    #create_inference_mesh(vertices_1,1)
-    #create_inference_mesh(vertices_2,2)
-    create_inference_mesh(vertices_3,3)
-
+    return predictor
+ 
+def loadTxtFiles(path):
+    pattern = re.compile(".*\.txt")
+    files = [f for f in listdir(path) if isfile(join(path, f)) and pattern.match(f)]
+    return files
 
 
-pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
-#for pc in pcs:
-pc = pcs[9]
-path = "/home/heid/Documents/master/pc2mesh/flexmesh/utils/examples/"
-path = path + pc
-pc_inp = load_pc(path, num_points=1024)
-predict(pc_inp,path)
+path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/random/"
+#pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
+pcs = loadTxtFiles(path)
 
+path_output = "/home/heid/Documents/master/pc2mesh/flexmesh/utils/examples/results/"
+
+predictor = loadModel()
+for pc in pcs:
+
+    path_pc = os.path.join(path, pc)
+    pc_inp = load_pc(path_pc, num_points=1024)
+    vertices = predict(predictor, pc_inp,path_pc)
+    create_inference_mesh(vertices[2], 2, pc, path_pc, path_output, display_mesh=False)
 

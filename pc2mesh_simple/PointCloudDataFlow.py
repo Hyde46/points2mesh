@@ -10,6 +10,59 @@ from tensorpack.dataflow.serialize import LMDBSerializer
 MODEL40PATH = '/graphics/scratch/students/heid/pointcloud_data/ModelNet40'
 ############################################
 
+def get_allowed_categories(version):
+    """
+    Modelnet40 categories
+    0  -  airplane
+    1  -  bathtub
+    2  -  bed
+    3  -  bench
+    4  -  bookshelf
+    5  -  bottle
+    6  -  bowl
+    7  -  car
+    8  -  chair
+    9  -  cone
+    10 -  cup
+    11 -  curtain
+    12 -  desk
+    13 -  door
+    14 -  dresser
+    15 -  flower_pot
+    16 -  glass_box
+    17 -  guitar
+    18 -  keyboard
+    19 -  lamp
+    20 -  laptop
+    21 -  mantel
+    22 -  monitor
+    23 -  night_stand
+    24 -  person
+    25 -  piano
+    26 -  plant
+    27 -  radio
+    28 -  range_hood
+    29 -  sink
+    30 -  sofa
+    31 -  stairs
+    32 -  stool
+    33 -  table
+    34 -  tent
+    35 -  toilet
+    36 -  tv_stand
+    37 -  vase
+    38 -  wardrobe
+    39 -  xbox
+    """
+    assert version in ["small", "big", "airplane"]
+    if version == "big":
+        return [0,7,8,17,22,30]
+    if version == "small":
+        return [0,2,8]
+    if version == "airplane":
+        return [0]
+    return 0
+
 def get_modelnet_dataflow(
         name, batch_size=6,
         num_points=10000,
@@ -80,11 +133,13 @@ def get_modelnet_dataflow(
         parallel = min(40, multiprocessing.cpu_count() // 2)
         logger.info("Using " + str(parallel) + " processing cores")
 
+    allowed_categories = get_allowed_categories("small")
+
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     #seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [ dp[1][:3], dp[1][3:] ] ) 
+    df = MapData(df, lambda dp: [ dp[1][:3], dp[1][3:] ] if dp[0] in allowed_categories else None ) 
 
     if parallel < 16:
         logger.warn("DataFlow may become the bottleneck when too few processes are used.")

@@ -20,7 +20,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 
 
-class pc2MeshModel(ModelDesc):
+class FlexmeshModel(ModelDesc):
     def __init__(self, **kwargs):
         allowed_kwargs = {'name', 'logging'}
         for kwarg in kwargs.keys():
@@ -70,10 +70,8 @@ class pc2MeshModel(ModelDesc):
 
         #connect graph and get cost
         eltwise = [3, 5, 7, 9, 11, 13, 19, 21, 23, 25, 27, 29, 35, 37, 39, 41, 43, 45]
-        #eltwise = [3, 5, 7, 9, 11, 13]
         #shortcuts
         concat = [15, 31]
-        #concat = []
         self.activations.append(self.input)
         
         with tf.name_scope("mesh_deformation"):
@@ -87,20 +85,16 @@ class pc2MeshModel(ModelDesc):
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
-            # TODO: remove bad outputs
             #define outputs for multi stage mesh views
-            self.output1 = self.activations[15]
-            print self.output1
+            self.output1 = tf.identity(self.activations[15],name="output1")
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
-            self.output2 = self.activations[31]
-            print self.output2
+            self.output2 = tf.identity(self.activations[31],name="output2")
             unpool_layer = GraphPooling(placeholders=self.placeholders, pool_id = 2)
             self.output_stage_2 = unpool_layer(self.output2)
 
-            self.output3 = self.activations[-1]
-            print self.output3
+            self.output3 = tf.identity(self.activations[-1],name="output3")
 
         variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope = self.name)
         self.vars = {var.name: var for var in variables}
@@ -123,15 +117,15 @@ class pc2MeshModel(ModelDesc):
         #xr = 0.001 * tf.nn.l2_loss(x)
         # Features for each point is its own position in space
         features = positions
-        neighbors = knn_bruteforce(positions, K = 8 )
         x = features
+        neighbors = knn_bruteforce(positions, K = 8 )
+        x0 = features
         # Try not to use basic positions, but rather find important positions in pc
         #x0 = [positions,features]
 
         # feature 0 
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 32, activation = tf.nn.relu)
         
         # Fully connected:
         x1 = tf.layers.flatten(x)
@@ -142,8 +136,8 @@ class pc2MeshModel(ModelDesc):
         positions = subsample(positions)
         neighbors = knn_bruteforce(positions, K = 8)
 
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 64, activation = tf.nn.relu)
         
         # Fully connected:
         x2 = tf.layers.flatten(x)
@@ -154,17 +148,15 @@ class pc2MeshModel(ModelDesc):
         positions = subsample(positions)
         neighbors = knn_bruteforce(positions, K = 8)
 
-        x = flex_convolution(x, positions, neighbors, 256 , activation = tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors, 256, activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 128 , activation = tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors, 128, activation = tf.nn.relu)
         
         # Fully connected
         x3 = tf.layers.flatten(x)
         x3 = tf.layers.dense(x3, 3 * FLAGS.pc_num, activation = tf.nn.relu)
         x3 = tf.reshape(x3, [FLAGS.batch_size, 3, FLAGS.pc_num])
         #Get output stages
-        #TODO:here
-        #self.placeholders.update({'pc_feature' : [x0, x1, x2, x3]})
-        self.placeholders.update({'pc_feature' : [x1, x2, x3]})
+        self.placeholders.update({'pc_feature' : [x0, x1, x2, x3]})
 
         return 0
 
