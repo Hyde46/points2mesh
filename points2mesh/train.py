@@ -10,15 +10,13 @@ from PointCloudDataFlow import get_modelnet_dataflow
 from models import *
 from fetcher import *
 
-
 enable_argscope_for_module(tf.layers)
 
-#TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
-BATCH_SIZE = 1
-NUM_EPOCH = 50
+BATCH_SIZE = 5
+NUM_EPOCH = 10
 
-PC = {'num': 1024, 'dp':3, 'ver':"40"}
+PC = {'batch_size': BATCH_SIZE, 'num': 1024, 'dp':3, 'ver':"40"}
 
 seed = 1024
 np.random.seed(seed)
@@ -29,10 +27,7 @@ tf.set_random_seed(seed)
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
-#flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer('feat_dim', 239, 'Number of units in FlexConv Feature layer')
-#flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
-#flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 #original 3e-5
@@ -41,7 +36,6 @@ flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer('feature_depth',32 , 'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
-flags.DEFINE_integer('batch_size', 1 , 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat', 'Path to base model for mesh deformation')
 
 if __name__ == '__main__':
@@ -54,14 +48,14 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "2" 
+    os.environ['CUDA_VISIBLE_DEVICES'] = "4" 
 
-    logger.set_logger_dir('train_log/fusion2_%s' % (args.fusion))
+    logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
 
     #Loading Data
-    df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
+    df_train = get_modelnet_dataflow('train', batch_size=PC['batch_size'],
             num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True)
-    df_test = get_modelnet_dataflow('test', batch_size= 2 * FLAGS.batch_size,
+    df_test = get_modelnet_dataflow('test', batch_size= 2 * PC['batch_size'],
             num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True)
     steps_per_epoch = len(df_train)
 
@@ -88,6 +82,5 @@ if __name__ == '__main__':
             max_epoch=NUM_EPOCH
             )
     launch_train_with_config(config, SimpleTrainer())
-    #TODO: Fix GPUTrainer
     #launch_train_with_config(config, SyncMultiGPUTrainerParameterServer([0],ps_device='gpu'))
 

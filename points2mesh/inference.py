@@ -14,7 +14,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 1024, 'dp':3, 'ver':"40"}
+PC = {'batch_size':1,'num': 1024, 'dp':3, 'ver':"40"}
 #settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -96,6 +96,6 @@ for pc in pcs:
     path_pc = os.path.join(path, pc)
     pc_inp = load_pc(path_pc, num_points=1024)
     vertices = predict(predictor, pc_inp,path_pc)
-    create_inference_mesh(vertices[2], 2, pc, path_pc, path_output, display_mesh=False)
+    create_inference_mesh(vertices[2][0], 2, pc, path_pc, path_output, display_mesh=False)
 
 

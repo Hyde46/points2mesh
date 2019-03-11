@@ -52,8 +52,8 @@ class FlexmeshModel(ModelDesc):
 
 
     def inputs(self):
-        return [tf.placeholder(tf.float32, (None,self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
+        return [tf.placeholder(tf.float32, (self.PC['batch_size'] ,self.PC['dp'], self.PC['num']), "positions"),
+                tf.placeholder(tf.float32, (self.PC['batch_size'], self.PC['dp'], self.PC['num']), "vertex_normals"),
                 ]
 
     def build_graph(self, positions, vertex_normals):
@@ -82,7 +82,7 @@ class FlexmeshModel(ModelDesc):
                 if idx in eltwise:
                     hidden = tf.add(hidden, self.activations[-2]) * 0.5
                 if idx in concat:
-                    hidden = tf.concat([hidden, self.activations[-2]], 1)
+                    hidden = tf.concat([hidden, self.activations[-2]], 2)
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
@@ -217,14 +217,11 @@ class FlexmeshModel(ModelDesc):
                                              placeholders=self.placeholders, logging=self.logging))
 
     def get_loss(self,positions,vertex_normals):
-
-        mesh_loss_first_block  = mesh_loss(self.output1, positions,vertex_normals,self.placeholders, 1)
+        # TODO
+        # Losses here
+        mesh_loss_first_block  = mesh_loss(self.output1, positions, vertex_normals, self.placeholders, 1)
         mesh_loss_second_block = mesh_loss(self.output2, positions, vertex_normals, self.placeholders, 2)
         mesh_loss_third_block  = mesh_loss(self.output3, positions, vertex_normals, self.placeholders, 3)
-        
-        #distance_loss0 = distance_density_loss(self.output1)
-        #distance_loss1 = distance_density_loss(self.output2)
-        #distance_loss2 = distance_density_loss(self.output3)
 
         with tf.name_scope("loss_summaries"):
             summary.add_tensor_summary(mesh_loss_first_block ,['scalar'], name="mesh_loss")
@@ -285,16 +282,17 @@ class FlexmeshModel(ModelDesc):
             lape_idx[i][lape_idx[i] == -1] = np.max(lape_idx[i]) + 1
 
         # Define tensors based on loaded pkl object
-        self.placeholders["features"] = tf.convert_to_tensor(coord, dtype = tf.float32)
-        self.placeholders["support1"] = [ self.convert_support_to_tensor(s) for s in pkl[1]] 
-        self.placeholders["support2"] = [ self.convert_support_to_tensor(s) for s in pkl[2]] 
-        self.placeholders["support3"] = [ self.convert_support_to_tensor(s) for s in pkl[3]] 
-        self.placeholders["faces"] = [tf.convert_to_tensor(f, dtype=tf.int32) for f in faces ]
-        self.placeholders["edges"] = [tf.convert_to_tensor(e, dtype=tf.int32) for e in edges ]
-        self.placeholders["lape_idx"] = [tf.convert_to_tensor(l, dtype = tf.int32) for l in lape_idx ]
-        self.placeholders["pool_idx"] = [tf.convert_to_tensor(p, dtype = tf.int32) for p in pool_idx ]
+        self.placeholders["features"] = [ tf.convert_to_tensor(coord, dtype = tf.float32) for b in range(self.PC['batch_size'])]
+        self.placeholders["features"] = tf.stack(self.placeholders["features"])
+        self.placeholders["support1"] =  [ self.convert_support_to_tensor(s) for s in pkl[1]] 
+        self.placeholders["support2"] =  [ self.convert_support_to_tensor(s) for s in pkl[2]]
+        self.placeholders["support3"] =  [ self.convert_support_to_tensor(s) for s in pkl[3]] 
+        self.placeholders["faces"] =  [tf.convert_to_tensor(f, dtype=tf.int32) for f in faces ] 
+        self.placeholders["edges"] =  [tf.convert_to_tensor(e, dtype=tf.int32) for e in edges ]
+        self.placeholders["lape_idx"] =  [tf.convert_to_tensor(l, dtype = tf.int32) for l in lape_idx ]
+        self.placeholders["pool_idx"] =  [tf.convert_to_tensor(p, dtype = tf.int32) for p in pool_idx ]
 
-        logger.info("Loaded Ellipsoid into Graph context")
+        logger.info("Loaded Ellipsoids into Graph context for batch size {}".format(self.PC['batch_size']))
 
     def convert_support_to_tensor(self, to_convert):
         indices = tf.convert_to_tensor(to_convert[0], dtype=tf.int64)
