@@ -4,13 +4,23 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-
 from tensorpack import *
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce
 from layers import *
 from losses import *
-
 from fetcher import *
+
+'''
+Pointnet++ imports
+'''
+import sys
+BASE_DIR = os.path.dirname(__file__)
+sys.path.append(BASE_DIR)
+sys.path.append('/home/heid/Documents/master/pc2mesh/points2mesh/utils/pointnet_utils')
+import tf_util
+from pointnet_util import pointnet_sa_module, pointnet_fp_module
+
+
 
 enable_argscope_for_module(tf.layers)
 
@@ -49,11 +59,13 @@ class FlexmeshModel(ModelDesc):
         self.num_supports = 2
         self.num_blocks = 3
         self.PC = PC
+        self.is_training = PC['is_training']
+        self.bn_decay = PC['bn_decay']
 
 
     def inputs(self):
-        return [tf.placeholder(tf.float32, (None,self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
+        return [tf.placeholder(tf.float32, (1,self.PC['dp'], self.PC['num']), "positions"),
+                tf.placeholder(tf.float32, (1, self.PC['dp'], self.PC['num']), "vertex_normals"),
                 ]
 
     def build_graph(self, positions, vertex_normals):
@@ -63,7 +75,8 @@ class FlexmeshModel(ModelDesc):
 
         # Build graphs
         with tf.variable_scope("pointcloud_features"):
-            self.cost += self.build_flex_graph(positions)
+            #self.cost += self.build_flex_graph(positions)
+            self.cost += self.build_pointnet(positions)
 
         self.build_gcn_graph(positions)
 
@@ -108,6 +121,40 @@ class FlexmeshModel(ModelDesc):
             tf.summary.scalar('total_loss', self.cost)
 
         return self.cost
+   
+    def build_pointnet(self, point_cloud):
+        """ 
+        Pointnet_part_seg model
+        Input:
+        pointcloud [B,N,Dp]
+        Output:
+        network, end_points
+        """
+        point_cloud = tf.transpose(point_cloud,[0,2,1])
+        #batch_size = point_cloud.get_shape()[0].value
+        batch_size = 1
+        num_point = point_cloud.get_shape()[1].value
+        end_points = {}
+        l0_xyz = tf.slice(point_cloud, [0,0,0], [-1,-1,3])
+        l0_points = tf.slice(point_cloud, [0,0,3], [-1,-1,3])
+
+        # Set Abstraction layers
+        l1_xyz, l1_points, l1_indices = pointnet_sa_module(l0_xyz, l0_points, npoint=512, radius=0.2, nsample=64, mlp=[64,64,128], mlp2=None, group_all=False, is_training=self.is_training, bn_decay=self.bn_decay, scope='layer1')
+        l2_xyz, l2_points, l2_indices = pointnet_sa_module(l1_xyz, l1_points, npoint=128, radius=0.4, nsample=64, mlp=[128,128,256], mlp2=None, group_all=False, is_training=self.is_training, bn_decay=self.bn_decay, scope='layer2')
+        l3_xyz, l3_points, l3_indices = pointnet_sa_module(l2_xyz, l2_points, npoint=None, radius=None, nsample=None, mlp=[256,512,1024], mlp2=None, group_all=True, is_training=self.is_training, bn_decay=self.bn_decay, scope='layer3')
+
+        # Feature Propagation layers
+        l2_points = pointnet_fp_module(l2_xyz, l3_xyz, l2_points, l3_points, [256,256], self.is_training, self.bn_decay, scope='fa_layer1')
+        l1_points = pointnet_fp_module(l1_xyz, l2_xyz, l1_points, l2_points, [256,128], self.is_training, self.bn_decay, scope='fa_layer2')
+        l0_points = pointnet_fp_module(l0_xyz, l1_xyz, tf.concat([l0_xyz,l0_points],axis=-1), l1_points, [128,128,128], self.is_training, self.bn_decay, scope='fa_layer3')
+
+        # FC layers
+        net = tf_util.conv1d(l0_points, 128, 1, padding='VALID', bn=True, is_training=self.is_training, scope='fc1', bn_decay=self.bn_decay)
+        end_points['feats'] = net 
+        net = tf_util.dropout(net, keep_prob=0.5, is_training=self.is_training, scope='dp1')
+        net = tf_util.conv1d(net, 50, 1, padding='VALID', activation_fn=None, scope='fc2')
+
+        return net, end_points
 
     def build_flex_graph(self, positions):
 

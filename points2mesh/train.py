@@ -18,7 +18,7 @@ TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
 NUM_EPOCH = 50
 
-PC = {'num': 1024, 'dp':3, 'ver':"40"}
+PC = {'num': 1024, 'dp':3, 'ver':"40", 'is_training':True, 'bn_decay':0.5}
 
 seed = 1024
 np.random.seed(seed)
