@@ -226,7 +226,7 @@ class FlexmeshModel(ModelDesc):
         #distance_loss1 = distance_density_loss(self.output2)
         #distance_loss2 = distance_density_loss(self.output3)
 
-        with tf.name_scope("loss_summaries"):
+        with tf.name_scope("Mesh_loss"):
             summary.add_tensor_summary(mesh_loss_first_block ,['scalar'], name="mesh_loss")
             summary.add_tensor_summary(mesh_loss_second_block ,['scalar'], name="mesh_loss")
             summary.add_tensor_summary(mesh_loss_third_block ,['scalar'], name="mesh_loss")
@@ -239,14 +239,23 @@ class FlexmeshModel(ModelDesc):
         l_loss_second = laplace_loss(self.output_stage_1, self.output2, self.placeholders, 2)
         l_loss_third = laplace_loss(self.output_stage_2, self.output3, self.placeholders, 3)
         
-        with tf.name_scope("loss_summaries"):
+        with tf.name_scope("laplacian_loss"):
             summary.add_tensor_summary(l_loss_first, ['scalar'], name="laplacian_loss")
             summary.add_tensor_summary(l_loss_second, ['scalar'], name="laplacian_loss")
             summary.add_tensor_summary(l_loss_third, ['scalar'], name="laplacian_loss")
 
         loss += l_loss_first + l_loss_second + l_loss_third
+
+        t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
+
+        loss += t_loss
+
+        #with tf.name_scope("tension_loss"):
+        #    pass
         #loss += distance_loss0 + distance_loss1 + distance_loss2
         loss = tf.identity(loss, name="complete_loss")
+
+
         
         # GCN loss
         conv_layers = range(1, 15) + range(17, 31) + range(33, 48)
