@@ -64,7 +64,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-            session_init = get_model_loader("train_log/fusion_/checkpoint"),
+            session_init = get_model_loader("train_log/fusion2_/checkpoint"),
             model = FlexmeshModel(PC,name="Flexmesh"),
             input_names = ['positions'],
             output_names = ['mesh_outputs/output1',
@@ -89,7 +89,7 @@ path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/re
 
 predictor = loadModel()
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+os.environ['CUDA_VISIBLE_DEVICES'] = "4"
 
 for pc in pcs:
 

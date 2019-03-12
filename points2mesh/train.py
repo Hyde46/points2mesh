@@ -13,8 +13,8 @@ from fetcher import *
 enable_argscope_for_module(tf.layers)
 
 TOTAL_BATCH_SIZE = 1
-BATCH_SIZE = 5
-NUM_EPOCH = 10
+BATCH_SIZE = 1
+NUM_EPOCH = 3
 
 PC = {'batch_size': BATCH_SIZE, 'num': 1024, 'dp':3, 'ver':"40"}
 
