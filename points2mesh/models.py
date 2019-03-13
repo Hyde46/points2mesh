@@ -246,9 +246,20 @@ class FlexmeshModel(ModelDesc):
 
         loss += l_loss_first + l_loss_second + l_loss_third
 
-        t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
+        c_loss_first = collapse_loss(self.output1)
+        c_loss_second = collapse_loss(self.output2)
+        c_loss_third = collapse_loss(self.output3)
 
-        loss += t_loss
+        with tf.name_scope("collapse_loss"):
+            summary.add_tensor_summary(c_loss_first, ['scalar'], name="collapse_loss")
+            summary.add_tensor_summary(c_loss_second, ['scalar'], name="collapse_loss")
+            summary.add_tensor_summary(c_loss_third, ['scalar'], name="collapse_loss")
+        loss += c_loss_first + c_loss_second + c_loss_third
+
+            
+        #t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
+
+        #loss += t_loss
 
         #with tf.name_scope("tension_loss"):
         #    pass

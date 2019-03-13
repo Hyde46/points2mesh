@@ -3,6 +3,9 @@ from cd_dist import *
 from user_ops import knn_bruteforce as _knn_bruteforce
 from flex_conv_layers import knn_bf_sym
 
+flags = tf.app.flags
+FLAGS = flags.FLAGS
+
 def tension_loss(pred, positions, placeholders, block_id):
     B = 1 
     Dp = pred.shape.as_list()[1]
@@ -31,6 +34,19 @@ def tension_loss(pred, positions, placeholders, block_id):
     print dir_knnY
     return 0
 
+def collapse_loss(pred):
+    #dist1, _, _, _  = nn_distance(pred,pred)
+    p = tf.transpose(pred,[1,0])
+    p = tf.expand_dims(p,0)
+    _,dist,_, = knn_bf_sym(p,p,K=2)
+    dist = tf.squeeze(dist)
+    dist1 = tf.identity(dist)
+    coll_loss = tf.map_fn(lambda x: tf.cond( 
+                                        tf.less(x[1], FLAGS.collapse_epsilon ),
+                                            lambda:1.0,
+                                            lambda:0.0)
+                                            ,dist1)
+    return tf.reduce_sum(coll_loss)
    
 def point2triangle_loss(pred, placeholders, block_id):
     #TODO
