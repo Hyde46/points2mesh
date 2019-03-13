@@ -13,6 +13,7 @@ point_cloud_data/
 utils/examples/
 train_log/
 user_ops/
+pointnet2/
 *.txt
 *.obj
 *.swp
