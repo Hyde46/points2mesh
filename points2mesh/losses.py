@@ -1,7 +1,10 @@
 import tensorflow as tf
 from cd_dist import *
-from user_ops import knn_bruteforce as _knn_bruteforce
+from user_ops import knn_bruteforce as knn_bruteforce
 from flex_conv_layers import knn_bf_sym
+
+flags = tf.app.flags
+FLAGS = flags.FLAGS
 
 def tension_loss(pred, positions, placeholders, block_id):
     B = 1 
@@ -28,9 +31,20 @@ def tension_loss(pred, positions, placeholders, block_id):
     knnY_mean = tf.reduce_mean(knnY, axis = 2)[0]
 
     dir_knnY = tf.subtract(knnY_mean, positions) 
-    print dir_knnY
     return 0
 
+def collapse_loss(pred):
+    #chamfer distance
+    dist1, _, _, _ = nn_distance(pred,pred)
+    dist1 = tf.identity(dist1)
+    print dist1
+    
+    coll_loss = tf.map_fn(lambda x: tf.cond( tf.less(x,FLAGS.collapse_epsilon),
+
+                                            lambda: 1.0,
+                                            lambda: 0.0),dist1)
+    return tf.reduce_sum(coll_loss)
+    
    
 def point2triangle_loss(pred, placeholders, block_id):
     #TODO

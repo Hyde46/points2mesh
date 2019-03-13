@@ -59,12 +59,13 @@ class FlexmeshModel(ModelDesc):
         self.num_supports = 2
         self.num_blocks = 3
         self.PC = PC
+
         self.is_training = PC['is_training']
         self.bn_decay = PC['bn_decay']
 
 
     def inputs(self):
-        return [tf.placeholder(tf.float32, (1,self.PC['dp'], self.PC['num']), "positions"),
+        return [tf.placeholder(tf.float32, (1, self.PC['dp'], self.PC['num']), "positions"),
                 tf.placeholder(tf.float32, (1, self.PC['dp'], self.PC['num']), "vertex_normals"),
                 ]
 
@@ -75,8 +76,8 @@ class FlexmeshModel(ModelDesc):
 
         # Build graphs
         with tf.variable_scope("pointcloud_features"):
-            #self.cost += self.build_flex_graph(positions)
-            self.cost += self.build_pointnet(positions)
+            self.cost += self.build_flex_graph(positions)
+            #self.cost += self.build_pointnet(positions)
 
         self.build_gcn_graph(positions)
 
@@ -93,6 +94,7 @@ class FlexmeshModel(ModelDesc):
             for idx, layer in enumerate(self.layers):
                 hidden = layer (self.activations[-1])
                 if idx in eltwise:
+
                     hidden = tf.add(hidden, self.activations[-2]) * 0.5
                 if idx in concat:
                     hidden = tf.concat([hidden, self.activations[-2]], 1)
@@ -168,11 +170,10 @@ class FlexmeshModel(ModelDesc):
         # Features for each point is its own position in space
         features = positions
         x = features
-        neighbors = knn_bruteforce(positions, K = 8 )
+        neighbors,_,_ = knn_bruteforce(positions, K = 8 )
         x0 = features
         # Try not to use basic positions, but rather find important positions in pc
         #x0 = [positions,features]
-
         # feature 0 
         x = flex_convolution(x, positions, neighbors, FLAGS.feature_depth, activation = tf.nn.relu)
         x = flex_convolution(x, positions, neighbors, FLAGS.feature_depth, activation = tf.nn.relu)
@@ -292,10 +293,19 @@ class FlexmeshModel(ModelDesc):
             summary.add_tensor_summary(l_loss_third, ['scalar'], name="laplacian_loss")
 
         loss += l_loss_first + l_loss_second + l_loss_third
+        '''
+        
+        with tf.name_scope("Collapse_loss"):
+        #t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
+            c_loss = collapse_loss(self.output1)
+            summary.add_tensor_summary(c_loss, ['scalar'],name ='collapse_loss')
+            c_loss2 = collapse_loss(self.output2)
+            summary.add_tensor_summary(c_loss, ['scalar'],name ='collapse_loss')
+            c_loss3 = collapse_loss(self.output3)
+            summary.add_tensor_summary(c_loss, ['scalar'],name ='collapse_loss')
 
-        t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
-
-        loss += t_loss
+        loss += c_loss + c_loss2 + c_loss3
+        '''
 
         #with tf.name_scope("tension_loss"):
         #    pass
