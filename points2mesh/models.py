@@ -76,8 +76,8 @@ class FlexmeshModel(ModelDesc):
 
         # Build graphs
         with tf.variable_scope("pointcloud_features"):
-            self.cost += self.build_flex_graph(positions)
-            #self.cost += self.build_pointnet(positions)
+            #self.cost += self.build_flex_graph(positions)
+            pointnet_layers = self.build_pointnet(positions)
 
         self.build_gcn_graph(positions)
 
@@ -156,6 +156,7 @@ class FlexmeshModel(ModelDesc):
         net = tf_util.dropout(net, keep_prob=0.5, is_training=self.is_training, scope='dp1')
         net = tf_util.conv1d(net, 50, 1, padding='VALID', activation_fn=None, scope='fc2')
 
+        self.placeholders.update({'pc_feature' : [x0, end_points['feats']]})
         return net, end_points
 
     def build_flex_graph(self, positions):
@@ -170,7 +171,7 @@ class FlexmeshModel(ModelDesc):
         # Features for each point is its own position in space
         features = positions
         x = features
-        neighbors,_,_ = knn_bruteforce(positions, K = 8 )
+        neighbors = knn_bruteforce(positions, K = 8 )
         x0 = features
         # Try not to use basic positions, but rather find important positions in pc
         #x0 = [positions,features]
