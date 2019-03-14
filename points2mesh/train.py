@@ -16,7 +16,7 @@ enable_argscope_for_module(tf.layers)
 #TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 150
+NUM_EPOCH = 20
 
 PC = {'num': 1024, 'dp':3, 'ver':"40"}
 
@@ -35,7 +35,7 @@ flags.DEFINE_integer('feat_dim', 239, 'Number of units in FlexConv Feature layer
 #flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
-flags.DEFINE_float('collapse_epsilon', 0.001, 'Collapse loss epsilon')
+flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
 #original 3e-5
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "4" 
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0" 
 
     logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
 

@@ -25,7 +25,7 @@ flags.DEFINE_integer('feat_dim', 239, 'Number of units in FlexConv Feature layer
 flags.DEFINE_integer('feature_depth',32 , 'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
-flags.DEFINE_float('collapse_epsilon', 0.01, 'Collapse loss epsilon')
+flags.DEFINE_float('collapse_epsilon', 0.001, 'Collapse loss epsilon')
 flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer('num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
@@ -65,7 +65,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-            session_init = get_model_loader("train_log/fusion_/checkpoint"),
+            session_init = get_model_loader("train_log/fusion_collapse/checkpoint"),
             model = FlexmeshModel(PC,name="Flexmesh"),
             input_names = ['positions'],
             output_names = ['mesh_outputs/output1',
