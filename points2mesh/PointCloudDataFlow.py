@@ -1,7 +1,7 @@
 import os
 import multiprocessing
 
-from tensorpack.dataflow import (PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData)
+from tensorpack.dataflow import (PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, RandomMixData)
 from tensorpack.utils import logger
 from tensorpack.dataflow.serialize import LMDBSerializer
 
@@ -56,14 +56,60 @@ def get_allowed_categories(version):
     """
     assert version in ["small", "big", "airplane"]
     if version == "big":
-        return [0,2,5,7,8,12,17,30,33,35,37]
+        return [0, 2, 5, 7, 8, 12, 17, 30, 33, 35, 37]
     if version == "small":
-        return [0,2,8,35]
+        return [0, 2, 8, 35]
     if version == "airplane":
         return [0]
     if version == "toilet":
         return [35]
     return 0
+
+
+def prepare_df(df, parallel, prefetch_data, batch_size):
+    if parallel < 16:
+        logger.warn("DataFlow may become the bottleneck when too few processes are used.")
+    if prefetch_data:
+        df = PrefetchDataZMQ(df, parallel)
+
+    if batch_size == 1:
+        logger.warn("Batch size is 1. Data will not be batched.")
+    df = BatchData(df, batch_size)
+    return df
+
+
+def get_advaced_mixed_modelnet_dataflow(
+        dataset_type,
+        version="10k",
+        batch_size=6,
+        num_points=10000,
+        parallel=None,
+        shuffle=False,
+        prefetch_data=False):
+    assert batch_size > 0
+    assert dataset_type in ['train', 'test']
+    assert version in ["100", "10k", "100k", "1M"]
+    path_to_data = '/graphics/scratch/datasets/ModelNet40/advanced/'
+    path_to_data = os.path.join(path_to_data, version)
+
+    data_flows = []
+    files = [i for i in os.listdir(path_to_data) if i.startswith(dataset_type) and i.endswith("lmdb")]
+    for f in files:
+        print "  "
+        print f
+        if type(f) is not str or f == "":
+            continue
+        tmp_file_name = os.path.join(path_to_data, f)
+        df = LMDBSerializer.load(tmp_file_name, shuffle)
+        for d in df:
+            print d
+            break
+        data_flows.append(df)
+    df = RandomMixData(data_flows)
+    
+    df = prepare_df(df, parallel, prefetch_data, batch_size)
+    return df
+
 
 def get_modelnet_dataflow(
         name, batch_size=6,
@@ -140,36 +186,26 @@ def get_modelnet_dataflow(
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
-    #seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [ dp[1][:3], dp[1][3:] ] if dp[0] in allowed_categories else None ) 
+    # seperate df from labels and seperate into positions and vertex normals
+    df = MapData(df, lambda dp: [dp[1][:3], dp[1][3:]] if dp[0] in allowed_categories else None ) 
 
-    if parallel < 16:
-        logger.warn("DataFlow may become the bottleneck when too few processes are used.")
-    if prefetch_data:
-        df = PrefetchDataZMQ(df, parallel)
-
-    if batch_size == 1:
-        logger.warn("Batch size is 1. Data will not be batched.")
-    df = BatchData(df, batch_size)
-    df = PrintData(df)
-    
+    df = prepare_df(df, parallel, prefetch_data, batch_size)
+    # df = PrintData(df)
     return df
 
 
 if __name__ == '__main__':
-    # Testing LMDB dataflow object
-    # Load all different dataflow object types
-
-    df = get_modelnet_dataflow('train', batch_size=2, num_points=1024, model_ver="40", normals=True,prefetch_data=False)
-
-
-    for d in df:
-        print " "
-        print d[1].shape
-        break
+    get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
+   
+    # df = get_modelnet_dataflow('train', batch_size=2, num_points=1024, model_ver="40", normals=True, prefetch_data=False)
+    # for d in df:
+    #    print " "
+    #    print d[1].shape
+    #    break
     # Test speed!
-    #TestDataSpeed(df, 2000).start()
-"""
+    # TestDataSpeed(df, 2000).start()
+
+    """
     df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="10", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
@@ -178,6 +214,7 @@ if __name__ == '__main__':
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
+        num_points=10000,
     df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="40", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()

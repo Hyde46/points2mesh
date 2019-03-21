@@ -70,7 +70,6 @@ class ShapeNetCore55ClassDataFlow(DataFlow):
         self.start = start
         self.objects = objects
         self.label = label
-        # Replace with own list
         self.filelist = sorted([k for k in fs.recursive_walk(
             self.work_dir) if k.endswith('.obj')])[start:]
         # self.filelist = filtered_files[start:]
@@ -91,9 +90,9 @@ class ShapeNetCore55ClassDataFlow(DataFlow):
             print('generate points for: ', f)
             m = trimesh.load_mesh(f, validate=True, use_embree=True)
             bbnormalize(m)
-            P, F = sampleGT(m, self.samples, self.sphere_samples)
+            P, N, F = sampleGT(m, self.samples, self.sphere_samples)
             V = combinedVertices(m, F)
-            yield [P, V.base, self.label, obj_id]
+            yield [P, N, V.base, self.label, obj_id]
 
 
 def sampleGT(mesh, N, ray_samples=1000, assertion=False, max_hits=5, junks=15):
@@ -134,19 +133,17 @@ def sampleGT(mesh, N, ray_samples=1000, assertion=False, max_hits=5, junks=15):
         point_survived = S[point_survivor]
         faces_survived = Sidx[point_survivor]
 
-        print faces_survived
-        print faces_survived.shape
-        print " "
-
         result_points = np.concatenate([result_points, point_survived], 0)
         result_faces = np.concatenate([result_faces, faces_survived], 0)
+        result_normals = np.concatenate(
+            [result_normals, mesh.face_normals[faces_survived]], 0)
 
     elapsed = time.time() - t
     print('{} points in {} seconds.'.format(result_points.shape[0], elapsed))
 
     # print(result_points.shape)
     # print(result_faces.shape)
-    return result_points[:N], result_faces[:N]
+    return result_points[:N], result_normals[:N], result_faces[:N]
 
 
 def combinedVertices(mesh, faces_list):
@@ -304,8 +301,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    class_syntid = get_synsetid(shape_names[args.label])
     snc55dir = '/graphics/scratch/datasets/ShapeNetCorev2/ShapeNetCore.v2/'
-    snc55dir = os.path.join(snc55dir, str(get_synsetid(shape_names[args.label])))
+    snc55dir = os.path.join(snc55dir, str(class_syntid))
 
     def getFN_parts(part_id):
         return os.path.join(args.dir, '{}_{}_N{}_S{}__{}_of_{}.parts'.format(
@@ -324,10 +322,10 @@ if __name__ == '__main__':
         ds = ConcatData(df_list)
         LMDBSerializer.save(ds, getFN_final())
     else:
-        # work_dir = os.path.join(snc55dir, shape_names[args.label], args.mode)
-        filtered_files = filter_files(
-            shape_names[args.label], args.mode, snc55dir)
-        num_models = len(filtered_files)
+        # work_dir = os.path.join(snc55dir, str(class_syntid))
+        # filtered_files = filter_files(
+        #    shape_names[args.label], args.mode, snc55dir)
+        num_models = len(os.listdir(snc55dir))
         num_objects = (num_models - 1) // args.num_parts + 1
 
         start_object = args.part_id * num_objects
