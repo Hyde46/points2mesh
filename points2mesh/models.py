@@ -130,7 +130,10 @@ class FlexmeshModel(ModelDesc):
         x = flex_convolution(x, positions, neighbors, FLAGS.feature_depth, activation = tf.nn.relu)
         x = flex_convolution(x, positions, neighbors, FLAGS.feature_depth, activation = tf.nn.relu)
         x = tf.identity(x, name="flex_layer_1")
-        
+        '''  
+        x_c = flex_convolution(x,positions, neighbors, FLAGS.feature_depth, activtion = None)
+        x_conv = tf.nn.conv2d(x,(1,1))
+        ''' 
         x1 = [positions, x]
         # Subsample!
         x = subsample(x)
@@ -246,7 +249,7 @@ class FlexmeshModel(ModelDesc):
 
         loss += l_loss_first + l_loss_second + l_loss_third
 
-        c_loss_first = collapse_loss(self.output1)
+        c_loss_first = 0.3*collapse_loss(self.output1)
         c_loss_second = collapse_loss(self.output2)
         c_loss_third = collapse_loss(self.output3)
 

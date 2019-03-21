@@ -6,46 +6,46 @@ from flex_conv_layers import knn_bf_sym
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 
+
 def tension_loss(pred, positions, placeholders, block_id):
-    B = 1 
+    B = 1
     Dp = pred.shape.as_list()[1]
-    N  = positions.shape.as_list()[2]
+    N = positions.shape.as_list()[2]
     K = 6
-    #Transform tensors to the form of [B, Dp, N]
-    features = tf.expand_dims(tf.transpose(positions) , axis=0)
-    input_features = tf.expand_dims(tf.transpose(positions) , axis=0) 
+    # Transform tensors to the form of [B, Dp, N]
+    features = tf.expand_dims(tf.transpose(positions), axis=0)
+    input_features = tf.expand_dims(tf.transpose(positions), axis=0)
     Y = tf.expand_dims(pred, axis=0)
 
-    # Find Nearest neighbors 
-    knn,_ ,_ = knn_bf_sym(features, input_features, K=K)
+    # Find Nearest neighbors
+    knn, _, _ = knn_bf_sym(features, input_features, K=K)
     knnr = tf.reshape(knn, [1, B * N * K])
 
-    bv = tf.ones([B,N*K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
+    bv = tf.ones([B, N*K], dtype=tf.int32) * tf.constant(np.arange(0, B),
+                shape=[B, 1], dtype=tf.int32)
 
-    knnr = tf.stack([tf.reshape(bv,[1,B*N*K]), tf.reshape(knn,[1,B*N*K])],-1)
+    knnr = tf.stack([tf.reshape(bv, [1, B*N*K]), tf.reshape(knn, [1, B*N*K])], -1)
     knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, K, Dp])
 
-    # Could filter out 2 neighboring vertices from which new vertex got interpolated from,
-    # but they can be ignored as they cancel out each other
-    
-    knnY_mean = tf.reduce_mean(knnY, axis = 2)[0]
+    # Could filter out 2 neighboring vertices from which new vertex got
+    # interpolated from, but they can be ignored as they cancel out each other
+    knnY_mean = tf.reduce_mean(knnY, axis=2)[0]
 
-    dir_knnY = tf.subtract(knnY_mean, positions) 
-    print dir_knnY
+    dir_knnY = tf.subtract(knnY_mean, positions)
+
     return 0
 
 def collapse_loss(pred):
-    #dist1, _, _, _  = nn_distance(pred,pred)
-    p = tf.transpose(pred,[1,0])
-    p = tf.expand_dims(p,0)
-    _,dist,_, = knn_bf_sym(p,p,K=2)
+    # dist1, _, _, _  = nn_distance(pred,pred)
+    p = tf.transpose(pred, [1, 0])
+    p = tf.expand_dims(p, 0)
+    _, dist, _, = knn_bf_sym(p, p, K=2)
     dist = tf.squeeze(dist)
     dist1 = tf.identity(dist)
-    coll_loss = tf.map_fn(lambda x: tf.cond( 
-                                        tf.less(x[1], FLAGS.collapse_epsilon ),
+    coll_loss = tf.map_fn(lambda x: tf.cond(
+                                        tf.less(x[1], FLAGS.collapse_epsilon),
                                             lambda:1.0,
-                                            lambda:0.0)
-                                            ,dist1)
+                                            lambda:0.0), dist1)
     return tf.reduce_sum(coll_loss)
    
 def point2triangle_loss(pred, placeholders, block_id):
