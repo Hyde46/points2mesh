@@ -283,7 +283,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--merge', help='merging together all the parts to the final lmdb', action='store_true')
     parser.add_argument(
-        '--label', help='label_id of ShapeNetCore55 [0,54] (default: 0)', type=int, default=0)
+        '--label', help='label_id of ShapeNetCorev2 [0,54] (default: 0)', type=int, default=0)
     parser.add_argument(
         '--samples', help='number of points to generate', type=int)
     parser.add_argument('--sphere_samples',

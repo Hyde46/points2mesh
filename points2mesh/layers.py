@@ -222,24 +222,25 @@ class GraphPooling(Layer):
 
         nn, dist, _ = knn_bf_sym(inputs_exp, to_compare, K=8)
         # (1, 156, 8)
-        
+
         tension = tf.reduce_sum(tf.abs(dist), 2)[0]
         return tension
-        
+
 
 class GraphAlignment(Layer):
     """ GraphAlignment
     Moves Graph features towards arithmetic middle of ground truth points
     """
+
     def __init__(self, gt_pt, **kwargs):
         super(GraphAlignment, self).__init__(**kwargs)
         self.gt_pt = gt_pt
 
     def _call(self, inputs):
-        mean_graph = tf.reduce_mean(inputs, axis=0) 
+        mean_graph = tf.reduce_mean(inputs, axis=0)
         mean_gt = tf.reduce_mean(self.gt_pt[0], axis=1)
         delta_mean = tf.subtract(mean_gt, mean_graph)
-        
+
         outputs = tf.add(inputs, delta_mean)
         outputs = outputs / tf.reduce_max(tf.abs(outputs))
         return outputs
@@ -270,17 +271,17 @@ class GraphProjection(Layer):
         '''
         # outputs = tf.concat([inputs, stage_0, stage_1[0], stage_2[0], stage_3[0]], 1)
         # outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
-        outputs = tf.concat([inputs,\
-                stage_1[1],\
-                stage_2[1],\
-                stage_3[1]], 1)
+        outputs = tf.concat([inputs,
+                             stage_1[1],
+                             stage_2[1],
+                             stage_3[1]], 1)
         # outputs = tf.concat([inputs, stage_0,\
         #        stage_1[0], stage_1[1],\
         #        stage_2[0], stage_2[1],\
         #        stage_3[0], stage_3[1]\
         #        ], 1)
         return outputs
-
+    '''
     def tension_projection(self, inputs, num_feature):
         """
         Calculates the tension for each vertex in ground truth point cloud
@@ -312,22 +313,29 @@ class GraphProjection(Layer):
         # feature_tension = tf.reduce_sum(tf.abs(dist),axis=2)[0]
 
         # Get knn of each vertex in ellipsoiddist
-        ell_neighbor_vals, ell_neighbor_indices = self.knn_neighbors(inputs, num_feature)
-        
-        feature_tension = tf.reduce_sum(tf.abs(tf.norm(ell_neighbor_vals, axis=3)),axis=2)[0]
+        ell_neighbor_vals, ell_neighbor_indices = self.knn_neighbors(
+            inputs, num_feature)
+
+        feature_tension = tf.reduce_sum(
+            tf.abs(tf.norm(ell_neighbor_vals, axis=3)), axis=2)[0]
 
         # Normalized vector to each neigbor
-        ellip_normalized_neighbors = tf.nn.l2_normalize(ell_neighbor_vals, axis=[3])[0]
-        
-        tension_neighbors = self.select_tension_neighbor(ell_neighbor_indices[0], feature_tension)
+        ellip_normalized_neighbors = tf.nn.l2_normalize(
+            ell_neighbor_vals, axis=[3])[0]
+
+        tension_neighbors = self.select_tension_neighbor(
+            ell_neighbor_indices[0], feature_tension)
         # scale directional neighbor vector with tension
         max_tension = tf.reduce_max(tension_neighbors) * 0.25
         scaled_tension_neighbors = tf.divide(tension_neighbors, max_tension)
-        scaled_tension_neighbors = tf.stack([scaled_tension_neighbors, scaled_tension_neighbors,scaled_tension_neighbors],axis=1)
-        scaled_tension_neighbors = tf.transpose(scaled_tension_neighbors, [0,2,1])
+        scaled_tension_neighbors = tf.stack(
+            [scaled_tension_neighbors, scaled_tension_neighbors, scaled_tension_neighbors], axis=1)
+        scaled_tension_neighbors = tf.transpose(
+            scaled_tension_neighbors, [0, 2, 1])
         # scale vectors with scaled tension_neighbors, add to vertices
 
-        scaled_vector = tf.multiply(ellip_normalized_neighbors, scaled_tension_neighbors)
+        scaled_vector = tf.multiply(
+            ellip_normalized_neighbors, scaled_tension_neighbors)
 
         scaled_vector = tf.reduce_mean(scaled_vector, axis=1)
         # ret= ell_neighbor_vals[0] + scaled_vector
@@ -343,15 +351,15 @@ class GraphProjection(Layer):
 
         knnr = tf.reshape(indices, [1, N * self.K])
 
-        bv = tf.ones([N*self.K], dtype=tf.int32) * tf.constant(np.arange(0), shape=[1],dtype=tf.int32)
+        bv = tf.ones([N*self.K], dtype=tf.int32) * \
+            tf.constant(np.arange(0), shape=[1], dtype=tf.int32)
 
-        knnr = tf.stack([tf.reshape(bv, [1 N*self.K]), tf.reshape(indices, [1, N*self.K])],-1)
+        knnr = tf.stack([tf.reshape(bv, [1 N*self.K]), tf.reshape(indices, [1, N*self.K])], -1)
 
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [N, self.K])
 
         return knnY
-
-
+    '''
     def knn_neighbors(self, inputs, num_feature):
         coord = inputs
 
@@ -384,12 +392,13 @@ class GraphProjection(Layer):
         # Easier shape to work on
         knnr = tf.reshape(knn, [1, B * N * self.K])
 
-        bv = tf.ones([B, N*self.K], dtype=tf.int32) * tf.constant(np.arange(0, B), shape=[B, 1],dtype=tf.int32)
-        knnr = tf.stack([tf.reshape(bv, [1, B*N*self.K]), tf.reshape(knn, [1,  B*N*self.K])], -1)
+        bv = tf.ones([B, N*self.K], dtype=tf.int32) * \
+            tf.constant(np.arange(0, B), shape=[B, 1], dtype=tf.int32)
+        knnr = tf.stack([tf.reshape(bv, [1, B*N*self.K]),
+                         tf.reshape(knn, [1,  B*N*self.K])], -1)
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
         return knnY, knn
 
-        
     def mean_neighborhood(self, inputs, num_feature):
         coord = inputs
 
@@ -397,9 +406,9 @@ class GraphProjection(Layer):
         Dp = coord.shape.as_list()[1]
 
         if num_feature > 0:
-            D_feature = FLAGS.feature_depth * pow(2,num_feature-1)
+            D_feature = FLAGS.feature_depth * pow(2, num_feature-1)
 
-        coord_expanded = tf.expand_dims( coord, -1)
+        coord_expanded = tf.expand_dims(coord, -1)
 
         #transform PC feature to usable format
         if num_feature > 0:
@@ -408,38 +417,39 @@ class GraphProjection(Layer):
         else:
             pc_coords = self.pc_feat[num_feature]
 
-        ellipsoid = tf.transpose(coord_expanded,[2, 1, 0])
+        ellipsoid = tf.transpose(coord_expanded, [2, 1, 0])
 
-        Y = tf.transpose(pc_coords, [0,2,1])
+        Y = tf.transpose(pc_coords, [0, 2, 1])
         if num_feature > 0:
             Y_feature = tf.transpose(pc_feature, [0, 2, 1])
 
         N = ellipsoid.shape.as_list()[2]
         # Neighbors: [B, K, N]
         # Distances: [B, K, N]
-        knn,_,_ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
+        knn, _, _ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
 
         # Easier shape to work on
         knnr = tf.reshape(knn, [1, B * N * self.K])
 
-        bv = tf.ones([B,N*self.K],dtype=tf.int32) * tf.constant(np.arange(0,B),shape=[B,1],dtype=tf.int32)
+        bv = tf.ones([B, N*self.K], dtype=tf.int32) * \
+            tf.constant(np.arange(0, B), shape=[B, 1], dtype=tf.int32)
 
-        knnr = tf.stack([tf.reshape(bv,[1,B*N*self.K]), tf.reshape(knn,[1,B*N*self.K])],-1)
+        knnr = tf.stack([tf.reshape(bv, [1, B*N*self.K]),
+                         tf.reshape(knn, [1, B*N*self.K])], -1)
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
-        knnY_mean = tf.reduce_mean(knnY, axis = 2)
+        knnY_mean = tf.reduce_mean(knnY, axis=2)
 
         if num_feature > 0:
-            knnY_feature = tf.reshape(tf.gather_nd(Y_feature, knnr), [B, N, self.K, D_feature])
-            
+            knnY_feature = tf.reshape(tf.gather_nd(Y_feature, knnr), [
+                                      B, N, self.K, D_feature])
+
             if self.use_maximum:
-                max_features = tf.reduce_max(knnY_feature[0], axis=1, keepdims=False,name="Maximum")
+                max_features = tf.reduce_max(
+                    knnY_feature[0], axis=1, keepdims=False, name="Maximum")
                 return [max_features]
                 #return [knnY_mean[0], max_features]
             else:
-                knnY_feature_mean = tf.reduce_mean(knnY_feature, axis = 2)
+                knnY_feature_mean = tf.reduce_mean(knnY_feature, axis=2)
                 return [knnY_mean[0], knnY_feature_mean[0]]
 
         return knnY_mean[0]
-
-
-
