@@ -4,8 +4,10 @@ import numpy as np
 from tensorpack import *
 from tensorpack.utils.utils import get_rng
 
+from sklearn.neighbors import KDTree
 
-class NeighborhoodDensitySubSample(RNGDataFlow):
+
+class WRSDataFlow(RNGDataFlow):
     """docstring for NeighborhoodDensitySubSample
 
     Example:
@@ -53,7 +55,7 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
 
         Args:
             ds: incoming dataflow
-            neighborhood_sizes: either an integer of list of integers specifying the neighborhood sizes
+            neighborhood_sizes: either an integer or list of integers specifying the neighborhood sizes
             sample_sizes: list of sampled point cloud size of the outcome per level. If not used take strides instead.
             strides: either an integer of list of integers specifying the strides. Overridden by defining sample_sizes
             num_points: If strides is used num_points needs to be set
@@ -66,7 +68,6 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
         """
 
         super(NeighborhoodDensitySubSample, self).__init__()
-
         if sample_sizes is not None:
             if type(neighborhood_sizes) is list:
                 assert len(sample_sizes) == len(neighborhood_sizes)
@@ -105,18 +106,19 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
                 dp
             ) == 2, "incoming dp should only have location, feature, but len is %i" % len(
                 dp)
+            location = np.transpose(location[0])
+            feature = np.transpose(feature[0])
             num_elements = location.shape[0]
             idxs = list(range(num_elements))
 
-            current_location = dp[0]
-            current_feature = dp[1]
+            current_location = location
+            current_feature = feature
 
             cum_density = None
 
             ret = []
-
+            # B, Dp, N = location.shape
             N = len(current_location)
-            print N
             assert self.sample_sizes[0] <= N
 
             if self.time_dataflow:
@@ -164,7 +166,7 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
 
                 density = np.sum(current_dist, 1)
                 density /= density.sum()
-
+                weights = density
                 # cum_density = np.cumsum(density)
                 # cum_density /= cum_density[-1]
 
@@ -197,7 +199,8 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
                     # samples = self.rng.randint(0, self.sample_resolution,
                     #                            2 * subN)
 
-                    idx = self.rng.choice(np.arange(len(density)), 2 * subN, p=density)
+                    idx = self.rng.choice(
+                        np.arange(len(density)), 2 * subN, p=density)
 
                     # print 'samples: ', samples
 
@@ -243,10 +246,43 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
 
                 ret += [
                     current_location, current_feature,
+                    weights,
                     current_neighborhood.astype(np.uint32), idxs
                 ]
 
-            yield ret
+                yield ret
+
+    def wrs_downsample_ids(survive_pobability, coarse_resolution):
+        '''
+        Args:
+            survive_pobability: normalized probabilities [B,N]
+            coarse_resolution: number of points to downsample
+            max_attempts: possible rejections
+        Return:
+            ids: to downsample [B, coarse_resolution]
+        '''
+        B = tf.shape(survive_pobability)[0]
+        N = int(survive_pobability.shape[1])
+
+        u = tf.random_uniform([B, N])
+        k = tf.pow(u, 1.0 / survive_pobability)
+
+        sort = tf.contrib.framework.argsort(k, axis=-1, direction='DESCENDING')
+        return tf.reshape(sort[:, :coarse_resolution], [B, coarse_resolution])
+
+    def downsample_by_id(x, ids):
+        """Downsample point cloud features using specified ids obtained via
+        'probability_downsample_ids'.
+        Args:
+            x (tf.tensor): features in fine resolution
+            ids (tf.tensor): ids survive downsampling into coarse resolution
+
+        Returns:
+            tf.tensor: features in coarse resolution
+        """
+        xT = tf.transpose(x[:, :, 0], [0, 2, 1])
+        down = tf.batch_gather(xT, ids)
+        return tf.transpose(down, [0, 2, 1])[:, :, None]
 
     def reset_state(self):
         self.ds.reset_state()
@@ -257,5 +293,3 @@ class NeighborhoodDensitySubSample(RNGDataFlow):
 
     def size(self):
         return self.ds.size()
-
-

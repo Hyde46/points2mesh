@@ -1,14 +1,18 @@
 import os
 import multiprocessing
 
-from tensorpack.dataflow import (PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, RandomMixData)
+from tensorpack.dataflow import (
+    PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, RandomMixData)
 from tensorpack.utils import logger
 from tensorpack.dataflow.serialize import LMDBSerializer
+
+import numpy as np
 
 ############################################
 # Important! Set path to .lmdb data:
 MODEL40PATH = '/graphics/scratch/students/heid/pointcloud_data/ModelNet40'
 ############################################
+
 
 def get_allowed_categories(version):
     """
@@ -68,7 +72,8 @@ def get_allowed_categories(version):
 
 def prepare_df(df, parallel, prefetch_data, batch_size):
     if parallel < 16:
-        logger.warn("DataFlow may become the bottleneck when too few processes are used.")
+        logger.warn(
+            "DataFlow may become the bottleneck when too few processes are used.")
     if prefetch_data:
         df = PrefetchDataZMQ(df, parallel)
 
@@ -93,7 +98,8 @@ def get_advaced_mixed_modelnet_dataflow(
     path_to_data = os.path.join(path_to_data, version)
 
     data_flows = []
-    files = [i for i in os.listdir(path_to_data) if i.startswith(dataset_type) and i.endswith("lmdb")]
+    files = [i for i in os.listdir(path_to_data) if i.startswith(
+        dataset_type) and i.endswith("lmdb")]
     for f in files:
         print "  "
         print f
@@ -106,7 +112,7 @@ def get_advaced_mixed_modelnet_dataflow(
             break
         data_flows.append(df)
     df = RandomMixData(data_flows)
-    
+
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     return df
 
@@ -165,7 +171,7 @@ def get_modelnet_dataflow(
     assert model_ver in ['10', '40']
     # Two different data sets exist with either 1024 samples per object or 10000 samples per object.
     # Different amounts of samples can still be used by choosing 10000 samples per object and selecting
-    # a subset of them with the disadvantage of slower loading and sampling time. 
+    # a subset of them with the disadvantage of slower loading and sampling time.
     assert num_points in [1024, 10000]
 
     # Construct correct filename
@@ -173,7 +179,8 @@ def get_modelnet_dataflow(
     if not normals:
         normals_str = "-positions"
 
-    file_name = "model" + model_ver + "-" + name + normals_str + "-" + str(num_points) + ".lmdb"
+    file_name = "model" + model_ver + "-" + name + \
+        normals_str + "-" + str(num_points) + ".lmdb"
     path = os.path.join(MODEL40PATH, file_name)
 
     # Try using multiple processing cores to load data
@@ -187,7 +194,8 @@ def get_modelnet_dataflow(
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     # seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [dp[1][:3], dp[1][3:]] if dp[0] in allowed_categories else None ) 
+    df = MapData(df, lambda dp: [dp[1][:3], dp[1][3:]]
+                 if dp[0] in allowed_categories else None)
 
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     # df = PrintData(df)
@@ -195,8 +203,16 @@ def get_modelnet_dataflow(
 
 
 if __name__ == '__main__':
-    get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
-   
+    #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
+    df = LMDBSerializer.load(
+        "/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
+    for d in df:
+        #print d[0]
+        #print d[1]
+        print np.concatenate((d[0], d[1]), axis=1)
+        np.savetxt('/home/heid/tmp/test.asc',
+                   np.concatenate((d[0], d[1]), axis=1), delimiter=',')
+        break
     # df = get_modelnet_dataflow('train', batch_size=2, num_points=1024, model_ver="40", normals=True, prefetch_data=False)
     # for d in df:
     #    print " "

@@ -71,7 +71,7 @@ class ShapeNetCore55ClassDataFlow(DataFlow):
         self.objects = objects
         self.label = label
         self.filelist = sorted([k for k in fs.recursive_walk(
-            self.work_dir) if k.endswith('.obj')])[start:]
+            self.work_dir) if k.endswith('.obj')])[start:100]
         # self.filelist = filtered_files[start:]
 
         if objects is not None:
@@ -132,11 +132,12 @@ def sampleGT(mesh, N, ray_samples=1000, assertion=False, max_hits=5, junks=15):
 
         point_survived = S[point_survivor]
         faces_survived = Sidx[point_survivor]
+        normals_survived = mesh.face_normals[faces_survived]
 
         result_points = np.concatenate([result_points, point_survived], 0)
         result_faces = np.concatenate([result_faces, faces_survived], 0)
         result_normals = np.concatenate(
-            [result_normals, mesh.face_normals[faces_survived]], 0)
+            [result_normals, normals_survived], 0)
 
     elapsed = time.time() - t
     print('{} points in {} seconds.'.format(result_points.shape[0], elapsed))
@@ -326,6 +327,7 @@ if __name__ == '__main__':
         # filtered_files = filter_files(
         #    shape_names[args.label], args.mode, snc55dir)
         num_models = len(os.listdir(snc55dir))
+        num_models = 100
         num_objects = (num_models - 1) // args.num_parts + 1
 
         start_object = args.part_id * num_objects
