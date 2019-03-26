@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
+from sampler import wrs_downsample_ids, downsample_by_id
 
 from tensorpack import *
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce
@@ -115,8 +116,21 @@ class FlexmeshModel(ModelDesc):
 
     def build_flex_graph(self, positions):
 
+        def wrs_subsample(positions, features):
+            # Calculate density for each node
+            _, dist, _ = knn_bf_sym(positions, positions, K=32)
+            # feed relative density to wrs subsampling
+            density = tf.reduce_sum(dist, axis=2)
+            density = tf.divide(density, tf.reduce_sum(density, 1))
+            wrs_idxs = wrs_downsample_ids(
+                density, positions.shape.as_list()[2]//2)
+            # choose positions and features based on indices
+            coarse_positions = downsample_by_id(positions, wrs_idxs)
+            coarse_features = downsample_by_id(features, wrs_idxs)
+            # return sampled positions and features
+            return coarse_positions, coarse_features
+
         def subsample(x, factor=4):
-            # TODO: build better supsampling (IDISS)
             # Number of samples
             n = x.shape.as_list()[-1]
             return x[:, :, :n // factor]
@@ -142,8 +156,9 @@ class FlexmeshModel(ModelDesc):
         '''
         x1 = [positions, x]
         # Subsample!
-        x = subsample(x)
-        positions = subsample(positions)
+        # x = subsample(x)
+        # positions = subsample(positions)
+        positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
         x = flex_convolution(x, positions, neighbors,
@@ -156,8 +171,9 @@ class FlexmeshModel(ModelDesc):
         # Fully connected:
         x2 = [positions, x]
         #Subsample!
-        x = subsample(x)
-        positions = subsample(positions)
+        # x = subsample(x)
+        # positions = subsample(positions)
+        positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
         x = flex_convolution(x, positions, neighbors,

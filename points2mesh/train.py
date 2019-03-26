@@ -71,18 +71,6 @@ if __name__ == '__main__':
                                      num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True)
     df_test = get_modelnet_dataflow('test', batch_size=2 * FLAGS.batch_size,
                                     num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True)
-
-    #df = MapData(df_train, lambda dp: [dp, dp])
-    #df_sampled_s1 = NeighborhoodDensitySubSample(
-    #    df, neighborhood_sizes=32, sample_sizes=[1024, 512, 128])
-
-    #print " Hier:S"
-    #ds = PrintData(df_sampled_s1)
-    #ds.reset_state()
-
-    #for d in ds:
-    #    print d
-
     steps_per_epoch = len(df_train)
 
     # Setup Model
@@ -107,6 +95,6 @@ if __name__ == '__main__':
         starting_epoch=0,
         max_epoch=NUM_EPOCH
     )
-    #launch_train_with_config(config, SimpleTrainer())
+    launch_train_with_config(config, SimpleTrainer())
     # TODO: Fix GPUTrainer
     # launch_train_with_config(config, SyncMultiGPUTrainerParameterServer([0],ps_device='gpu'))
