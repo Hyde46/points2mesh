@@ -1,0 +1,251 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LaTeX-Rahmen fuer das Erstellen von Masterarbeiten
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% allgemeine Einstellungen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[twoside,12pt,a4paper]{report}
+%\usepackage{reportpage}
+\usepackage{epsf}
+\usepackage{graphics, graphicx}
+\usepackage{latexsym}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage[utf8]{inputenc}
+\usepackage[toc,page]{appendix}
+
+\textwidth 14cm
+\textheight 22cm
+\topmargin 0.0cm
+\evensidemargin 1cm
+\oddsidemargin 1cm
+%\footskip 2cm
+\parskip0.5explus0.1exminus0.1ex
+
+% Kann von Student auch nach pers\"onlichem Geschmack ver\"andert werden.
+\pagestyle{headings}
+
+\sloppy
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% hier steht die neue Titelseite 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\begin{titlepage}
+ \begin{center}
+  {\LARGE Eberhard Karls Universit\"at T\"ubingen}\\
+  {\large Mathematisch-Naturwissenschaftliche Fakult\"at \\
+Wilhelm-Schickard-Institut f\"ur Informatik\\[4cm]}
+  {\huge Master Thesis Bioinformatics\\[2cm]}
+  {\Large\bf  Title of thesis\\[1.5cm]}
+ {\large Vor- und Nachname}\\[0.5cm]
+Datum\\[4cm]
+{\small\bf Reviewers}\\[0.5cm]
+  \parbox{7cm}{\begin{center}{\large Name Erstgutachter}\\
+   (Bioinformatik)\\
+  {\footnotesize Wilhelm-Schickard-Institut f\"ur Informatik\\
+	Universit\"at T\"ubingen}\end{center}}\hfill\parbox{7cm}{\begin{center}
+  {\large Name Zweitgutachter}\\
+  (Biologie/Medizin)\\
+  {\footnotesize Medizinische Fakult\"at\\
+	Universit\"at T\"ubingen}\end{center}
+ }
+  \end{center}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Titelr"uckseite: Bibliographische Angaben
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{minipage}{11.2cm}
+\textbf{Nachname, Vorname:}\\
+\emph{Title of thesis}\\ Master Thesis Bioinformatics\\
+Eberhard Karls Universit\"at T\"ubingen\\
+Thesis period: von-bis
+\end{minipage}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Seite I: Zusammenfassug, Danksagung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section*{Abstract}
+
+Write here your abstract.
+\newpage
+\section*{Zusammenfassung}
+
+Bei einer englischen Masterarbeit muss zus\"atzlich eine deutsche Zusammenfassung verfasst werden.
+
+\newpage
+\section*{Acknowledgements}
+
+Write here your acknowledgements.
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\baselinestretch}{1.3}
+\small\normalsize
+
+\tableofcontents
+
+\renewcommand{\baselinestretch}{1}
+\small\normalsize
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% List of Figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\baselinestretch}{1.3}
+\small\normalsize
+
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+\renewcommand{\baselinestretch}{1}
+\small\normalsize
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% List of tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\baselinestretch}{1.3}
+\small\normalsize
+
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+\renewcommand{\baselinestretch}{1}
+\small\normalsize
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% List of abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% can be removed
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\chapter*{List of Abbreviations\markboth{LIST OF ABBREVIATIONS}{LIST OF ABBREVIATIONS}}
+
+\begin{tabbing}
+\textbf{FACTOTUM}\hspace{1cm}\=Schrott\kill
+\textbf{BLAST}\>Basic Local Alignment Search Tool \\
+\textbf{...} \> ...\\
+\end{tabbing}
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Der Haupttext, ab hier mit arabischer Numerierung
+%%% Mit \input{dateiname} werden die Datei `dateiname' eingebunden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%% Introduction
+\input{intro}
+\cleardoublepage
+
+%% 
+\input{MM}
+\cleardoublepage
+
+%%
+\input{results}
+\cleardoublepage
+
+%%
+\input{discussion}
+\cleardoublepage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+%\setcounter{secnumdepth}{-1}
+%\section{Tables}\label{chap:App}
+\chapter{Further Tables and Figures}\label{chap:App}
+Viele Arbeiten haben einen Appendix. Besondere Sorgfalt muss beim Nummerieren der Tabellen und Abbildungen gewährleistet sein.
+\begin{table}[htb]
+\begin{tabular}{cc}
+Nummer & Datum \\
+\hline
+1 & 1.1.80\\
+2 & 1.1.90 \\
+\end{tabular}
+\caption{Erste Appendix-Tabelle}\label{tab:app1}
+\end{table}
+
+%\chapter{Figures}\label{chap:App2}
+
+\begin{table}[htb]
+\begin{tabular}{cc}
+Nummer & Datum \\
+\hline
+1 & 1.1.80\\
+2 & 1.1.90 \\
+\end{tabular}
+\caption{Zweite Appendix-Tabelle}\label{tab:app2}
+\end{table}
+%\end{appendices)
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Bibliographie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\bibliographystyle{alpha}
+\bibliography{mylit}
+%% Obige Anweisung legt fest, dass BibTeX-Datei `mylit.bib' verwendet
+%% wird. Hier koennen mehrere Dateinamen mit Kommata getrennt aufgelistet
+%% werden.
+
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Erklaerung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\section*{Selbst\"andigkeitserkl\"arung}
+
+Hiermit versichere ich, dass ich die vorliegende Masterarbeit 
+selbst\"andig und nur mit den angegebenen Hilfsmitteln angefertigt habe und dass alle Stellen, die dem Wortlaut oder dem 
+Sinne nach anderen Werken entnommen sind, durch Angaben von Quellen als 
+Entlehnung kenntlich gemacht worden sind. 
+Diese Masterarbeit wurde in gleicher oder \"ahnlicher Form in keinem anderen 
+Studiengang als Pr\"ufungsleistung vorgelegt. 
+
+\vskip 3cm
+
+Ort, Datum	\hfill Unterschrift \hfill 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

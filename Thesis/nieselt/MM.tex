@@ -1,0 +1,76 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Grundlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Methods and Material}
+  \label{MetMat}
+
+\noindent
+Ziel dieses Kapitels ist eine Einf\"uhrung in die Thematik BlaBlaBla ...
+
+\section{title of section}
+  \label{Abschnittslabel} 
+
+BlaBlaBla ...
+
+\subsection{title of subsection}
+  \label{Unterabschnittslabel}
+
+BlaBlaBla ...
+
+Im folgenden wird das Einbinden einer Abbildung als `pdf-Datei' in ein
+\LaTeX-Dokument gezeigt.
+
+\begin{figure}[htb]
+     \centerline{\epsffile{figures/chordal.eps}}
+  \caption{Chordale Graphen}
+  \label{fig2.1}
+\end{figure}
+
+Abbildung~\ref{fig2.1} zeigt ...
+
+Tabellen k\"onnen wie folgt erstellt werden:
+
+{
+\renewcommand{\baselinestretch}{0.9} 
+\normalsize
+\begin{table}[htb]
+\begin{tabular}{|p{2.7cm}||l|c|r|}
+\hline
+    \textbf{Spalte 1} 
+  & \textbf{Spalte 2} 
+  & \textbf{Spalte 3} 
+  & \textbf{Spalte 4} \\
+  \hline\hline
+  xxx1111
+  & xxxxxxx2222222
+  & xxxxxx333333 
+  & xxxxxxxxxx444444 \\
+  \hline
+    ...
+  & ...
+  & ...
+  & ...\\
+  \hline
+\end{tabular}
+  \caption[Beispieltabelle mit einer langen Legende]{Beispieltabelle mit einer langen Legende, damit man sieht, dass in der Legende der Zeilenabstand verringert wurde. Ausserdem soll auch der Font etwas kleiner gew\"ahlt werden. So sieht die ganze Umgebung kompakter aus.}
+  \label{tabelle-1}
+\end{table}
+}
+
+\noindent
+Eine Aufz\"ahlung geht wie folgt:
+\begin{itemize}
+\item ...
+\item ...
+\end{itemize}
+Eine numerierte Aufz\"ahlung:
+\begin{enumerate}
+\item ...
+\item ...
+\end{enumerate}
+
+Betonungen sollen \emph{kursiv} gedruckt werden. 
+\textbf{Fettdruck} ist auch m\"oglich.
+
+Referenzen: \cite{SaaSchTue97,TueConSaa96ismis,SchTueSaa98preprint}

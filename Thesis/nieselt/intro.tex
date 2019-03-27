@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einleitung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Introduction}\label{Introduction}
+
+Start with a comprehensive introduction about the questions of your thesis.
+
+The thesis could include a background section, which also could become one or two separate chapters.
+
+Do not forget to also give a short overview of the structure of the thesis in this chapter, for example as follows:
+
+\medskip
+This thesis is structured as follows: First a background on XXX is introduced in the following background chapter (or the following section).
+In chapter~\ref{MetMat} the developed algorithm to analyse ... is presented, followed by a comprehensive description of the used data or material.
+The results are given in chapter~\ref{results}. A discussion and short outlook conclude this thesis.
+
+The following (in german) help newbies in \LaTeX to learn about sections, math equations and much more.
+
+Bevor wir uns der Auswertung bzw. Bewertung der gewonnenen Prim\"ardaten zuwenden, wollen wir zun\"achst einige grundlegende Begriffe der deskriptiven Statistik wiederholen.
+\section{Stichproben}
+
+Grunds\"atzlich haben wir es bei Microarrayexpressionsdaten mit einer {\em Stichprobe} aus einer {\em Population (Grundgesamtheit)} zu tun.   
+Wir bezeichnen nun im allgemeinen mit $X=\{x_1,x_2,\ldots,x_n\}$ die Beobachtungsdaten vom Umfang $n$. 
+Diese Daten sollen mit statistischen Kenngr\"o\"sen beschrieben werden. Aus diesen will man m\"oglichst zuverl\"assig auf die zugrundeliegende Verteilung in der Grundgesamtheit schlie\"sen. Hierzu verwenden wir die {\bf Lage-} und {\bf Streuparameter}. Zun\"achst wenden wir uns aber der H\"aufigkeits- und Summenh\"aufigkeitsverteilung zu, die sowohl graphisch als auch numerisch einen Eindruck \"uber die Verteilung von $X$ bieten. Daf\"ur betrachten wir diskrete Verteilungen.
+
+Gegeben sei eine Stichprobe $(X_1,X_2,\ldots,X_n)$. Eine Funktion $Z_n=Z(X_1,\ldots,X_n)$ heisst eine {\em Stichprobenfunktion}. Sie ist selber eine Zufallsgr\"o\"se.
+
+\subsection{H\"aufigkeiten und Histogramm}
+In $X$ trete der Wert $x_i$ genau $n_i$ mal auf, $i=1,2,\ldots m$. Dann ist $\sum_i n_i = n$. Der Quotient $n_i/n$ ist die {\em relative H\"aufigkeit} f\"ur das Eintreten des Ereignisses ``$X=x_i$''.
+Die Menge der relativen H\"aufigkeiten $\{n_1/n,n_2/n,\ldots, n_m/n\}$ hei\"st {\em H\"aufigkeitsverteilung} von $X$. Ferner hei\"st die Menge $\{s_1,\ldots,s_m\}$ mit $s_i=\sum_{k=1}^{i}n_k/n$ die {\em Summenh\"aufigkeitsverteilung} von $X$.
+
+F\"ur die graphische Darstellung der H\"aufigkeitsverteilung wird das {\em Histogramm} (s. Abb.~) gew\"ahlt. f\"ur die Summenh\"aufigkeitsverteilung die {\em Treppenfunktion}.
+
+%
+\subsection{Wichtige Verteilungen}
+
+\subsubsection{Die Normalverteilung}
+Die Dichte der Normalverteilung ist gegeben durch
+\begin{equation}\label{dichtenormal}
+g(x) = \frac{1}{2\pi\sigma}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\end{equation}
+wobei $\mu$ (Lage) der Mittelwert und $\sigma$ (Breite) die Standardabweichung der Normalverteilung ist. 
+Durch die $z$-Transformation l\"asst sich die Normalverteilung auf die Standardnormalverteilung mit $\mu=0$ und $\sigma=1$ transformieren.
+
+Die Normalverteilung bildet die Basis fast der gesamten statistischen Theorie. \footnote{ 
+``Everyone believes in the normal law, the experimenters because they imagine it is a mathematical theorem, and the mathematicians because they think it is an experimental fact.'' (Gabriel Lippman, in Poincar\'e's Calcul de probabilit\'es, 1896)}. Auch bei der Analyse der Microarraydaten werden wir sehr oft von der Annahme der Normalverteilung Gebrauch machen. Allerdings sollten wir uns klarmachen, dass  rein experimentell zahlreiche Untersuchungen gezeigt haben, dass die echten Fehler selten, wenn \"uberhaupt normal verteilt sind.
+
+
+\section{Sch\"atzung von Parametern}
+Allgemein erhofft man sich beim Ziehen einer Stichprobe, einen unbekannten Parameter $\gamma$ der Grundgesamtheit, z.B. den Mittelwert, aus der Stichprobe zu sch\"atzen.
+\subsection{Eigenschaften von Punktsch\"atzungen}
+

@@ -1,0 +1,85 @@
+% use to waste space:
+% \documentclass[12pt,a4paper]{article}
+
+% if you have this style and like it.
+%\documentclass{acmsiggraph}
+%\documentclass[review]{acmsiggraph}      % review
+%\documentclass[widereview]{acmsiggraph}  % wide-spaced review
+%\documentclass[preprint]{acmsiggraph}    % preprint
+
+% define a \comment{this is a comment which can have linebreaks in it}
+\newcommand{\comment}[1]{}
+% \newcommand{\todo}[1]{\marginpar{\bf{#1}}}
+\newcommand{\todo}[1]{{\color{red}\bf{TODO: #1}}}
+
+\usepackage{mathptmx}
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftex]{color}
+\definecolor{rot}{RGB}{165,30,55} %rote Farbe
+\graphicspath{{./images/}}
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{pxfonts}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+% comment these two lines out if you don't want minion/myriad fonts.
+% \usepackage[minionint,mathlf]{MinionPro}
+% \renewcommand{\sfdefault}{Myriad-LF}
+%\usepackage{Myriad}
+
+% no page number on float pages, fixes problems with overlarge diagrams.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%\lhead{}
+%\chead{}
+%\rhead{}
+%\lfoot{}
+\fancyhf{}
+\fancyhead[EL]{\nouppercase{\leftmark}}
+\fancyhead[OR]{\nouppercase{\rightmark}}
+\cfoot{}
+%\fancyfoot[EL]{\iffloatpage{}{\thepage}}
+%\fancyfoot[OR]{\iffloatpage{}{\thepage}}
+\fancyfoot[EL]{\thepage}
+\fancyfoot[OR]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%\usepackage{natbib}		% textual referencing
+%\usepackage[numbers,super]{natbib}	% nice superscripts
+%\bibliographystyle{chicago}	% shitty
+\bibliographystyle{alpha}	% abbr names and year in \cite
+%\bibliographystyle{agsm}	% australian, need natbib
+%\bibliographystyle{kluwer}	% need natbib
+%\bibliographystyle{apalike}	% lengthly
+%\bibliographystyle{abbrv}	% minimal?
+
+% use for german line breaking:
+%\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+
+% avoid us-style text color destruction:
+\frenchspacing
+\usepackage{microtype}
+
+% have a nice framebox with border directly around the image:
+\fboxsep 0pt
+\newcommand{\fimg}[2]{\fbox{\includegraphics[width=#1]{#2}}}
+
+\usepackage{theorem}
+\theorembodyfont{\upshape}
+\newtheorem{definition}{Definition}
+
+\usepackage{listings}
+\lstset{numbers=left, numberstyle=\tiny, basicstyle=\tiny, language=C++}
+\usepackage[boxruled]{algorithm2e}
+%\usepackage{hyperref}
+\usepackage{url}
+\usepackage{subfig}
+
+\def\code#1{{\tt{#1}}}
+

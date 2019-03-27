@@ -1,0 +1,96 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 70 200 600 500
+%%Pages: 1
+%%DocumentFonts: Helvetica
+%%DocumentNeededFonts: Helvetica
+%%EndComments
+% use inch as unit
+/inch {72 mul} def
+% triangle side length (3 inch)
+/tl {3 inch mul} def
+% triangle side length for smaller statistics triangles (2 inch)
+/tl2 {2.1 inch mul} def
+% plot one dot (x-y coordinates on stack)
+/dot {
+newpath
+0.02 tl 0 360 arc  % radius is 0.003 of the triangle length
+closepath
+fill
+} def
+/dotr {
+1 0 0 setrgbcolor
+newpath
+0.02 tl 0 360 arc  % radius is 0.003 of the triangle length
+closepath
+fill
+} def
+/dotg {
+0 1 0 setrgbcolor
+newpath
+0.01 tl 0 360 arc  % radius is 0.003 of the triangle length
+closepath
+fill
+} def
+% plot one dot (x-y coordinates on stack)
+/dot2 {
+newpath
+0.01 tl 0 360 arc  % radius is 0.003 of the triangle length
+closepath
+fill
+} def
+% Title
+/Helvetica findfont
+15 scalefont
+setfont
+gsave
+% draw first graph
+2 inch 6 inch translate
+newpath
+ 0.0 tl 0.0 tl moveto
+ 1.5 tl 0.0 tl lineto
+ 0.25 tl 0.25 tl moveto
+ 1.75 tl 0.25 tl lineto
+ 0.0 tl 0.0 tl moveto
+ 0.25 tl 0.25 tl lineto
+ 0.5 tl 0.0 tl lineto
+ 0.75 tl 0.25 tl lineto
+ 1.0 tl 0.0 tl lineto
+ 1.25 tl 0.25 tl lineto
+ 1.5 tl 0.0 tl lineto
+ 1.75 tl 0.25 tl lineto
+ stroke
+stroke
+% Now the borders of the interval
+ 0.0 tl 0.0 tl dot
+ 0.5 tl 0.0 tl dot
+ 1.0 tl 0.0 tl dot
+ 1.5 tl 0.0 tl dot
+ 0.25 tl 0.25 tl dot
+ 0.75 tl 0.25 tl dot
+ 1.25 tl 0.25 tl dot
+ 1.75 tl 0.25 tl dot
+stroke
+% draw second graph
+0 inch -2 inch translate
+newpath
+ 0.5 tl 0.0 tl moveto
+ 1.25 tl 0.0 tl lineto
+ 0.5 tl 0.0 tl moveto
+ 0.5 tl 0.25 tl lineto
+ 1.25 tl 0.0 tl lineto
+ 0.5 tl 0.0 tl moveto
+ 0.5 tl -0.25 tl lineto
+ 1.25 tl 0.0 tl lineto
+ 0.5 tl 0.25 tl moveto
+ 0.0 tl 0.0 tl lineto
+ 0.5 tl -0.25 tl lineto
+stroke
+% draw dots
+ 0.5 tl 0.0 tl dot
+ 1.25 tl 0.0 tl dot
+ 0.5 tl 0.25 tl dot
+ 0.5 tl -0.25 tl dot
+ 0.0 tl 0.0 tl dot
+%
+showpage
+%EOF

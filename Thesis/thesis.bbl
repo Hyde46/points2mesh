@@ -1,0 +1,10 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{AFS{\etalchar{+}}11}
+
+\bibitem[AFS{\etalchar{+}}11]{agarwal2011}
+Sameer Agarwal, Yasutaka Furukawa, Noah Snavely, Ian Simon, Brian Curless,
+  Steven~M. Seitz, and Richard Szeliski.
+\newblock Building rome in a day.
+\newblock {\em Commun. ACM}, 54(10):105--112, October 2011.
+
+\end{thebibliography}
