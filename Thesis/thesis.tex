@@ -1,0 +1,50 @@
+\documentclass[a4paper,cleardoubleempty,BCOR1cm]{scrbook}
+\input{header}
+
+\title{Thesis Template}
+\author{My Name \thanks{e-mail: my.name@uni-tuebingen.de}}
+\date{\today}
+\begin{document}
+
+\input{teaser}
+
+\chapter*{Abstract}
+Template
+
+\chapter*{Acknowledgments}
+If you have someone to Acknowledge;)
+
+
+\tableofcontents
+
+%% braucht kein Mensch ...
+%\listoffigures
+%\listoftables
+
+% write content here or...
+\chapter{Introduction}
+What is this all about?
+
+Cite like this:\cite{agarwal2011}
+
+\section{Problem Statement}
+
+\input{content/background}
+
+\input{content/material}
+
+\input{content/methods}
+
+\input{content/results}
+
+\input{content/discussion}
+% ... input content via other .tex files
+
+\appendix
+\chapter{Blub}
+
+%\bibliographystyle{alpha}
+\bibliography{bibliography}
+
+\end{document}
+
