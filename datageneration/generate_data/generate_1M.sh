@@ -15,8 +15,8 @@ for l in "$@"
 do
     echo "$l"
 
-    parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/1024/ --num_parts 20 --samples 1024 --mode train --part_id ::: {0..19}
-    python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/1024/ --num_parts 20 --samples 1024 --mode train
+    parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train --part_id ::: {0..19}
+    python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train
 
     #parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/10 --num_parts 20 --samples 10 --mode test --part_id ::: {0..19}
     #python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/10 --num_parts 20 --samples 10 --mode test
