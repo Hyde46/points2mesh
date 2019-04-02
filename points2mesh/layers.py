@@ -257,7 +257,7 @@ class GraphProjection(Layer):
         self.use_maximum = False
 
     def _call(self, inputs):
-        stage_0 = self.mean_neighborhood(inputs,0)
+        stage_0 = self.mean_neighborhood(inputs, 0)
         stage_1 = self.mean_neighborhood(inputs, 1)
         stage_2 = self.mean_neighborhood(inputs, 2)
         stage_3 = self.mean_neighborhood(inputs, 3)

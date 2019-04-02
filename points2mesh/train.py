@@ -64,7 +64,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
-    logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
+    logger.set_logger_dir('train_log/fusionGCN_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
