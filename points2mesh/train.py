@@ -33,7 +33,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 # flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
-    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 451, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
