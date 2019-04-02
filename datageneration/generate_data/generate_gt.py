@@ -71,7 +71,7 @@ class ShapeNetCore55ClassDataFlow(DataFlow):
         self.objects = objects
         self.label = label
         self.filelist = sorted([k for k in fs.recursive_walk(
-            self.work_dir) if k.endswith('.obj')])[start:100]
+            self.work_dir) if k.endswith('.obj')])[start:]
         # self.filelist = filtered_files[start:]
 
         if objects is not None:
@@ -327,7 +327,7 @@ if __name__ == '__main__':
         # filtered_files = filter_files(
         #    shape_names[args.label], args.mode, snc55dir)
         num_models = len(os.listdir(snc55dir))
-        num_models = 100
+        #num_models = 100
         num_objects = (num_models - 1) // args.num_parts + 1
 
         start_object = args.part_id * num_objects

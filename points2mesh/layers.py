@@ -86,6 +86,7 @@ class Layer(object):
 
 class Dense(Layer):
     """Dense layer."""
+
     def __init__(self, input_dim, output_dim, placeholders, dropout=0., sparse_inputs=False,
                  act=tf.nn.relu, bias=False, featureless=False, **kwargs):
         super(Dense, self).__init__(**kwargs)
@@ -129,6 +130,7 @@ class Dense(Layer):
             output += self.vars['bias']
 
         return self.act(output)
+
 
 class GraphConvolution(Layer):
     """Graph convolution layer."""
@@ -308,24 +310,22 @@ class GraphProjection(Layer):
         stage_2 = self.mean_neighborhood(inputs, 2)
         stage_3 = self.mean_neighborhood(inputs, 3)
         '''
-
         stage_0 = self.tension_projection(inputs,0)
         stage_1 = self.tension_projection(inputs,1) 
         stage_2 = self.tension_projection(inputs,2) 
         stage_3 = self.tension_projection(inputs,3) 
-
         '''
         # outputs = tf.concat([inputs, stage_0, stage_1[0], stage_2[0], stage_3[0]], 1)
         # outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
-        outputs = tf.concat([inputs,
-                             stage_1[1],
-                             stage_2[1],
-                             stage_3[1]], 1)
-        # outputs = tf.concat([inputs, stage_0,\
-        #        stage_1[0], stage_1[1],\
-        #        stage_2[0], stage_2[1],\
-        #        stage_3[0], stage_3[1]\
-        #        ], 1)
+        #outputs = tf.concat([inputs,
+        #                     stage_1[1],
+        #                     stage_2[1],
+        #                     stage_3[1]], 1)
+        outputs = tf.concat([inputs, stage_0,
+                             stage_1[0], stage_1[1],
+                             stage_2[0], stage_2[1],
+                             stage_3[0], stage_3[1]
+                             ], 1)
         return outputs
     '''
     def tension_projection(self, inputs, num_feature):
@@ -406,6 +406,7 @@ class GraphProjection(Layer):
 
         return knnY
     '''
+
     def knn_neighbors(self, inputs, num_feature):
         coord = inputs
 
@@ -492,8 +493,8 @@ class GraphProjection(Layer):
             if self.use_maximum:
                 max_features = tf.reduce_max(
                     knnY_feature[0], axis=1, keepdims=False, name="Maximum")
-                return [max_features]
-                #return [knnY_mean[0], max_features]
+                #return [max_features]
+                return [knnY_mean[0], max_features]
             else:
                 knnY_feature_mean = tf.reduce_mean(knnY_feature, axis=2)
                 return [knnY_mean[0], knnY_feature_mean[0]]

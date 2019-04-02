@@ -88,14 +88,14 @@ class FlexmeshModel(ModelDesc):
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
-            #define outputs for multi stage mesh views
-            #self.output1 = tf.identity(self.activations[15],name="output1")
+            # define outputs for multi stage mesh views
+            # self.output1 = tf.identity(self.activations[15],name="output1")
             self.output1 = tf.identity(self.activations[16], name="output1")
             unpool_layer = GraphPooling(
                 placeholders=self.placeholders, gt_pt=positions, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
-            #self.output2 = tf.identity(self.activations[31],name="output2")
+            # self.output2 = tf.identity(self.activations[31],name="output2")
             self.output2 = tf.identity(self.activations[32], name="output2")
             unpool_layer = GraphPooling(
                 placeholders=self.placeholders, gt_pt=positions, pool_id=2)
@@ -107,7 +107,7 @@ class FlexmeshModel(ModelDesc):
             tf.GraphKeys.GLOBAL_VARIABLES, scope=self.name)
         self.vars = {var.name: var for var in variables}
 
-        #return cost of graph
+        # return cost of graph
         self.cost += self.get_loss(positions, vertex_normals)
         with tf.name_scope("loss_summaries"):
             tf.summary.scalar('total_loss', self.cost)
@@ -117,6 +117,7 @@ class FlexmeshModel(ModelDesc):
     def build_flex_graph(self, positions):
 
         def wrs_subsample(positions, features):
+            # weighted reservoir sampling
             # Calculate density for each node
             _, dist, _ = knn_bf_sym(positions, positions, K=32)
             # feed relative density to wrs subsampling
