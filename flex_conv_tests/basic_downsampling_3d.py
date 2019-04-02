@@ -16,6 +16,7 @@ def save_pc_to_file(data, file_name, path_to_file):
     '''
     np.savetxt(os.path.join(path_to_file,file_name), data, delimiter = " ")
 
+
 def load_pc_meshlab(path_to_file):
     prg = 'meshlab'
     cmd = [prg, path_to_file]
