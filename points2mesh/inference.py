@@ -21,7 +21,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('pc', 'utils/examples/airplane_0627.txt', 'Test pointcloud')
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
-flags.DEFINE_integer('feat_dim', 227, 'Number of units in FlexConv Feature layer')
+flags.DEFINE_integer('feat_dim', 239, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('feature_depth', 32, 'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
@@ -65,7 +65,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-            session_init = get_model_loader("train_log/fusionGcnBig_/checkpoint"),
+            session_init = get_model_loader("train_log/fusionGCN_/checkpoint"),
             model = FlexmeshModel(PC,name="Flexmesh"),
             input_names = ['positions'],
             output_names = ['mesh_outputs/output1',
