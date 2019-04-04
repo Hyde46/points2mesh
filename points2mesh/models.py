@@ -144,19 +144,12 @@ class FlexmeshModel(ModelDesc):
         x = features
         neighbors = knn_bruteforce(positions, K=8)
         x0 = features
-        # Try not to use basic positions, but rather find important positions in pc
-        #x0 = [positions,features]
-
         # feature 0
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_1")
-        '''  
-        x_c = flex_convolution(x,positions, neighbors, FLAGS.feature_depth, activtion = None)
-        x_conv = tf.nn.conv2d(x,(1,1))
-        '''
         x1 = [positions, x]
         # Subsample!
         # x = subsample(x)
@@ -164,12 +157,12 @@ class FlexmeshModel(ModelDesc):
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
+      #  x = flex_pooling(x, neighbors)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_2")
-        # TODO: Max pooling nach downsampling!
 
         # Fully connected:
         x2 = [positions, x]
@@ -179,6 +172,7 @@ class FlexmeshModel(ModelDesc):
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
+       # x = flex_pooling(x, neighbors)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 4, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
