@@ -138,7 +138,6 @@ class FlexmeshModel(ModelDesc):
             n = x.shape.as_list()[-1]
             return x[:, :, :n // factor]
 
-        #xr = 0.001 * tf.nn.l2_loss(x)
         # Features for each point is its own position in space
         features = positions
         x = features
@@ -151,37 +150,29 @@ class FlexmeshModel(ModelDesc):
                              FLAGS.feature_depth, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_1")
         x1 = [positions, x]
-        # Subsample!
-        # x = subsample(x)
-        # positions = subsample(positions)
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
-      #  x = flex_pooling(x, neighbors)
+        x = flex_pooling(x, neighbors)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_2")
 
-        # Fully connected:
         x2 = [positions, x]
-        #Subsample!
-        # x = subsample(x)
-        # positions = subsample(positions)
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
-       # x = flex_pooling(x, neighbors)
+        x = flex_pooling(x, neighbors)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 4, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth * 4, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_3")
 
-        # Fully connected
         x3 = [positions, x]
-        #Get output stages
+        # Get output stages
         self.placeholders.update({'pc_feature': [x0, x1, x2, x3]})
 
         return 0

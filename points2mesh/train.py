@@ -18,7 +18,7 @@ enable_argscope_for_module(tf.layers)
 # TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 100
+NUM_EPOCH = 500
 
 PC = {'num': 1024, 'dp': 3, 'ver': "40"}
 
@@ -62,9 +62,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
-    logger.set_logger_dir('train_log/fusionPool_%s' % (args.fusion))
+    logger.set_logger_dir('train_log/fusion_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

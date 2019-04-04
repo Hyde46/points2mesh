@@ -44,7 +44,7 @@ def load_pc(pc_path, num_points):
     data = data[np.newaxis,:,:]
     return data
 
-def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False):
+                def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False):
 
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
