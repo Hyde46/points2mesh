@@ -61,29 +61,16 @@ def read_data(pkl):
     # Coord 3D coordinates of first stage ellipsoid
     # Shape (156, 3)
     coord = pkl[0]
-   # print coord.shape
-    #
-    # len 2
     # pool_idx[0] - (462, 2)
     # pool_idx[1] - (1848, 2)
     pool_idx = pkl[4]
-   
-    # TODO
-    #Not needed?
-    # len 3
-    # faces[0] - (462, 4)
-    # faces[1] - (1848, 4)
-    # faces[2] - (7392, 4)
-    faces = pkl[5]
-    print len(faces)
-    
+
 
     # len 3
     # lape_idx[0]
     # lape_idx[1]
     # lape_idx[2]
     lape_idx = pkl[7]
-   
     edges = []
     for i in range(1, 4):
         # len 3
@@ -107,4 +94,4 @@ def read_data(pkl):
 pkl = pickle.load(open(
    '/home/heid/Documents/master/pc2mesh/points2mesh/utils/ellipsoid/info_ellipsoid.dat', 'rb'))
 fd = read_data(pkl)
-read_torus("/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/torus.ply")
+#read_torus("/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/torus.ply")
