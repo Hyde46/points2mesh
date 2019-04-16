@@ -1,11 +1,51 @@
 import numpy as np
 import cPickle as pickle
+import networkx as nx
+import scipy.sparse as sp
+from scipy.sparse.linalg.eigen.arpack import eigsh
 #import tensorflow as tf
 
 # Created Torus with
 # (x*x + y*y + 0.5*z*z + 0.5*0.5 - 0.25*0.25)*(x*x + y*y + z*z + 0.5*0.5 - 0.25*0.25) - 4*0.5*0.5*(x*x + y*y)
 # vertices (160, 3)
 # faces (320, 3)
+
+
+def normalize_adj(adj):
+    print len(adj)
+    """Symmetrically normalize adjacency matrix."""
+    adj = sp.coo_matrix(adj)
+    rowsum = np.array(adj.sum(1))
+    d_inv_sqrt = np.power(rowsum, -0.5).flatten()
+    d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.
+    d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
+    print adj.getnnz()
+    print d_mat_inv_sqrt.getnnz()
+    return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()
+
+
+def chebyshev_polynomials(adj, k=3):
+    """Calculate Chebyshev polynomials up to order k. Return a list of sparse matrices (tuple representation)."""
+
+    adj_normalized = normalize_adj(adj)
+    laplacian = sp.eye(adj.shape[0]) - adj_normalized
+    largest_eigval, _ = eigsh(laplacian, 1, which='LM')
+    scaled_laplacian = (
+        2. / largest_eigval[0]) * laplacian - sp.eye(adj.shape[0])
+
+    t_k = list()
+    t_k.append(sp.eye(adj.shape[0]))
+
+    t_k.append(scaled_laplacian)
+
+    def chebyshev_recurrence(t_k_minus_one, t_k_minus_two, scaled_lap):
+        s_lap = sp.csr_matrix(scaled_lap, copy=True)
+        return 2 * s_lap.dot(t_k_minus_one) - t_k_minus_two
+
+    for i in range(2, k+1):
+        t_k.append(chebyshev_recurrence(t_k[-1], t_k[-2], scaled_laplacian))
+
+    return sparse_to_tuple(t_k)
 
 
 def process_vertex(line):
@@ -54,8 +94,6 @@ def read_torus(path):
     torus = torus.append(vertices)
 
 
-
-
 def read_data(pkl):
 
     # Coord 3D coordinates of first stage ellipsoid
@@ -64,7 +102,6 @@ def read_data(pkl):
     # pool_idx[0] - (462, 2)
     # pool_idx[1] - (1848, 2)
     pool_idx = pkl[4]
-
 
     # len 3
     # lape_idx[0]
@@ -89,9 +126,10 @@ def read_data(pkl):
         adj = pkl[i][1]
         #print adj[0]
         edges.append(adj[0])
-
+    #print adj
+    pol0 = chebyshev_polynomials(edges[0], 3)
 
 pkl = pickle.load(open(
-   '/home/heid/Documents/master/pc2mesh/points2mesh/utils/ellipsoid/info_ellipsoid.dat', 'rb'))
+    '/home/heid/Documents/master/pc2mesh/points2mesh/utils/ellipsoid/info_ellipsoid.dat', 'rb'))
 fd = read_data(pkl)
 #read_torus("/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/torus.ply")
