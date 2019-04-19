@@ -358,7 +358,6 @@ class FlexmeshModel(ModelDesc):
         logger.info("Loaded Ellipsoid into Graph context")
 
     def convert_support_to_tensor(self, to_convert):
-        print to_convert[0]
         indices = tf.convert_to_tensor(to_convert[0], dtype=tf.int64)
         values = tf.convert_to_tensor(to_convert[1], dtype=tf.float32)
         d_shape = tf.convert_to_tensor(to_convert[2], dtype=tf.int64)
