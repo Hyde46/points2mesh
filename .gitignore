@@ -14,7 +14,7 @@ utils/examples/
 train_log/
 user_ops/
 pointnet2/
-manual_loss/
+points2mesh/manual_loss/
 *.txt
 *.obj
 *.swp
