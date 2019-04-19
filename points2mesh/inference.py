@@ -41,11 +41,16 @@ num_blocks = 3
 num_supports = 2
 
 
+def noise_augment(data, noise_level=0.01):
+    rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
+    return data + rnd
+
 def load_pc(pc_path, num_points):
     #Load pointcloud from file
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
+    data = noise_augment(data)
     # Add single Batch [B,dp,N]
     data = data[np.newaxis, :, :]
     return data
@@ -100,7 +105,7 @@ path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/re
 
 predictor = loadModel()
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 
 for pc in pcs:
 

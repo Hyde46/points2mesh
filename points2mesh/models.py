@@ -53,12 +53,11 @@ class FlexmeshModel(ModelDesc):
 
     def inputs(self):
         return [tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(
-                    tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "gt_positions"),
                 ]
 
-    def build_graph(self, positions, vertex_normals):
-
+    def build_graph(self, positions, vertex_normals, gt_positions):
         self.load_ellipsoid_as_tensor()
         self.input = self.placeholders["features"]
 
@@ -110,7 +109,7 @@ class FlexmeshModel(ModelDesc):
         self.vars = {var.name: var for var in variables}
 
         # return cost of graph
-        self.cost += self.get_loss(positions, vertex_normals)
+        self.cost += self.get_loss(positions, vertex_normals, gt_positions)
         with tf.name_scope("loss_summaries"):
             tf.summary.scalar('total_loss', self.cost)
 
@@ -236,14 +235,14 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=3,
                                             placeholders=self.placeholders, logging=self.logging))
 
-    def get_loss(self, positions, vertex_normals):
+    def get_loss(self, positions, vertex_normals, gt_positions):
 
         mesh_loss_first_block = mesh_loss(
-            self.output1, positions, vertex_normals, self.placeholders, 1)
+            self.output1, positions, gt_positions, vertex_normals, self.placeholders, 1)
         mesh_loss_second_block = mesh_loss(
-            self.output2, positions, vertex_normals, self.placeholders, 2)
+            self.output2, positions, gt_positions, vertex_normals, self.placeholders, 2)
         mesh_loss_third_block = mesh_loss(
-            self.output3, positions, vertex_normals, self.placeholders, 3)
+            self.output3, positions, gt_positions, vertex_normals, self.placeholders, 3)
 
         #distance_loss0 = distance_density_loss(self.output1)
         #distance_loss1 = distance_density_loss(self.output2)
@@ -358,7 +357,7 @@ class FlexmeshModel(ModelDesc):
         logger.info("Loaded Ellipsoid into Graph context")
 
     def convert_support_to_tensor(self, to_convert):
-        print to_convert[0]
+        #print to_convert[0]
         indices = tf.convert_to_tensor(to_convert[0], dtype=tf.int64)
         values = tf.convert_to_tensor(to_convert[1], dtype=tf.float32)
         d_shape = tf.convert_to_tensor(to_convert[2], dtype=tf.int64)
