@@ -2,11 +2,13 @@ import os
 import multiprocessing
 
 from tensorpack.dataflow import (
-    PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, RandomMixData)
+    PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, JoinData)
 from tensorpack.utils import logger
 from tensorpack.dataflow.serialize import LMDBSerializer
 
 import numpy as np
+
+import random as rnd
 
 ############################################
 # Important! Set path to .lmdb data:
@@ -46,6 +48,7 @@ def get_allowed_categories(version):
     26 -  plant
     27 -  radio
     28 -  range_hood
+    df_noisy = noise_data_augmentation(df)
     29 -  sink
     30 -  sofa
     31 -  stairs
@@ -76,55 +79,22 @@ def prepare_df(df, parallel, prefetch_data, batch_size):
             "DataFlow may become the bottleneck when too few processes are used.")
     if prefetch_data:
         df = PrefetchDataZMQ(df, parallel)
-
     if batch_size == 1:
         logger.warn("Batch size is 1. Data will not be batched.")
+        return df
     df = BatchData(df, batch_size)
     return df
 
 
-def get_advaced_mixed_modelnet_dataflow(
-        dataset_type,
-        version="10k",
-        batch_size=6,
-        num_points=10000,
-        parallel=None,
-        shuffle=False,
-        prefetch_data=False):
-    assert batch_size > 0
-    assert dataset_type in ['train', 'test']
-    assert version in ["100", "10k", "100k", "1M"]
-    path_to_data = '/graphics/scratch/datasets/ModelNet40/advanced/'
-    path_to_data = os.path.join(path_to_data, version)
-
-    data_flows = []
-    files = [i for i in os.listdir(path_to_data) if i.startswith(
-        dataset_type) and i.endswith("lmdb")]
-    for f in files:
-        print "  "
-        print f
-        if type(f) is not str or f == "":
-            continue
-        tmp_file_name = os.path.join(path_to_data, f)
-        df = LMDBSerializer.load(tmp_file_name, shuffle)
-        for d in df:
-            print d
-            break
-        data_flows.append(df)
-    df = RandomMixData(data_flows)
-
-    df = prepare_df(df, parallel, prefetch_data, batch_size)
-    return df
-
-
 def get_modelnet_dataflow(
-        name, batch_size=6,
-        num_points=10000,
-        parallel=None,
-        model_ver="40",
-        shuffle=False,
-        normals=False,
-        prefetch_data=False
+    name, batch_size=6,
+    num_points=10000,
+    parallel=None,
+    model_ver="40",
+    shuffle=False,
+    normals=False,
+    prefetch_data=False,
+    noise_level=0.01
 ):
     """
     Loads Modelnet40 point cloud data and returns
@@ -181,6 +151,7 @@ def get_modelnet_dataflow(
 
     file_name = "model" + model_ver + "-" + name + \
         normals_str + "-" + str(num_points) + ".lmdb"
+    pass
     path = os.path.join(MODEL40PATH, file_name)
 
     # Try using multiple processing cores to load data
@@ -194,59 +165,67 @@ def get_modelnet_dataflow(
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     # seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [dp[1][:3], dp[1][3:]]
+    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, 1024)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]#, dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
 
+    #df_noisy = noise_data_augmentation(df)
     df = prepare_df(df, parallel, prefetch_data, batch_size)
-    # df = PrintData(df)
+    df.reset_state()
     return df
 
 
 if __name__ == '__main__':
     #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
-    df = LMDBSerializer.load(
-        "/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
-    for d in df:
-        #print d[0]
-        #print d[1]
-        print np.concatenate((d[0], d[1]), axis=1)
-        np.savetxt('/home/heid/tmp/test.asc',
-                   np.concatenate((d[0], d[1]), axis=1), delimiter=',')
-        break
-    # df = get_modelnet_dataflow('train', batch_size=2, num_points=1024, model_ver="40", normals=True, prefetch_data=False)
+    #df = LMDBSerializer.load("/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
+    #for d in df:
+    #    #print d[0]
+    #    #print d[1]
+    #   print np.concatenate((d[0], d[1]), axis=1)
+    #   np.savetxt('/home/heid/tmp/test.asc',
+    #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
+    #   break
+    df = get_modelnet_dataflow('train', batch_size=1, num_points=1024,
+                               model_ver="40", normals=True, prefetch_data=False)
     # for d in df:
     #    print " "
     #    print d[1].shape
     #    break
     # Test speed!
-    # TestDataSpeed(df, 2000).start()
+    TestDataSpeed(df, 2000).start()
 
     """
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="10", normals=False)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=10000, model_ver="10", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=1024, model_ver="40", normals=False)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=1024, model_ver="40", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
         num_points=10000,
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="40", normals=False)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=10000, model_ver="40", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=1024, model_ver="10", normals=True)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=1024, model_ver="10", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="10", normals=True)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=10000, model_ver="10", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=1024, model_ver="40", normals=True)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=1024, model_ver="40", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
 
-    df = get_modelnet_dataflow('train', batch_size=8, num_points=10000, model_ver="40", normals=True)
+    df = get_modelnet_dataflow(
+        'train', batch_size=8, num_points=10000, model_ver="40", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
     """
