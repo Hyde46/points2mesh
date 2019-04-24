@@ -17,6 +17,8 @@ pointnet2/
 *.txt
 *.obj
 *.swp
+*.png
+*.avi
 
 # C extensions
 *.so
