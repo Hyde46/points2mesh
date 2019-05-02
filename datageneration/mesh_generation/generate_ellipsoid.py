@@ -153,6 +153,8 @@ def process_detail_step(faces):
     unpooled_edges = {}
     next_vert_id = np.max(faces) + 1
     new_faces = []
+    # Create new vertices and thus 4 new triangles
+    # Add them to faces list
     for f in faces:
         next_vert_id = add_new_edge(f[0], f[1], unpooled_edges, next_vert_id)
         next_vert_id = add_new_edge(f[1], f[2], unpooled_edges, next_vert_id)
