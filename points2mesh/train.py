@@ -18,7 +18,7 @@ enable_argscope_for_module(tf.layers)
 # TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 200
+NUM_EPOCH = 150
 
 PC = {'num': 1024, 'dp': 3, 'ver': "40"}
 

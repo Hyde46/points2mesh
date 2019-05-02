@@ -94,7 +94,7 @@ def get_modelnet_dataflow(
     shuffle=False,
     normals=False,
     prefetch_data=False,
-    noise_level=0.01
+    noise_level=0.00
 ):
     """
     Loads Modelnet40 point cloud data and returns

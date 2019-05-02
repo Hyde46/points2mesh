@@ -2,6 +2,7 @@ from inits import *
 import tensorflow as tf
 from tensorpack.utils import logger
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce, knn_bf_sym
+import tensorflow_probability as tfp
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -255,30 +256,137 @@ class GraphProjection(Layer):
         self.pc_feat = placeholders['pc_feature']
 
         self.use_maximum = False
+        self.tfd = tfp.distributions
+        self.dist = tfd.Normal(loc=0., scale=1.)
 
     def _call(self, inputs):
-        stage_0 = self.mean_neighborhood(inputs, 0)
-        stage_1 = self.mean_neighborhood(inputs, 1)
-        stage_2 = self.mean_neighborhood(inputs, 2)
-        stage_3 = self.mean_neighborhood(inputs, 3)
-        '''
-        stage_0 = self.tension_projection(inputs,0)
-        stage_1 = self.tension_projection(inputs,1) 
-        stage_2 = self.tension_projection(inputs,2) 
-        stage_3 = self.tension_projection(inputs,3) 
-        '''
+        stage_0 = self.projected_neighborhood(inputs, 0)
+        stage_1 = self.projected_neighborhood(inputs, 1)
+        stage_2 = self.projected_neighborhood(inputs, 2)
+        stage_3 = self.projected_neighborhood(inputs, 3)
+        #stage_0 = self.mean_neighborhood(inputs, 0)
+        #stage_1 = self.mean_neighborhood(inputs, 1)
+        #stage_2 = self.mean_neighborhood(inputs, 2)
+        #stage_3 = self.mean_neighborhood(inputs, 3)
+
         # outputs = tf.concat([inputs, stage_0, stage_1[0], stage_2[0], stage_3[0]], 1)
         # outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
         #outputs = tf.concat([inputs,
         #                     stage_1[1],
         #                     stage_2[1],
         #                     stage_3[1]], 1)
-        outputs = tf.concat([inputs, stage_0,
+        outputs = tf.concat([inputs,
+                             stage_0[0],
                              stage_1[0], stage_1[1],
                              stage_2[0], stage_2[1],
                              stage_3[0], stage_3[1]
                              ], 1)
+
         return outputs
+
+    def inverse_square_dist(self, target, distances):
+        assert target.shape.as_list()[0] == distances.shape.as_list()[0]
+
+        distances = 1.0 / (1.0 + tf.square(distances))
+        distances_adjusted = tf.stack([distances] * target.shape.as_list()[2])
+        distances_adjusted = tf.transpose(distances_adjusted, [1, 2, 0])
+        target_adjusted = tf.multiply(target, distances_adjusted)
+
+        return target_adjusted
+
+    def gauss_dist(self, target, distances):
+        assert target.shape.as_list()[0] == distances.shape.as_list()[0]
+
+        dist = tfd.Normal
+
+
+
+    def projected_neighborhood(self, inputs, num_feature):
+        knn_neighbors, knn_features = self.get_neighborhood(
+            inputs, num_feature)
+
+        # Repeat [N,3] -> [N,K,3]
+        broadcasted_inputs = tf.stack(
+            [inputs] * knn_neighbors.shape.as_list()[1])
+        broadcasted_inputs = tf.transpose(broadcasted_inputs, [1, 0, 2])
+        vec_to_neighbors = tf.subtract(knn_neighbors, broadcasted_inputs)
+
+        knn_dist = tf.norm(vec_to_neighbors, ord='euclidean', axis=2)
+
+        # Scale vectors towards neighbors depending on technique. Pick one\
+
+        # 1 / 1 + d^2
+        # At some points more detail. Needs longer training 
+        # Litle better with negative spaces
+        # Clearer when genus is a problem
+       # target_coord = self.inverse_square_dist(vec_to_neighbors, knn_dist)
+       # target_feature = self.inverse_square_dist(knn_features, knn_dist)
+        # Max ?
+        target_coord = self.gauss_dist(vec_to_neighbors, knn_dist)
+        target_feature = self.gauss_dist(knn_features, knn_dist)
+
+        # more ?
+
+        target_coord = tf.reduce_mean(target_coord, axis=1) + inputs
+        target_feature = tf.reduce_mean(target_feature, axis=1)
+        return target_coord, target_feature
+
+    def get_neighborhood(self, inputs, num_feature):
+        coord = inputs
+
+        B = FLAGS.batch_size
+        Dp = coord.shape.as_list()[1]
+
+        if num_feature > 0:
+            D_feature = FLAGS.feature_depth * pow(2, num_feature-1)
+
+        coord_expanded = tf.expand_dims(coord, -1)
+
+        #transform PC feature to usable format
+        if num_feature > 0:
+            pc_coords = self.pc_feat[num_feature][0]
+            pc_feature = self.pc_feat[num_feature][1]
+        else:
+            pc_coords = self.pc_feat[num_feature]
+
+        ellipsoid = tf.transpose(coord_expanded, [2, 1, 0])
+
+        Y = tf.transpose(pc_coords, [0, 2, 1])
+        if num_feature > 0:
+            Y_feature = tf.transpose(pc_feature, [0, 2, 1])
+
+        N = ellipsoid.shape.as_list()[2]
+        # Neighbors: [B, K, N]
+        # Distances: [B, K, N]
+        knn, _, _ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
+        # Easier shape to work on
+        knnr = tf.reshape(knn, [1, B * N * self.K])
+
+        bv = tf.ones([B, N*self.K], dtype=tf.int32) * \
+            tf.constant(np.arange(0, B), shape=[B, 1], dtype=tf.int32)
+
+        knnr = tf.stack([tf.reshape(bv, [1, B*N*self.K]),
+                         tf.reshape(knn, [1, B*N*self.K])], -1)
+        knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
+        knnY_mean = tf.reduce_mean(knnY, axis=2)
+
+        if num_feature > 0:
+            knnY_feature = tf.reshape(tf.gather_nd(Y_feature, knnr), [
+                                      B, N, self.K, D_feature])
+            return knnY[0], knnY_feature[0]
+        return knnY[0], knnY[0]
+        '''
+            if self.use_maximum:
+                max_features = tf.reduce_max(
+                    knnY_feature[0], axis=1, keepdims=False, name="Maximum")
+                #return [max_features]
+                return [knnY_mean[0], max_features]
+            else:
+                knnY_feature_mean = tf.reduce_mean(knnY_feature, axis=2)
+                return [knnY_mean[0], knnY_feature_mean[0]]
+
+        return knnY_mean[0]
+        '''
     '''
     def tension_projection(self, inputs, num_feature):
         """
@@ -357,7 +465,7 @@ class GraphProjection(Layer):
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [N, self.K])
 
         return knnY
-    '''
+
 
     def knn_neighbors(self, inputs, num_feature):
         coord = inputs
@@ -397,58 +505,4 @@ class GraphProjection(Layer):
                          tf.reshape(knn, [1,  B*N*self.K])], -1)
         knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
         return knnY, knn
-
-    def mean_neighborhood(self, inputs, num_feature):
-        coord = inputs
-
-        B = FLAGS.batch_size
-        Dp = coord.shape.as_list()[1]
-
-        if num_feature > 0:
-            D_feature = FLAGS.feature_depth * pow(2, num_feature-1)
-
-        coord_expanded = tf.expand_dims(coord, -1)
-
-        #transform PC feature to usable format
-        if num_feature > 0:
-            pc_coords = self.pc_feat[num_feature][0]
-            pc_feature = self.pc_feat[num_feature][1]
-        else:
-            pc_coords = self.pc_feat[num_feature]
-
-        ellipsoid = tf.transpose(coord_expanded, [2, 1, 0])
-
-        Y = tf.transpose(pc_coords, [0, 2, 1])
-        if num_feature > 0:
-            Y_feature = tf.transpose(pc_feature, [0, 2, 1])
-
-        N = ellipsoid.shape.as_list()[2]
-        # Neighbors: [B, K, N]
-        # Distances: [B, K, N]
-        knn, _, _ = knn_bf_sym(ellipsoid, pc_coords, K=self.K)
-
-        # Easier shape to work on
-        knnr = tf.reshape(knn, [1, B * N * self.K])
-
-        bv = tf.ones([B, N*self.K], dtype=tf.int32) * \
-            tf.constant(np.arange(0, B), shape=[B, 1], dtype=tf.int32)
-
-        knnr = tf.stack([tf.reshape(bv, [1, B*N*self.K]),
-                         tf.reshape(knn, [1, B*N*self.K])], -1)
-        knnY = tf.reshape(tf.gather_nd(Y, knnr), [B, N, self.K, Dp])
-        knnY_mean = tf.reduce_mean(knnY, axis=2)
-
-        if num_feature > 0:
-            knnY_feature = tf.reshape(tf.gather_nd(Y_feature, knnr), [
-                                      B, N, self.K, D_feature])
-
-            if self.use_maximum:
-                max_features = tf.reduce_max(
-                    knnY_feature[0], axis=1, keepdims=False, name="Maximum")
-                #return [max_features]
-                return [knnY_mean[0], max_features]
-            else:
-                knnY_feature_mean = tf.reduce_mean(knnY_feature, axis=2)
-                return [knnY_mean[0], knnY_feature_mean[0]]
-
-        return knnY_mean[0]
+    '''

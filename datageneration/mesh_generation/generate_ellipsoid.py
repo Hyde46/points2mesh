@@ -11,23 +11,55 @@ from scipy.sparse.linalg.eigen.arpack import eigsh
 # faces (320, 3)
 
 
+def sparse_to_tuple(sparse_mx):
+    """Convert sparse matrix to tuple representation."""
+    def to_tuple(mx):
+        if not sp.isspmatrix_coo(mx):
+            mx = mx.tocoo()
+        coords = np.vstack((mx.row, mx.col)).transpose()
+        values = mx.data
+        shape = mx.shape
+        return coords, values, shape
+
+    if isinstance(sparse_mx, list):
+        for i in range(len(sparse_mx)):
+            sparse_mx[i] = to_tuple(sparse_mx[i])
+    else:
+        sparse_mx = to_tuple(sparse_mx)
+
+    return sparse_mx
+
 def normalize_adj(adj):
-    print len(adj)
     """Symmetrically normalize adjacency matrix."""
     adj = sp.coo_matrix(adj)
+    #print adj
     rowsum = np.array(adj.sum(1))
     d_inv_sqrt = np.power(rowsum, -0.5).flatten()
+    #print "d inv sqrt shape"
     d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.
+   # print d_inv_sqrt.shape
     d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
-    print adj.getnnz()
-    print d_mat_inv_sqrt.getnnz()
-    return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()
+    return adj.dot(d_mat_inv_sqrt).transpose()\
+            .dot(d_mat_inv_sqrt).tocoo()
 
+def create_neighbor_matrix(adj, shape):
+    neighbors = np.zeros(shape, dtype=int)
+    for n in adj:
+        if n[0] == n[1]:
+            continue
+        neighbors[n[0]][n[1]] = 1
+        neighbors[n[1]][n[0]] = 1
+    return neighbors
 
 def chebyshev_polynomials(adj, k=3):
     """Calculate Chebyshev polynomials up to order k. Return a list of sparse matrices (tuple representation)."""
 
+    #print adj
+    #adj = np.transpose(adj)
     adj_normalized = normalize_adj(adj)
+    #print "normalized shape"
+    #print adj_normalized.shape
+
     laplacian = sp.eye(adj.shape[0]) - adj_normalized
     largest_eigval, _ = eigsh(laplacian, 1, which='LM')
     scaled_laplacian = (
@@ -50,19 +82,104 @@ def chebyshev_polynomials(adj, k=3):
 
 def process_vertex(line):
     ver = line.rstrip().split(" ")
+    ver = [float(ver[0]), float(ver[1]), float(ver[2])]
+    #er = float(ver)
     return ver
 
 
 def process_face(line):
     f = line.rstrip().split(" ")
     assert int(f[0]) == 3
-    return f[1:]
+    f = f[1:]
+    f = [int(f[0]), int(f[1]), int(f[2])]
+    return f
 
+
+def process_detail_step(faces):
+    edges = []
+    pool_idx = []
+    lape_idx = []
+    print "Calculating edges ..."
+    # Calculate edges for first step
+    for f in faces:
+        if [f[0], f[0]] not in edges:
+            edges.append([f[0], f[0]])
+        if [f[1], f[1]] not in edges:
+            edges.append([f[1], f[1]])
+
+        if [f[1], f[0]] not in edges:
+            edges.append([f[1], f[0]])
+        if [f[0], f[1]] not in edges:
+            edges.append([f[0], f[1]])
+        if [f[0], f[2]] not in edges:
+            edges.append([f[0], f[2]])
+        if [f[2], f[0]] not in edges:
+            edges.append([f[2], f[0]])
+        if [f[1], f[2]] not in edges:
+            edges.append([f[1], f[2]])
+        if [f[2], f[1]] not in edges:
+            edges.append([f[2], f[1]])
+    print " "
+    print "Calculating pool_idx ..."
+    for i in range(0, 160):
+        for e in edges:
+            if e[0] == e[1]:
+                continue
+            if e not in pool_idx and [e[1], e[0]] not in pool_idx:
+                pool_idx.append(e)
+    print " "
+    print "Calculating lape_idx ..."
+    for i in range(0, 160):
+        neighbors = []
+        neighbor_counter = 0
+        for e in pool_idx:
+            if e[0] == i:
+                neighbors.append(e[1])
+                neighbor_counter += 1
+            if e[1] == i:
+                neighbors.append(e[0])
+                neighbor_counter += 1
+        to_pad = 8 - neighbor_counter
+        [neighbors.append(-1) for _ in range(0, to_pad)]
+        neighbors.append(i)
+        neighbors.append(neighbor_counter)
+        lape_idx.append(neighbors)
+    print " "
+    print "Calculating support ..."
+    edges_n = create_neighbor_matrix(edges, [np.max(edges) + 1, 1 + np.max(edges)])
+    edges_n = nx.adjacency_matrix(nx.from_numpy_matrix(edges_n))
+    support = chebyshev_polynomials(edges_n, 1)
+    # Unpool torus
+    unpooled_edges = {}
+    next_vert_id = np.max(faces) + 1
+    new_faces = []
+    for f in faces:
+        next_vert_id = add_new_edge(f[0], f[1], unpooled_edges, next_vert_id)
+        next_vert_id = add_new_edge(f[1], f[2], unpooled_edges, next_vert_id)
+        next_vert_id = add_new_edge(f[0], f[2], unpooled_edges, next_vert_id)
+        zero_one_id = unpooled_edges[(f[0], f[1])]
+        zero_two_id = unpooled_edges[(f[0], f[2])]
+        one_two_id = unpooled_edges[(f[1], f[2])]
+        new_faces.append([f[0], zero_one_id, zero_two_id])
+        new_faces.append([f[1], zero_one_id, one_two_id])
+        new_faces.append([f[2], zero_two_id, one_two_id])
+        new_faces.append([zero_one_id, zero_two_id, one_two_id])
+    return new_faces, edges, pool_idx, lape_idx, support
+
+
+def add_new_edge(f1, f2, edges, next_vert_id):
+    if (f1, f2) not in edges.keys():
+        edges[(f1, f2)] = next_vert_id
+        edges[(f2, f1)] = next_vert_id
+        next_vert_id += 1
+    return next_vert_id
+    
 
 def read_torus(path):
     torus = []
     vertices = []
     faces = []
+    
     with open(path, 'rU') as f:
         found_header = False
         vertices_end = False
@@ -87,12 +204,11 @@ def read_torus(path):
             line_count += 1
     assert len(vertices) == num_vertices and len(faces) == num_faces
     print "Succesfully read file"
-    print "Calculating two step high resolution torus now"
     vertices = np.array(vertices)
-    #print vertices
     faces = np.array(faces)
-    torus = torus.append(vertices)
-
+    new_faces, edges, pool_idx, lape_idx, support = process_detail_step(faces)
+    new_faces2, edges2, pool_idx2, lape_idx2, support2 = process_detail_step(new_faces)
+    
 
 def read_data(pkl):
 
@@ -102,12 +218,22 @@ def read_data(pkl):
     # pool_idx[0] - (462, 2)
     # pool_idx[1] - (1848, 2)
     pool_idx = pkl[4]
-
+    #print coord
+    for p in pool_idx[0]:
+        if p[0] == 0 or p[1] == 0:
+            print p
+    print " "
+    print " "
+    for p in pool_idx[1]:
+        if p[0] == 0 or p[1] == 0:
+            print p
+    exit(0)
     # len 3
     # lape_idx[0]
     # lape_idx[1]
     # lape_idx[2]
     lape_idx = pkl[7]
+    #print lape_idx[0][155]
     edges = []
     for i in range(1, 4):
         # len 3
@@ -124,12 +250,15 @@ def read_data(pkl):
         # pkl[1][1][2] - (618,618) - tuple
         # pkl[2][1][2] - (2466,2566) - tuple
         adj = pkl[i][1]
-        #print adj[0]
+        # print adj[0]
         edges.append(adj[0])
-    #print adj
-    pol0 = chebyshev_polynomials(edges[0], 3)
+    print pkl[1]
+    edges_n = create_neighbor_matrix(edges[1], [np.max(edges[1]) + 1, 1+ np.max(edges[1])])
+    edges_n = nx.adjacency_matrix(nx.from_numpy_matrix(edges_n))
+    #print edges_n
+    pol0 = chebyshev_polynomials(edges_n, 3)
 
 pkl = pickle.load(open(
     '/home/heid/Documents/master/pc2mesh/points2mesh/utils/ellipsoid/info_ellipsoid.dat', 'rb'))
-fd = read_data(pkl)
-#read_torus("/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/torus.ply")
+#fd = read_data(pkl)
+read_torus("/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/torus.ply")
