@@ -35,12 +35,12 @@ flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
-#                   'Path to base model for mesh deformation')
+flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+                   'Path to base model for mesh deformation')
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
 #                    'Path to base model for mesh deformation')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
-                    'Path to base model for mesh deformation')
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
+#                    'Path to base model for mesh deformation')
 
 num_blocks = 3
 num_supports = 2
@@ -65,8 +65,8 @@ def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mes
 
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     #face = np.loadtxt('utils/ellipsoid/face_torus_'+str(num)+'.obj', dtype='|S32')
-    face = np.loadtxt('utils/ellipsoid/face_ellipsoid_'+str(num)+'.obj', dtype='|S32')
-    #face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
+    #face = np.loadtxt('utils/ellipsoid/face_ellipsoid_'+str(num)+'.obj', dtype='|S32')
+    face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
     mesh = np.vstack((vert, face))
 
     result_name = pc.replace(".txt", "_result_p"+str(num)+".obj")
