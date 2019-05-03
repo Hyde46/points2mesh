@@ -7,6 +7,7 @@ from models import *
 from fetcher import *
 from pc_meshlab_loader import *
 import re
+import cPickle as pickle
 
 enable_argscope_for_module(tf.layers)
 
@@ -34,7 +35,11 @@ flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+#                   'Path to base model for mesh deformation')
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
+#                    'Path to base model for mesh deformation')
+flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
                     'Path to base model for mesh deformation')
 
 num_blocks = 3
@@ -59,7 +64,9 @@ def load_pc(pc_path, num_points):
 def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False):
 
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
-    face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
+    #face = np.loadtxt('utils/ellipsoid/face_torus_'+str(num)+'.obj', dtype='|S32')
+    face = np.loadtxt('utils/ellipsoid/face_ellipsoid_'+str(num)+'.obj', dtype='|S32')
+    #face = np.loadtxt('utils/ellipsoid/face'+str(num)+'.obj', dtype='|S32')
     mesh = np.vstack((vert, face))
 
     result_name = pc.replace(".txt", "_result_p"+str(num)+".obj")
@@ -74,12 +81,19 @@ def predict(predictor, data, path):
     vertices_1 = predictor(data)[0]
     vertices_2 = predictor(data)[1]
     vertices_3 = predictor(data)[2]
+
+    #pkl = pickle.load(open(FLAGS.base_model_path, 'rb'))
+    #coord = pkl[0]
+    #vertices_1 = coord
+    #vertices_2 = coord
+    #vertices_3 = coord
+
     return [vertices_1, vertices_2, vertices_3]
 
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("train_log/fusionNoise_/checkpoint"),
+        session_init=get_model_loader("train_log/fusionTorus_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -104,6 +118,7 @@ pcs = loadTxtFiles(path)
 path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/"
 
 predictor = loadModel()
+#predictor = 0
 
 os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 
@@ -112,5 +127,5 @@ for pc in pcs:
     path_pc = os.path.join(path, pc)
     pc_inp = load_pc(path_pc, num_points=1024)
     vertices = predict(predictor, pc_inp, path_pc)
-    create_inference_mesh(vertices[2], 2, pc,
+    create_inference_mesh(vertices[2], 3, pc,
                           path_pc, path_output, display_mesh=False)

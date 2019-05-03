@@ -2,7 +2,6 @@ from inits import *
 import tensorflow as tf
 from tensorpack.utils import logger
 from flex_conv_layers import flex_convolution, flex_pooling, knn_bruteforce, knn_bf_sym
-import tensorflow_probability as tfp
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -256,8 +255,6 @@ class GraphProjection(Layer):
         self.pc_feat = placeholders['pc_feature']
 
         self.use_maximum = False
-        self.tfd = tfp.distributions
-        self.dist = tfd.Normal(loc=0., scale=1.)
 
     def _call(self, inputs):
         stage_0 = self.projected_neighborhood(inputs, 0)
@@ -319,11 +316,11 @@ class GraphProjection(Layer):
         # At some points more detail. Needs longer training 
         # Litle better with negative spaces
         # Clearer when genus is a problem
-       # target_coord = self.inverse_square_dist(vec_to_neighbors, knn_dist)
-       # target_feature = self.inverse_square_dist(knn_features, knn_dist)
+        target_coord = self.inverse_square_dist(vec_to_neighbors, knn_dist)
+        target_feature = self.inverse_square_dist(knn_features, knn_dist)
         # Max ?
-        target_coord = self.gauss_dist(vec_to_neighbors, knn_dist)
-        target_feature = self.gauss_dist(knn_features, knn_dist)
+        #target_coord = self.gauss_dist(vec_to_neighbors, knn_dist)
+        #target_feature = self.gauss_dist(knn_features, knn_dist)
 
         # more ?
 

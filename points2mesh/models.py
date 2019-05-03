@@ -112,11 +112,9 @@ class FlexmeshModel(ModelDesc):
         self.cost += self.get_loss(positions, vertex_normals, gt_positions)
         with tf.name_scope("loss_summaries"):
             tf.summary.scalar('total_loss', self.cost)
-
         return self.cost
 
     def build_flex_graph(self, positions):
-
         def wrs_subsample(positions, features):
             # weighted reservoir sampling
             # Calculate density for each node
@@ -236,7 +234,6 @@ class FlexmeshModel(ModelDesc):
                                             placeholders=self.placeholders, logging=self.logging))
 
     def get_loss(self, positions, vertex_normals, gt_positions):
-
         mesh_loss_first_block = mesh_loss(
             self.output1, positions, gt_positions, vertex_normals, self.placeholders, 1)
         mesh_loss_second_block = mesh_loss(
@@ -306,7 +303,6 @@ class FlexmeshModel(ModelDesc):
         for layer_id in conv_layers:
             for var in self.layers[layer_id].vars.values():
                 loss += FLAGS.weight_decay * tf.nn.l2_loss(var)
-
         return loss
 
     def optimizer(self):
@@ -354,7 +350,7 @@ class FlexmeshModel(ModelDesc):
         self.placeholders["pool_idx"] = [
             tf.convert_to_tensor(p, dtype=tf.int32) for p in pool_idx]
 
-        logger.info("Loaded Ellipsoid into Graph context")
+        logger.info("Loaded Basic Shape into Graph context")
 
     def convert_support_to_tensor(self, to_convert):
 
