@@ -322,7 +322,7 @@ class FlexmeshModel(ModelDesc):
             summary.add_tensor_summary(
                 l_loss_fourth, ['scalar'], name="laplacian_loss")
 
-        loss += l_loss_first + l_loss_second + l_loss_third
+        loss += l_loss_first + l_loss_second + l_loss_third + l_loss_fourth
 
         #c_loss_first = 0.3*collapse_loss(self.output1)
         #c_loss_second = 0.8*collapse_loss(self.output2)
