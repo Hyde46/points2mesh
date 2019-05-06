@@ -41,8 +41,10 @@ class FlexmeshModel(ModelDesc):
         self.output1 = None
         self.output2 = None
         self.output3 = None
+        self.output4 = None
         self.output_stage_1 = None
         self.output_stage_2 = None
+        self.output_stage_3 = None
 
         self.loss = 0
         self.cost = 0
@@ -53,8 +55,10 @@ class FlexmeshModel(ModelDesc):
 
     def inputs(self):
         return [tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "gt_positions"),
+                tf.placeholder(
+                    tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
+                tf.placeholder(
+                    tf.float32, (None, self.PC['dp'], self.PC['num']), "gt_positions"),
                 ]
 
     def build_graph(self, positions, vertex_normals, gt_positions):
@@ -69,13 +73,14 @@ class FlexmeshModel(ModelDesc):
 
         #connect graph and get cost
         eltwise = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25,
-                    31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53,
-                    59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81]
+                   31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53,
+                   59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81,
+                   87, 89, 91, 93, 95, 97, 99, 101, 103, 105, 107, 109, 110]
         eltwise = [e + 1 for e in eltwise]
         #shortcuts
         #concat = [15, 31]
         #concat = [16, 32]
-        concat = [28, 56]
+        concat = [28, 56, 84]
         self.activations.append(self.input)
 
         with tf.name_scope("mesh_deformation"):
@@ -102,7 +107,12 @@ class FlexmeshModel(ModelDesc):
                 placeholders=self.placeholders, gt_pt=positions, pool_id=2)
             self.output_stage_2 = unpool_layer(self.output2)
 
-            self.output3 = tf.identity(self.activations[-1], name="output3")
+            self.output3 = tf.identity(self.activations[84], name="output3")
+            unpool_layer = GraphPooling(
+                placeholders=self.placeholders, gt_pt=positions, pool_id=3)
+            self.output_stage_3 = unpool_layer(self.output3)
+
+            self.output4 = tf.identity(self.activations[-1], name="output4")
 
         variables = tf.get_collection(
             tf.GraphKeys.GLOBAL_VARIABLES, scope=self.name)
@@ -169,8 +179,19 @@ class FlexmeshModel(ModelDesc):
         x = tf.identity(x, name="flex_layer_3")
 
         x3 = [positions, x]
+        positions, x = wrs_subsample(positions, x)
+        neighbors = knn_bruteforce(positions, K=8)
+
+        x = flex_pooling(x, neighbors)
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 8, activation=tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 8, activation=tf.nn.relu)
+        x = tf.identity(x, name="flex_layer_4")
+
+        x4 = [positions, x]
         # Get output stages
-        self.placeholders.update({'pc_feature': [x0, x1, x2, x3]})
+        self.placeholders.update({'pc_feature': [x0, x1, x2, x3, x4]})
 
         return 0
 
@@ -222,15 +243,35 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=3,
                                             placeholders=self.placeholders, logging=self.logging))
         # Mesh deformation block with G ResNet
-        for _ in range(25):
+        for _ in range(24):
             self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                                 output_dim=FLAGS.hidden,
                                                 gcn_block_id=3,
                                                 placeholders=self.placeholders, logging=self.logging))
+
         self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                             output_dim=FLAGS.coord_dim,
                                             act=lambda x: x,
                                             gcn_block_id=3,
+                                            placeholders=self.placeholders, logging=self.logging))
+        # third project block
+        self.layers.append(GraphProjection(placeholders=self.placeholders))
+        self.layers.append(GraphPooling(
+            placeholders=self.placeholders, gt_pt=positions, pool_id=3))  # unpooling
+        self.layers.append(GraphConvolution(input_dim=FLAGS.feat_dim + FLAGS.hidden,
+                                            output_dim=FLAGS.hidden,
+                                            gcn_block_id=4,
+                                            placeholders=self.placeholders, logging=self.logging))
+        # Mesh deformation block with G ResNet
+        for _ in range(25):
+            self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
+                                                output_dim=FLAGS.hidden,
+                                                gcn_block_id=4,
+                                                placeholders=self.placeholders, logging=self.logging))
+        self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
+                                            output_dim=FLAGS.coord_dim,
+                                            act=lambda x: x,
+                                            gcn_block_id=4,
                                             placeholders=self.placeholders, logging=self.logging))
 
     def get_loss(self, positions, vertex_normals, gt_positions):
@@ -240,6 +281,8 @@ class FlexmeshModel(ModelDesc):
             self.output2, positions, gt_positions, vertex_normals, self.placeholders, 2)
         mesh_loss_third_block = mesh_loss(
             self.output3, positions, gt_positions, vertex_normals, self.placeholders, 3)
+        mesh_loss_fourth_block = mesh_loss(
+            self.output4, positions, gt_positions, vertex_normals, self.placeholders, 4)
 
         #distance_loss0 = distance_density_loss(self.output1)
         #distance_loss1 = distance_density_loss(self.output2)
@@ -252,17 +295,22 @@ class FlexmeshModel(ModelDesc):
                                        'scalar'], name="mesh_loss")
             summary.add_tensor_summary(mesh_loss_third_block, [
                                        'scalar'], name="mesh_loss")
+            summary.add_tensor_summary(mesh_loss_fourth_block, [
+                                       'scalar'], name="mesh_loss")
 
         loss = mesh_loss_first_block + \
             mesh_loss_second_block +\
-            mesh_loss_third_block
+            mesh_loss_third_block +\
+            mesh_loss_fourth_block
 
         l_loss_first = .3 * \
             laplace_loss(self.input, self.output1, self.placeholders, 1)
-        l_loss_second = laplace_loss(
+        l_loss_second = 0.8 * laplace_loss(
             self.output_stage_1, self.output2, self.placeholders, 2)
         l_loss_third = laplace_loss(
             self.output_stage_2, self.output3, self.placeholders, 3)
+        l_loss_fourth = laplace_loss(
+            self.output_stage_3, self.output4, self.placeholders, 4)
 
         with tf.name_scope("laplacian_loss"):
             summary.add_tensor_summary(
@@ -271,21 +319,26 @@ class FlexmeshModel(ModelDesc):
                 l_loss_second, ['scalar'], name="laplacian_loss")
             summary.add_tensor_summary(
                 l_loss_third, ['scalar'], name="laplacian_loss")
+            summary.add_tensor_summary(
+                l_loss_fourth, ['scalar'], name="laplacian_loss")
 
         loss += l_loss_first + l_loss_second + l_loss_third
 
-        c_loss_first = 0.3*collapse_loss(self.output1)
-        c_loss_second = collapse_loss(self.output2)
-        c_loss_third = collapse_loss(self.output3)
+        #c_loss_first = 0.3*collapse_loss(self.output1)
+        #c_loss_second = 0.8*collapse_loss(self.output2)
+        #c_loss_third = collapse_loss(self.output3)
+        #c_loss_fourth = collapse_loss(self.output4)
 
-        with tf.name_scope("collapse_loss"):
-            summary.add_tensor_summary(
-                c_loss_first, ['scalar'], name="collapse_loss")
-            summary.add_tensor_summary(
-                c_loss_second, ['scalar'], name="collapse_loss")
-            summary.add_tensor_summary(
-                c_loss_third, ['scalar'], name="collapse_loss")
-        loss += c_loss_first + c_loss_second + c_loss_third
+       # with tf.name_scope("collapse_loss"):
+        #    summary.add_tensor_summary(
+         #       c_loss_first, ['scalar'], name="collapse_loss")
+          #  summary.add_tensor_summary(
+          #      c_loss_second, ['scalar'], name="collapse_loss")
+          #  summary.add_tensor_summary(
+          #      c_loss_third, ['scalar'], name="collapse_loss")
+          #  summary.add_tensor_summary(
+          #      c_loss_fourth, ['scalar'], name="collapse_loss")
+        #loss += c_loss_first + c_loss_second + c_loss_third + c_loss_fourth
 
         # t_loss = tension_loss(self.output1, positions,self.placeholders, 1)
 
@@ -298,7 +351,8 @@ class FlexmeshModel(ModelDesc):
 
         # GCN loss
         # conv_layers = range(1, 15) + range(17, 31) + range(33, 48)
-        conv_layers = range(1, 27) + range(29, 55) + range(57, 84)
+        conv_layers = range(1, 27) + range(29, 55) + \
+            range(57, 83) + range(85, 112)
         conv_layers = [e + 1 for e in conv_layers]
         for layer_id in conv_layers:
             for var in self.layers[layer_id].vars.values():
@@ -319,15 +373,15 @@ class FlexmeshModel(ModelDesc):
     def load_ellipsoid_as_tensor(self):
         pkl = pickle.load(open(FLAGS.base_model_path, 'rb'))
         coord = pkl[0]
-        pool_idx = pkl[4]
-        faces = pkl[5]
-        lape_idx = pkl[7]
+        pool_idx = pkl[5]
+        faces = pkl[6]
+        lape_idx = pkl[8]
         edges = []
         #156 vertices
-        for i in range(1, 4):
+        for i in range(1, 5):
             adj = pkl[i][1]
             edges.append(adj[0])
-        for i in range(0, 3):
+        for i in range(0, 4):
             lape_idx[i] = np.array(lape_idx[i])
             lape_idx[i][lape_idx[i] == -1] = np.max(lape_idx[i]) + 1
 
@@ -340,6 +394,8 @@ class FlexmeshModel(ModelDesc):
             self.convert_support_to_tensor(s) for s in pkl[2]]
         self.placeholders["support3"] = [
             self.convert_support_to_tensor(s) for s in pkl[3]]
+        self.placeholders["support4"] = [
+            self.convert_support_to_tensor(s) for s in pkl[4]]
         #Not used
         #self.placeholders["faces"] = [
         #   tf.convert_to_tensor(f, dtype=tf.int32) for f in faces]

@@ -246,13 +246,15 @@ def read_torus(path):
         new_faces)
     new_faces3, edges3, pool_idx3, lape_idx3, support3 = process_detail_step(
         new_faces2)
+    new_faces4, edges4, pool_idx4, lape_idx4, support4 = process_detail_step(
+        new_faces3)
 
     coord = vertices
-    pool_idx = [pool_idx, pool_idx2]
-    lape_idx = [lape_idx, lape_idx2, lape_idx3]
+    pool_idx = [pool_idx, pool_idx2, pool_idx3]
+    lape_idx = [lape_idx, lape_idx2, lape_idx3, lape_idx4]
     #edges = [edges, edges2, edges3]
-    faces = [faces, new_faces, new_faces2]
-    torus = [coord, support, support2, support3,
+    faces = [faces, new_faces, new_faces2, new_faces3]
+    torus = [coord, support, support2, support3, support4,
              pool_idx, faces, 0, lape_idx]
     torus_file = "/home/heid/tmp/ellipsoid_2.dat"
     pickle.dump(torus, open(torus_file, 'wb'))
@@ -272,6 +274,7 @@ def read_data(pkl):
     # pool_idx[0] - (462, 2)
     # pool_idx[1] - (1848, 2)
     pool_idx = pkl[4]
+    print pool_idx
     #print coord
     # len 3
     # lape_idx[0]
@@ -306,6 +309,6 @@ def read_data(pkl):
 
 pkl = pickle.load(open(
     '/home/heid/Documents/master/pc2mesh/points2mesh/utils/ellipsoid/info_ellipsoid.dat', 'rb'))
-#fd = read_data(pkl)
-read_torus(
-    "/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/ellipsoid.ply")
+fd = read_data(pkl)
+#read_torus(
+   # "/home/heid/Documents/master/pc2mesh/datageneration/mesh_generation/ellipsoid.ply")

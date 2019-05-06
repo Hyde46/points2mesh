@@ -18,7 +18,7 @@ enable_argscope_for_module(tf.layers)
 # TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 150
+NUM_EPOCH = 50
 
 PC = {'num': 1024, 'dp': 3, 'ver': "40"}
 
@@ -29,13 +29,13 @@ tf.set_random_seed(seed)
 # Settings
 # basic Ellipsoid 156 - 618 - 2466
 # basic torus     160 - 640 - 2560
-# new ellipsoid   168 - 666 - 2658
+# new ellipsoid   168 - 666 - 2658 - 10626
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 # flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 498, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 451, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
@@ -51,12 +51,12 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
-                    'Path to base model for mesh deformation')
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+#                   'Path to base model for mesh deformation')
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
 #                    'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
- #                   'Path to base model for mesh deformation')
+flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid_2.dat',
+                    'Path to base model for mesh deformation')
 
 if __name__ == '__main__':
 
@@ -68,9 +68,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
-    logger.set_logger_dir('train_log/fusionProjection_%s' % (args.fusion))
+    logger.set_logger_dir('train_log/fusionHighDetail_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

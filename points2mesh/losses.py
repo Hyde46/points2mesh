@@ -51,17 +51,11 @@ def collapse_loss(pred):
     return tf.reduce_sum(coll_loss)
 
 
-def point2triangle_loss(pred, placeholders, block_id):
-    #TODO
-    # Test point2triangle loss somewhere somehow
-
-    pass
-
-
 def laplace_coord(pred, placeholders, block_id):
     vertex = tf.concat([pred, tf.zeros([1, 3])], 0)
     indices = placeholders['lape_idx'][block_id - 1][:, :8]
-    weights = tf.cast(placeholders['lape_idx'][block_id - 1][:, -1], tf.float32)
+    weights = tf.cast(placeholders['lape_idx']
+                      [block_id - 1][:, -1], tf.float32)
 
     weights = tf.tile(tf.reshape(tf.reciprocal(weights), [-1, 1]), [1, 3])
     laplace = tf.reduce_sum(tf.gather(vertex, indices), 1)
@@ -89,7 +83,7 @@ def unit(tensor):
 
 def mesh_loss(pred, positions, gt_positions, vertex_normals, placeholders, block_id):
     chamfer_block_loss_metrics = [
-        [0.55, 1.0], [0.75, 0.6], [1.0, 0.55]
+        [0.55, 1.0], [0.75, 0.6], [0.8, 0.55], [1.0, 0.50]
     ]
     gt_pt = tf.transpose(gt_positions[0], [1, 0])
     gt_nm = tf.transpose(vertex_normals[0], [1, 0])

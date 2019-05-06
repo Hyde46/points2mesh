@@ -104,6 +104,8 @@ class GraphConvolution(Layer):
             self.support = placeholders['support2']
         elif gcn_block_id == 3:
             self.support = placeholders['support3']
+        elif gcn_block_id == 4:
+            self.support = placeholders['support4']
 
         self.sparse_inputs = sparse_inputs
         self.featureless = featureless
@@ -261,6 +263,7 @@ class GraphProjection(Layer):
         stage_1 = self.projected_neighborhood(inputs, 1)
         stage_2 = self.projected_neighborhood(inputs, 2)
         stage_3 = self.projected_neighborhood(inputs, 3)
+        stage_4 = self.projected_neighborhood(inputs, 4)
         #stage_0 = self.mean_neighborhood(inputs, 0)
         #stage_1 = self.mean_neighborhood(inputs, 1)
         #stage_2 = self.mean_neighborhood(inputs, 2)
@@ -276,7 +279,8 @@ class GraphProjection(Layer):
                              stage_0[0],
                              stage_1[0], stage_1[1],
                              stage_2[0], stage_2[1],
-                             stage_3[0], stage_3[1]
+                             stage_3[0], stage_3[1],
+                             stage_4[0], stage_4[1]
                              ], 1)
 
         return outputs
