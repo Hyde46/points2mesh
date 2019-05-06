@@ -63,11 +63,13 @@ def get_allowed_categories(version):
     """
     assert version in ["small", "big", "airplane"]
     if version == "big":
-        return [0, 2, 5, 7, 8, 12, 17, 30, 33, 35, 37]
+        return [0, 2, 5, 6, 7, 8, 17, 30, 35]
     if version == "small":
-        return [0, 2, 8, 35]
+        return [0, 7, 8, 35]
     if version == "airplane":
         return [0]
+    if version == "sofa":
+        return [20]
     if version == "toilet":
         return [35]
     return 0

@@ -112,10 +112,11 @@ def loadTxtFiles(path):
     return files
 
 
-path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
+#path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
+path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/big_class"
 #pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
 pcs = loadTxtFiles(path)
-path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/"
+path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/single_class/"
 
 predictor = loadModel()
 #predictor = 0
