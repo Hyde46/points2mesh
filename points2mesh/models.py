@@ -254,7 +254,7 @@ class FlexmeshModel(ModelDesc):
                                             act=lambda x: x,
                                             gcn_block_id=3,
                                             placeholders=self.placeholders, logging=self.logging))
-        # third project block
+        # fourth project block
         self.layers.append(GraphProjection(placeholders=self.placeholders))
         self.layers.append(GraphPooling(
             placeholders=self.placeholders, gt_pt=positions, pool_id=3))  # unpooling
