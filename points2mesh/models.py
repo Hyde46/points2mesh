@@ -118,7 +118,8 @@ class FlexmeshModel(ModelDesc):
         def wrs_subsample(positions, features):
             # weighted reservoir sampling
             # Calculate density for each node
-            _, dist, _ = knn_bf_sym(positions, positions, K=32)
+            # TODO: hier rumprobieren
+            _, dist, _ = knn_bf_sym(positions, positions, K=8)
             # feed relative density to wrs subsampling
             density = tf.reduce_sum(dist, axis=2)
             density = tf.divide(density, tf.reduce_sum(density, 1))

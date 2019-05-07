@@ -48,7 +48,6 @@ def get_allowed_categories(version):
     26 -  plant
     27 -  radio
     28 -  range_hood
-    df_noisy = noise_data_augmentation(df)
     29 -  sink
     30 -  sofa
     31 -  stairs
@@ -144,15 +143,18 @@ def get_modelnet_dataflow(
     # Two different data sets exist with either 1024 samples per object or 10000 samples per object.
     # Different amounts of samples can still be used by choosing 10000 samples per object and selecting
     # a subset of them with the disadvantage of slower loading and sampling time.
-    assert num_points in [1024, 10000]
-
+    assert num_points in [1024, 7500, 10000]
+    if num_points > 1024:
+        file_num_points = 10000
+    else:
+        file_num_points = num_points
     # Construct correct filename
     normals_str = ""
     if not normals:
         normals_str = "-positions"
 
     file_name = "model" + model_ver + "-" + name + \
-        normals_str + "-" + str(num_points) + ".lmdb"
+        normals_str + "-" + str(file_num_points) + ".lmdb"
     pass
     path = os.path.join(MODEL40PATH, file_name)
 
@@ -161,15 +163,17 @@ def get_modelnet_dataflow(
         parallel = min(40, multiprocessing.cpu_count() // 2)
         logger.info("Using " + str(parallel) + " processing cores")
 
-    allowed_categories = get_allowed_categories("small")
+    allowed_categories = get_allowed_categories("airplane")
 
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     # seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, 1024)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]#, dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
+    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, file_num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
-
+    if num_points > 1024:
+        df = MapData(df, lambda dp: np.array(
+            dp)[:, :, :, 0:num_points].tolist())
     #df_noisy = noise_data_augmentation(df)
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     df.reset_state()
@@ -186,14 +190,14 @@ if __name__ == '__main__':
     #   np.savetxt('/home/heid/tmp/test.asc',
     #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
     #   break
-    df = get_modelnet_dataflow('train', batch_size=1, num_points=1024,
+    df = get_modelnet_dataflow('train', batch_size=1, num_points=10000,
                                model_ver="40", normals=True, prefetch_data=False)
-    # for d in df:
-    #    print " "
-    #    print d[1].shape
-    #    break
+    for d in df:
+        print np.array(d).shape
+        print " "
+        break
     # Test speed!
-    TestDataSpeed(df, 2000).start()
+    #TestDataSpeed(df, 2000).start()
 
     """
     df = get_modelnet_dataflow(
