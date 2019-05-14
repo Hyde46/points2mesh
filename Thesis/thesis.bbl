@@ -1,10 +1,16 @@
-\newcommand{\etalchar}[1]{$^{#1}$}
-\begin{thebibliography}{AFS{\etalchar{+}}11}
+\begin{thebibliography}{GRL17}
 
-\bibitem[AFS{\etalchar{+}}11]{agarwal2011}
-Sameer Agarwal, Yasutaka Furukawa, Noah Snavely, Ian Simon, Brian Curless,
-  Steven~M. Seitz, and Richard Szeliski.
-\newblock Building rome in a day.
-\newblock {\em Commun. ACM}, 54(10):105--112, October 2011.
+\bibitem[BL18]{bukenberger2018hierarchical}
+Dennis~R. Bukenberger and Hendrik P.~A. Lensch.
+\newblock {Hierarchical Quad Meshing of 3D Scanned Surfaces}.
+\newblock {\em Computer Graphics Forum}, 37(5):131--141, 2018.
+\newblock
+  \url{https://diglib.eg.org/bitstream/handle/10.1111/cgf13497/v37i5pp131-141.pdf}.
+
+\bibitem[GRL17]{Groh2017}
+Fabian Groh, Benjamin Resch, and Hendrik P.~A. Lensch.
+\newblock {\em Multi-view Continuous Structured Light Scanning}, pages
+  377--388.
+\newblock Springer International Publishing, Cham, 2017.
 
 \end{thebibliography}

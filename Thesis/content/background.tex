@@ -1,35 +1,30 @@
 \chapter{Background}
 \label{sec:background}
-This chapter outlines the theory on which this work is based on, as well as different approaches to surface reconstruction from complete or lacking object data.
-Roter Faden:
+Often in computer graphics, it is necessary to process three-dimensional objects. There are many ways to acquire data of the surface of such geometry and more so many techniques to transform and augment that data to a distinct representation. This often non-trivial task is crucial to further process the object in question in later stages of their respective pipelines. Over the years many representations of acquisition data formats and transformation methods, as well as target data formats, have accumulated.\\
+In this chapter, various of these techniques and data formats are examined, of which some of them are used in this work as a vehicle for a novel data transformation routine.\\
+Initially, classical approaches are examined in section \ref{classic_approaches} which do not rely on artificial intelligence or machine learning methods.
+With the recent advances in deep learning, many new approaches have been developed and thus considered in this work. Hence, the general concept of deep learning and neural networks are then reviewed in section \ref{ml_review}.
+Subsequently, these more specific machine learning based methods are reassessed in section \ref{ml_approaches} which rely on distinctive statistical features in their initial data format or the dataset itself, thus allowing for the transformation.
+\section{Classical approaches}
+\label{classic_approaches}
 \begin{enumerate}
-  \item Representing objects with meshes has many useful applications
-  \item List different representations of objects (meshes, pointcloud, voxels,..)
-  \item Is a form of data transformation and extrapolation of missing information
-  \item Two main approaches for transformation, ml and classical approaches
-\end{enumerate}
-\todo{Die alternativen richtungen von lensch noch}
-
-\section{Non-machine learning background ;p}
-Roter Faden:
-\begin{enumerate}
-  \item classic approaches here
-  \item find more of a story after researching more
   \item non trivial task  (etwas mathematischer, genauer werden)
+  \item have to define your input and output model mathematically nicely
 \end{enumerate}
 Papers to cite here
 \begin{enumerate}
   \item Marching cubes
-  \item ask dennis. he prob has a bunch
-  \item cite his stuff too ?
-  \item find more classic papers
+  \item Fabians \cite{Groh2017}
   \item instant field aligned meshes
-  \item dennis sein zeug ist wohl sehr gut
+  \item Dennis paper\cite{bukenberger2018hierarchical}
 \end{enumerate}
-\todo{neuen namen finden fuer classic}
 
 
-\section{Machine Learning Background}
+\section{Machine Learning review}
+\label{ml_review}
+
+\section{Machine Learning approaches}
+\label{ml_approaches}
 \begin{enumerate}
   \item machine learning good way for inference, probably neural network too, given huge amount of data and finding similarities in data
   \item many approaches for surface reconstruction in classic ml

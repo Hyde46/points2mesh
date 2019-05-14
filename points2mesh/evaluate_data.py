@@ -180,7 +180,7 @@ for pc in pcs:
     if counter == max_len / 2:
         print "halfway done"
 
-log = open(os.path.join(log_output, "record_evaluation.txt"), 'a')
+log = open(os.path.join(log_output, "points2mesh_evaluation.txt"), 'a')
 for i in classes:
     number = model_count[i]
     f = sum_f[i] / number
