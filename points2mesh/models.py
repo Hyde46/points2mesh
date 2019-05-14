@@ -324,6 +324,7 @@ class FlexmeshModel(ModelDesc):
         faces = pkl[5]
         lape_idx = pkl[7]
         edges = []
+        #coord = self.normalize_coord(coord)
         #156 vertices
         for i in range(1, 4):
             adj = pkl[i][1]

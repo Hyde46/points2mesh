@@ -20,7 +20,7 @@ TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
 NUM_EPOCH = 100
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40"}
+PC = {'num': 1024, 'dp': 3, 'ver': "40"}
 
 seed = 1024
 np.random.seed(seed)
@@ -44,7 +44,7 @@ flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
 # original 3e-5
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
-flags.DEFINE_integer('pc_num', 7500, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
@@ -68,9 +68,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "2"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "7"
 
-    logger.set_logger_dir('train_log/fusionProjectionSingle7500_%s' % (args.fusion))
+    logger.set_logger_dir('train_log/fusionProjectionSofa1024_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

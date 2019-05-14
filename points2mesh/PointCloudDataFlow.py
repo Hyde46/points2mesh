@@ -60,13 +60,15 @@ def get_allowed_categories(version):
     38 -  wardrobe
     39 -  xbox
     """
-    assert version in ["small", "big", "airplane"]
+    assert version in ["small", "big", "airplane", "chair", "sofa", "toilet"]
     if version == "big":
         return [0, 2, 5, 6, 7, 8, 17, 30, 35]
     if version == "small":
         return [0, 7, 8, 35]
     if version == "airplane":
         return [0]
+    if version == "chair":
+        return [8]
     if version == "sofa":
         return [20]
     if version == "toilet":
@@ -163,7 +165,7 @@ def get_modelnet_dataflow(
         parallel = min(40, multiprocessing.cpu_count() // 2)
         logger.info("Using " + str(parallel) + " processing cores")
 
-    allowed_categories = get_allowed_categories("airplane")
+    allowed_categories = get_allowed_categories("sofa")
 
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)
