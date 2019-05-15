@@ -165,7 +165,7 @@ def get_modelnet_dataflow(
         parallel = min(40, multiprocessing.cpu_count() // 2)
         logger.info("Using " + str(parallel) + " processing cores")
 
-    allowed_categories = get_allowed_categories("sofa")
+    allowed_categories = get_allowed_categories("big")
 
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)

@@ -15,7 +15,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40"}
+PC = {'num': 1024, 'dp': 3, 'ver': "40"}
 # settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -30,7 +30,7 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-flags.DEFINE_integer('pc_num', 7500, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
@@ -98,7 +98,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("train_log/fusionProjectionSmall7500_/checkpoint"),
+        session_init=get_model_loader("train_log/fusionProjectionSmall1024_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -128,7 +128,8 @@ pcs = loadTxtFiles(path)
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/small_class/"
 #path_output = "/graphics/scratch/students/heid/inference/plane_class_1024_3"
 #path_output = "/graphics/scratch/students/heid/inference/chair_class_1024_3"
-path_output = "/graphics/scratch/students/heid/inference/small_class_7500_3"
+path_output = "/graphics/scratch/students/heid/inference/small_class_1024_3"
+#path_output = "/graphics/scratch/students/heid/inference/big_class_1024_3"
 #path_output = "/graphics/scratch/students/heid/inference/single_class_7500_3"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/big_class_1024_3/"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/single_class_1024_3/"
@@ -141,7 +142,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 for pc in pcs:
 
     path_pc = os.path.join(path, pc)
-    pc_inp = load_pc(path_pc, num_points=7500)
+    pc_inp = load_pc(path_pc, num_points=1024)
     vertices = predict(predictor, pc_inp, path_pc)
     create_inference_mesh(vertices[2], 3, pc,
                           path_pc, path_output, display_mesh=False)
