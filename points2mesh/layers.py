@@ -273,10 +273,9 @@ class GraphProjection(Layer):
         #                     stage_2[1],
         #                     stage_3[1]], 1)
         outputs = tf.concat([inputs,
-                             stage_0[0],
-                             stage_1[0], stage_1[1],
-                             stage_2[0], stage_2[1],
-                             stage_3[0], stage_3[1]
+                             stage_1[1],
+                             stage_2[1],
+                             stage_3[1]
                              ], 1)
 
         return outputs
