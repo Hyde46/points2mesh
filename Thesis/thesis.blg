@@ -4,45 +4,45 @@ The top-level auxiliary file: thesis.aux
 The style file: alpha.bst
 Database file #1: bibliography.bib
 Warning--can't use both author and editor fields in Groh2017
-You've used 2 entries,
+You've used 4 entries,
             2543 wiz_defined-function locations,
-            577 strings with 4995 characters,
-and the built_in function-call counts, 1002 in all, are:
-= -- 100
-> -- 44
+            594 strings with 5432 characters,
+and the built_in function-call counts, 1931 in all, are:
+= -- 191
+> -- 98
 < -- 1
-+ -- 15
-- -- 15
-* -- 74
-:= -- 164
-add.period$ -- 7
-call.type$ -- 2
-change.case$ -- 12
-chr.to.int$ -- 2
-cite$ -- 3
-duplicate$ -- 39
-empty$ -- 72
-format.name$ -- 17
-if$ -- 210
++ -- 35
+- -- 34
+* -- 158
+:= -- 324
+add.period$ -- 13
+call.type$ -- 4
+change.case$ -- 27
+chr.to.int$ -- 4
+cite$ -- 5
+duplicate$ -- 67
+empty$ -- 132
+format.name$ -- 37
+if$ -- 391
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 14
-num.names$ -- 6
-pop$ -- 12
+missing$ -- 5
+newline$ -- 25
+num.names$ -- 12
+pop$ -- 21
 preamble$ -- 1
-purify$ -- 15
+purify$ -- 32
 quote$ -- 0
-skip$ -- 36
+skip$ -- 57
 stack$ -- 0
-substring$ -- 67
-swap$ -- 12
+substring$ -- 128
+swap$ -- 14
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 28
 warning$ -- 1
-while$ -- 10
-width$ -- 3
-write$ -- 31
+while$ -- 19
+width$ -- 7
+write$ -- 58
 (There was 1 warning)

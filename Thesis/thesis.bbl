@@ -1,4 +1,5 @@
-\begin{thebibliography}{GRL17}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{BMR{\etalchar{+}}99}
 
 \bibitem[BL18]{bukenberger2018hierarchical}
 Dennis~R. Bukenberger and Hendrik P.~A. Lensch.
@@ -7,10 +8,21 @@ Dennis~R. Bukenberger and Hendrik P.~A. Lensch.
 \newblock
   \url{https://diglib.eg.org/bitstream/handle/10.1111/cgf13497/v37i5pp131-141.pdf}.
 
+\bibitem[BMR{\etalchar{+}}99]{817351}
+F.~{Bernardini}, J.~{Mittleman}, H.~{Rushmeier}, C.~{Silva}, and G.~{Taubin}.
+\newblock The ball-pivoting algorithm for surface reconstruction.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  5(4):349--359, Oct 1999.
+
 \bibitem[GRL17]{Groh2017}
 Fabian Groh, Benjamin Resch, and Hendrik P.~A. Lensch.
 \newblock {\em Multi-view Continuous Structured Light Scanning}, pages
   377--388.
 \newblock Springer International Publishing, Cham, 2017.
+
+\bibitem[LC87]{Lorensen:1987:MCH:37402.37422}
+William~E. Lorensen and Harvey~E. Cline.
+\newblock Marching cubes: A high resolution 3d surface construction algorithm.
+\newblock {\em SIGGRAPH Comput. Graph.}, 21(4):163--169, August 1987.
 
 \end{thebibliography}
