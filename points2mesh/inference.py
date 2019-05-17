@@ -94,7 +94,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("train_log/fusionHighDetail_/checkpoint"),
+        session_init=get_model_loader("train_log/fusionHighDetailSmall_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
