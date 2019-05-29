@@ -98,7 +98,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("train_log/fusionProjectionBig7500_/checkpoint"),
+        session_init=get_model_loader("train_log/fusionProjectionSmall7500_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -120,8 +120,8 @@ def loadTxtFiles(path):
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/single_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/chair_test"
-#path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/small_class"
-path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/big_class"
+path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/small_class"
+#path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/big_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/test_complete"
 #pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
 pcs = loadTxtFiles(path)
@@ -130,7 +130,9 @@ pcs = loadTxtFiles(path)
 #path_output = "/graphics/scratch/students/heid/inference/plane_class_7500_3"
 #path_output = "/graphics/scratch/students/heid/inference/chair_class_1024_3"
 #path_output = "/graphics/scratch/students/heid/inference/small_class_1024_3"
-path_output = "/graphics/scratch/students/heid/inference/big_class_1024_3"
+#path_output = "/graphics/scratch/students/heid/inference/big_class_7500_3"
+#path_output = "/graphics/scratch/students/heid/inference/plane_class_7500_3"
+path_output = "/graphics/scratch/students/heid/inference/small_class_7500_3"
 #path_output = "/graphics/scratch/students/heid/inference/single_class_7500_3"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/big_class_1024_3/"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/single_class_1024_3/"
