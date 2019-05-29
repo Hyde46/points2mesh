@@ -120,3 +120,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+Thesis/thesis.aux
+Thesis/thesis.aux
+Thesis/thesis.bbl
+Thesis/thesis.blg
+Thesis/thesis.pdf
+Thesis/thesis.toc
+Thesis/thesis.synctex.gz
