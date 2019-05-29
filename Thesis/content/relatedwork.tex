@@ -67,17 +67,21 @@ Similar to the marching cubes algorithm, the work presented by
        indicator function. This function results in non-zero
         values close to the surface of the object and thereby 
         can be directly extracted. The problem is then reduced to a 
-        form of voxel-grid now can be transformed by the marching
+        form of voxel-grid, thus can be transformed by the marching
          cubes algorithm.
 
-    
+ Similarly, surface information can be reconstructed by calculating 
+ the PC's medial axis transform ~(~MAT~) from unstructured point cloud
+  data, followed by an inverse transformation.  The medial axis of a PC
+   is described as a set of points where each point is the closest neighbor 
+   to at least one other point in the original PC. Not only can the PC be noisy 
+   or scanty, as described by Amenta et al. \cite{Groh2017}, but the reconstructed
+    surface mesh will always be manifold.
     
   
   
 \begin{enumerate}
-  \item large scale multiview stereopsis evaluation -> no reconstruction
   \item surface reconstruction from unorganized points
-  \item power crust -> not that relevant. Maybe if i need more written stuff
   \item instant field aligned meshes
   \item Dennis \cite{bukenberger2018hierarchical}
 \end{enumerate}
