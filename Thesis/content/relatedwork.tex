@@ -34,7 +34,7 @@ Hence, machine learning based methods are reassessed in section \ref{ml_approach
   In this section, some of the more important works on this subject of data transformation are examined, with 
   an overview of the different input and output data formats applicable. 
 
- \subsection{Transformation methods}
+ \subsection{Reconstruction methods}
  \todo{maybe not needed. only classic approaches as section?}
 
   One of the earliest, but still well-known algorithms, presented by
@@ -77,7 +77,7 @@ Hence, machine learning based methods are reassessed in section \ref{ml_approach
   Similarly, if not only samples on the surface are provided, 
   but also their orientation, a high-resolution quad- or 
   tri-dominant mesh can be reconstructed, as described in the 
-  work by Jakob et al. \cite{}. Although not limited to PC data,
+  work by Jakob et al. \cite{Jakob2015Instant}. Although not limited to PC data,
   it is able to process from a hundred thousand up to several
   hundred million data points in only seconds of calculation time.
   While other methods rely on global optimization problems, this work 
@@ -116,18 +116,89 @@ Hence, machine learning based methods are reassessed in section \ref{ml_approach
 With more advanced acquisition methods, higher computing power 
 and high-speed connectivity over the internet, gathering, interchanging
  and expanding big datasets are getting progressively more prevalent
-  and important (\todo{cite modelnet, other big data sets online?}) . 
+  and important. 
   Thus, allowing for statistical and data-driven algorithms to 
-  analyze big datasets, to compute characteristics and similarities
-   within. 
+  analyze big datasets, computing characteristics and similarities
+   within them. 
    
-   In this section, machine learning based approaches are inspected which learn features from big datasets and utilize gained knowledge to infer information on an object's surface given varied input data.
-Furthermore, this section establishes a frame for this work in 
-contrast to the current, as well as older techniques for data 
-transformation from diverse object datasets to a final reconstruction
- of surface information.
+  In this section, specfically machine learning based approaches are inspected which learn features from big
+  datasets and utilize gained knowledge to infer information on an object's surface given varied input data.
 
-\todo{different name for section}
+  First, subsection \ref{3ddatasets} compiles an overview of the work on datasets, consisting of polygonal object data, range data, and object annotations
+  to enable learning in three dimensional structures at all.
+  Then, subsection \ref{learn3d}  current and older approaches to processing 
+  and learning from three-dimensional data, independently on their input or output data
+  format. 
+  Furthermore, subsection \ref{transform} establishes a frame for this work in 
+  contrast to the current, as well as older techniques for data 
+  transformation from diverse object datasets to a final reconstruction
+  of surface information.
+
+  \subsection{3D datasets}
+  \label{3ddatasets} 
+  In recent years, a tremendous amount of work has been made in the field of learning in three-dimensional space.
+  Still, different objectives on learning goals require different datasets to work on. Some of them are more general 
+  set of objects, defined by tri- or quad meshes. Many of these datasets have been developed and published in the last 10 years.
+   Exemplary by Shilane et al. \cite{Shilane:2004:TPS}, offering ~1800 meshes, with a rendered image of the object and object label. 
+   Similarly, proposed in a paper by Wu et al.\cite{7298801}, ModelNet is a collection of
+    clean CAD models, with complete polygonal mesh, textures, labels out of currently 662 model categories and 127,915 models\footnote{As of 1.6.2019}.
+    Wu et al. also provide a much smaller and well-arranged subset with only 40 or 10 model categories where each object is axis aligned. 
+    Furthermore, Chang et al. \cite{shapenet2015} provide an even bigger and richer annotated dataset of more than three million polygonal 
+    mesh models and more than four thousand categories. While this dataset annotates objects in minuscule detail and semanticism, it also 
+    offers a condensed version of the dataset, ShapenetCore, for a better digest of all objects with 51300 models and 55 categories. Meanwhile also offering a more 
+    densely annotated subset, ShapeNetSem, but also PartNet\footnote{As of March, 2019}, a hierarchical part annotation subset of ShapeNetCore.
+    Xiang et al. \cite{xiang2016objectnet3d} also describe a large scale dataset consisting of 100 categories, 90000 images, 200000 objects in the
+     images of which are  44000 modeled, working towards facilitating object recognition and pose estimation of multiple objects in a scene. 
+Lim et al. \cite{lpt2013ikea} propose different dataset of polygonal objects with images of each object for the purpose of better pose estimations.
+Moreover, Zhou et al. \cite{Thingi10K} introduce an comprehensive dataset of 10000 3D-printing Models, 
+providing a basis for structural and semantic analysis.
+For different three-dimensional learning tasks, complete scenery is needed 
+consisting of a collection of depth information, semantic labels, meshes,
+ orientations, top-down 2D views or images, as proposed by \cite{Silberman:ECCV12,sunrgb,objectnn-shrec17,dai2017scannet,Matterport3D,savva2017minos,wu2018building,ai2thor,qiu2017unrealcv,xiazamirhe2018gibsonenv,InteriorNet18,hackel2017isprs}
+ \subsection{Learning in 3D}
+ \label{learn3d}
+ Learning in three-dimensional space, especially in the context of neural network and deep learning, has recently
+  started to gain traction and produce results. Still, a tremendous amount of work has been achieved. 
+ As there are numerous different applications, goals, and intentions for learning in three-dimensional space, many 
+ datasets in various data formats to learn on have been established. Most of which originate from range scans, surface samples,
+  or exact surface definitions. 
+ 
+ Since a collection of unregulated points in space like Point clouds are hard to structure, many opt to lessen the 
+ complexity by structuring them in a voxel-based grid, thus reducing the resolution of the problem size.
+ With this volumetric approach, various objectives have been worked on, and many results produced. Maturana et al.
+  \cite{Maturana2015VoxNet}, as well as Wu et al.\cite{inproceedings} and Sedaghat et al. \cite{SZB17a}, show the possibility of learning object recognition 
+  based on voxel data. Others use joint or multiple data formats, not only relying on one form of volumetric data. Consequently, 
+  learning object representations in lower dimensional vectors, and thus allowing for object discrimination as well 
+  \cite{articlefusionnet,DBLP:journals/corr/QiSNDYG16,DBLP:journals/corr/BrockLRW16}.
+
+  Furthermore, expanding the resolution of objects by considering point cloud data, learning features for object 
+  recognition is still possible, as shown by
+   \cite{DBLP:journals/corr/QiSMG16,qi2017pointnetplusplus,DBLP:journals/corr/KlokovL17,DBLP:journals/corr/abs-1801-07791,PointGrid}. Additionally,
+    semantic segmentation of such objects and 
+  scenes are possible. While not only bound to voxelized data \cite{DBLP:journals/corr/abs-1803-10409,DBLP:journals/corr/abs-1712-10215}, point cloud data \cite{DBLP:journals/corr/QiSMG16,qi2017pointnetplusplus,DBLP:journals/corr/DaiCSHFN17,Groh2017,inproceedingsparse,DBLP:journals/corr/abs-1710-07563}, but also explicit surface
+   definitions like polygonal meshes \cite{feng2018meshnet,Kalogerakis:2010:labelMeshes,Sidi:2011:UCS:2024156.2024160,Kalogerakis:2017:ShapePFCN}.
+ 
+ 
+ 
+  
+ 
+
+ \begin{enumerate}
+  \item work on learning in 3d only recently started
+  \item many differeny approaches for object recognition in 3d. voxelasation is important
+  \item gan on latent space for object generation also voxels
+  \item much work on pose estimation in differnt contexts
+  \item also learning semantic keypoints of objects
+  \item PointNet++ in metric space
+  \item learning a hierarchical latent-variable model of 3d shapes
+  \item FlexConv
+  \item tensorflow 3d
+  \item 3d shape understanding from poitn cloud
+ \end{enumerate}
+
+ \subsection{Learning reconstruction}
+ \label{transform}
+
 \begin{enumerate}
   \item machine learning good way for inference, probably neural network too, given huge amount of data and finding similarities in data
   \item many approaches for surface reconstruction in classic ml
@@ -141,14 +212,9 @@ transformation from diverse object datasets to a final reconstruction
 \end{enumerate}
 Papers to cite:
 \begin{enumerate}
-  \item Convolutional neural network
-  \item Semi-Supervised Classification with Graph Convolutional networks
   \item dense 3d object reconstruction from single depth view
-  \item PointNet++
   \item deep marching cubes
   \item pixel2mesh
-  \item learning a hierarchical latent-variable model of 3d shapes
-  \item FlexConv
   \item unsupervised learning of 3d structure
   \item image2 mesh
   \item Surface reconstruction from unorganized Points
