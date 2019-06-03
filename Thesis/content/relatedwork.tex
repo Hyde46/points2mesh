@@ -187,13 +187,25 @@ consisting of a collection of depth information, semantic labels, meshes,
 
  \subsection{Learning 3D reconstruction}
  \label{transform}
-
+ Learning 3D reconstruction can be quite a challenging task.
+  Numerous and complex approaches have been tested to infer surface 
+  structure from diverse input training data. Many of which rely 
+  on single-image or multiple-image to polygonal mesh transformations. 
+ While some try to reconstruct similar, already learned objects of
+  specific categories from RGB images, others try to generalize this 
+  step for all objects. 
  
-\begin{enumerate}
-  \item dense 3d object reconstruction from single depth view
-  \item deep marching cubes
-  \item pixel2mesh
-  \item unsupervised learning of 3d structure
-  \item image2 mesh
-  \item Surface reconstruction from unorganized Points
-\end{enumerate}
+ Naturally, object-specific categories are more restrictive in
+  inference as well as generalization. Whereas works by Pontes et al.
+   and Kong et al. rely on first finding a specific object, close to
+    the input data. Then they deform this general class object to a 
+    target object, expectedly close to the input data \cite{cmrKanazawa18,pontes2017image2mesh,inproceedingsLocal}. Nevertheless,
+     work by Wang et al. \cite{wang2018pixel2mesh} demonstrate a general case of 
+     reconstruction from RGB Input images.
+ Combining multi-view depth images of objects as a basis for
+  reconstruction is considered as well \cite{mvcTulsiani18}.
+  While not restricted to reconstructing from images, 
+  voxelized three-dimensional data also is utilized
+   \cite{DBLP:journals/corr/abs-1804-06032} with its drawbacks of native lower resolution.
+   No work in the field is present, as far as transforming point cloud data directly to a polygonal mesh structure.
+   
