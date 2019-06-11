@@ -146,27 +146,28 @@ class FlexmeshModel(ModelDesc):
                              FLAGS.feature_depth, activation=tf.nn.relu)
         x = flex_convolution(x, positions, neighbors,
                              FLAGS.feature_depth, activation=tf.nn.relu)
+        x = flex_pooling(x, neighbors)
         x = tf.identity(x, name="flex_layer_1")
         x1 = [positions, x]
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 2, activation=tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = flex_pooling(x, neighbors)
-        x = flex_convolution(x, positions, neighbors,
-                             FLAGS.feature_depth * 2, activation=tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors,
-                             FLAGS.feature_depth * 2, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_2")
 
         x2 = [positions, x]
         positions, x = wrs_subsample(positions, x)
         neighbors = knn_bruteforce(positions, K=8)
 
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 4, activation=tf.nn.relu)
+        x = flex_convolution(x, positions, neighbors,
+                             FLAGS.feature_depth * 4, activation=tf.nn.relu)
         x = flex_pooling(x, neighbors)
-        x = flex_convolution(x, positions, neighbors,
-                             FLAGS.feature_depth * 4, activation=tf.nn.relu)
-        x = flex_convolution(x, positions, neighbors,
-                             FLAGS.feature_depth * 4, activation=tf.nn.relu)
         x = tf.identity(x, name="flex_layer_3")
 
         x3 = [positions, x]

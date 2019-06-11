@@ -48,7 +48,6 @@ def collapse_loss(pred):
         tf.less(x[1], FLAGS.collapse_epsilon),
         lambda: 1.0,
         lambda: 0.0), dist1)
-    collapsed_verst = tf.reduce_sum(coll_loss)
     sum_collapsed = tf.reduce_sum(coll_loss)
     all_verts = pred.shape.as_list()[0]
     return sum_collapsed/all_verts
