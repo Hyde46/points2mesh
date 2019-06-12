@@ -31,7 +31,7 @@ Choosing suitable configurations, proper hyperparameters tunings,
 
 \begin{figure}
    \begin{center}
-   \includegraphics[width=10cm]{example-image-a}
+   \includegraphics[width=15cm]{general_structure}
    \caption{\todo{general network config explanation}}
    \label{fig:generalconfig}
    \end{center}
@@ -70,7 +70,7 @@ which is fed into the lower part of the network.
 
 \begin{figure}
    \begin{center}
-   \includegraphics[width=12.8cm]{example-image-b}
+   \includegraphics[width=14cm]{flexconv}
    \caption{\todo{only flexconvpart}}
    \label{fig:flexconv}
    \end{center}
@@ -88,7 +88,7 @@ As seen in the upper half of figure \ref{fig:flexconv}, $\mathcal{N}_{flex}$ pro
   as his current feature $v_i$.
 Then, it is separated into three consecutive parts, where each section $\mathcal{S}$ processes the point cloud vector $\textbf{x}_i$ and features $\textbf{v}_i$
  with two consecutive flexconv operators and a flexpool operator while expanding the dimension by a factor of $32$ in each section.
-After convolving, the point cloud is sampled down by a factor of four each time by weighted reservoir sampling~(~ See chapter \ref{subsec:wrs} ~)~. 
+After convolving, the point cloud is sampled down by a factor of four each time by weighted reservoir sampling~(~wrs~)~. 
 Following every convolution, the coordinates $\textbf{x}_i$ and their features $\textbf{v}_i$ are collected. 
 This compiles the multiscale feature vector $v_i^s$, which consits of key points in $\mathcal{PC}$ needed for the deformation steps in the second part of the network.
 
@@ -98,7 +98,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \label{gcnconv}
    \begin{figure}
       \begin{center}
-      \includegraphics[width=12.8cm]{example-image-c}
+      \includegraphics[width=14cm]{gcnpart}
       \caption{\todo{only gcn}}
       \label{fig:gcn}
       \end{center}
@@ -126,7 +126,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \label{gcnconv}
    \begin{figure}
       \begin{center}
-      \includegraphics[width=10.8cm]{example-image-a}
+      \includegraphics[width=10cm]{unpool}
       \caption{\todo{unpool}}
       \label{fig:unpool}
       \end{center}
@@ -148,9 +148,9 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
 
    \begin{figure}
       \begin{center}
-      \includegraphics[width=5cm]{example-image-a}
-      \includegraphics[width=5cm]{example-image-b}
-      \caption{\todo{graph alignment, biased left, unbiased right}}
+      \includegraphics[width=6cm]{align}
+      \includegraphics[width=6cm]{no_align}
+      \caption{\todo{graph alignment, unbiased left, biased}}
       \label{fig:align}
       \end{center}
    \end{figure}
@@ -173,9 +173,8 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \label{featureproj}
    \begin{figure}
       \begin{center}
-      \includegraphics[width=5cm]{example-image-a}
-      \includegraphics[width=5cm]{example-image-b}
-      \caption{graph projection. left high scale, find knearest neighbors, right, lower scale, knngraph projection. left high scale, find knearest neighbors, right, lower scale, knngraph projection. left high scale, find knearest neighbors, right, lower scale, knngraph projection. left high scale, find knearest neighbors, right, lower scale, knn}
+      \includegraphics[width=5cm]{projection}
+      \caption{\todo{graph projection}}
       \label{fig:proj}
       \end{center}
    \end{figure}
@@ -204,16 +203,15 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    $\mathcal{N}_{flex}$ where a feature vector is propagated out of the subnetwork ~(~ See figure \ref{fig:flexconv}~).
 
 \subsection{Loss functions}
-\label{lossfuncs}
-   \todo{@Fabi, die visualisierungen von loss funktionen hier, oder bei results?}
+\label{lossfuncs}s
    The losses are defined based on the network of Wang et al. \cite{wang2018pixel2mesh}, 
    and adapted accordingly to work with point cloud based input data. Given $\textbf{x}_i$ 
    and normal orientation $\textbf{n}_i$, an objective function $\mathcal{F}$ is defined as 
    follows to help generate good-looking results.
 
    A symmetrical \emph{chamfer distance loss} $l_{ch}$ tries to ensure that vertices of $\mathcal{M}_{i}$ 
-   are located close to other points $\textbf{x}qi2017pointnetplusplus_i$ in ground truth data $\mathcal{PC}$. It sums
-   up for each vertex $pj\in \mathcal{M}_i$ the distance to its nearest neighbor in $\mathcal{PC}$
+   are located close to other points $\textbf{x}_i$ in ground truth data $\mathcal{PC}$. It sums
+   up for each vertex $p_j\in \mathcal{M}_i$ the distance to its nearest neighbor in $\mathcal{PC}$
    and for each point $\textbf{x}_i\in \mathcal{PC}$ the distance to its nearest neighbor in
    $\mathcal{M}_i$. Though, it is scaled by sizes of $|\textbf{x}_i|$ relative to $|p_j|$, depending on how often 
    $\mathcal{M}_i$ already has been unpooled (~See Appendix \ref{sec:appendix} for their formula~).
@@ -258,18 +256,29 @@ Though, every configuration uses an ellipsoid triangle/quad mesh $\mathcal{M}_{i
 Consecutive \emph{unpooling} operations increase the count to $618$, and finally to $2466$ vertices.
 
 \textbf{$\mathcal{C}_1$: Baseconfiguration}
-
-\todo{figure mit kompletter config, wie oben beschrieben}
-Configuration $\mathcal{C}_1$, as described in this chapter and seen in figure \ref{fig:base},
+\begin{figure}
+   \begin{center}
+   \includegraphics[width=14cm]{c1}
+   \caption{\todo{c1 description}}
+   \label{fig:c1}
+   \end{center}
+\end{figure}
+Configuration $\mathcal{C}_1$, as described in this chapter and seen in figure \ref{fig:c1},
  illustrates the base structure of $\mathcal{N}_{recon}$.
 It is trained on an input $\mathcal{PC}$ with $1024$ as well as $800$ samples and increases
  the detail of $\mathcal{M}_{i}$ twice. 
 
 \textbf{$\mathcal{C}_2$: High detailed baseconfiguration}
-
+\begin{figure}
+   \begin{center}
+   \includegraphics[width=14cm]{c2}
+   \caption{\todo{c2 description}}
+   \label{fig:c2}
+   \end{center}
+\end{figure}
 Configuration $\mathcal{C}_2$ corresponds to $\mathcal{C}_1$ almost identically, 
 with the exception of increasing the count of \emph{unpooling layer} from two to three, thus increasing
- the number of vertices to 10626. As seen in figure \ref{highdetail}, $\mathcal{N}_{gcn}$
+ the number of vertices to 10626. As seen in figure \ref{fig:c2} marked as green layer components, $\mathcal{N}_{gcn}$
   is expanded by appending another \emph{projection} and  \emph{unpooling} layer, as well
    as a \emph{convolution} block at the end. Similarly $\mathcal{C}_2$ is trained with $1024$ as well as $800$ samples
    in $\mathcal{PC}$.
@@ -278,7 +287,7 @@ with the exception of increasing the count of \emph{unpooling layer} from two to
 
 Configuration $\mathcal{C}_3$, similarly configured like $\mathcal{C}_1$, but with a difference in the implementation of the \emph{projection layer}.
 Instead of only projecting feature vectors $v_i$ of $\mathcal{PC}$ onto the mesh, it also adds the mean vector $\textbf{x}_i$ 
-to the final feature vector $f_i^s$ for $\mathcal{M}_i$ as seen in figure \ref{biasedneighbors}.
+to the final feature vector $f_i^s$ for $\mathcal{M}_i$.
  \begin{align}
       \forall p_j \in \mathcal{M}_{i} : y_i^s &= \frac{1}{k}\sum_{\forall x_i^s \in knn(p_j),s\in \mathcal{S}} \frac{x_i^s}{1 + |x_i^s-p_j|^2}
    \end{align}
@@ -289,10 +298,16 @@ thus defining configuration $\mathcal{C}'_3$. Removing the layer introduces a po
 leads to interesting reconstructions worthy of evaluating in more detail.
 
 \textbf{$\mathcal{C}_4$: Compact GCN with simple projection}
-
-Finally, configuration $\mathcal{C}_4$ reduces the amount of convolutional layers in $\mathcal{N}_{gcn}$ as seen in figure \ref{smallgcn}.
+\begin{figure}
+   \begin{center}
+   \includegraphics[width=14cm]{c4}
+   \caption{\todo{c4 description}}
+   \label{fig:c4}
+   \end{center}
+\end{figure}
+Finally, configuration $\mathcal{C}_4$ reduces the amount of convolutional layers in $\mathcal{N}_{gcn}$ as seen in figure \ref{fig:c4}.
 Furthermore, the distance based falloff $\frac{1}{1+d}$ in the \emph{projection layer} is excluded, 
-while also computing only one nearest neighbor in that step. 
+while also computing only one nearest neighbor, $k=1$ in that particular layer. 
 
 \section{Dataset}
 \label{dataset}
@@ -330,5 +345,12 @@ objects with interesting and hard to reconstruct features.
 Point cloud data used for inference is not always sampled perfectly on the surface of an object. Random noise on these coordinates is common occurance.
 For that reason, to aid $\mathcal{N}_{recon}$ learning a more generalized reconstruction, each of the dataset categories are
  augmented with random noise added to each vertex in the point cloud by a factor $q_{noise}$.
-\subsection{examples}
-show objects with the interesing features
+
+ Interesting features for reconstruction include:
+ \begin{itemize}
+   \item long appendages (~leg of a chair, airplane propellor~)
+   \item thin appendages (~airplane wings~)
+   \item hard edges (~toilet flushing cistern~)
+   \item uniform curvatures (~bowl~)
+   \item objects of \emph{genus} $>0$ (~some chairs/airplanes,guitars~)
+ \end{itemize}
