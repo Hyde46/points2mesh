@@ -31,8 +31,9 @@ Choosing suitable configurations, proper hyperparameters tunings,
 
 \begin{figure}
    \begin{center}
-   \includegraphics[width=15cm]{general_structure}
-   \caption{\todo{general network config explanation}}
+   \includegraphics[width=14cm]{general_structure}
+   \caption{General workflow of \emph{points2mesh} network. $\mathcal{N}_{recon}$ takes a pointcloud $\mathcal{PC}$ and an initial mesh $\mathcal{M}_i$
+   as input, deforms $\mathcal{M}_i$ based on important features $v_i$ in $\mathcal{PC}$ to compute an approximate mesh $\hat{\mathcal{M}}$}
    \label{fig:generalconfig}
    \end{center}
  \end{figure}
@@ -71,7 +72,7 @@ which is fed into the lower part of the network.
 \begin{figure}
    \begin{center}
    \includegraphics[width=14cm]{flexconv}
-   \caption{\todo{only flexconvpart}}
+   \caption{$\mathcal{N}_{flex}$ with point cloud $\mathcal{PC}$ as input, computing features $v^j$ in three blocks of flexconv layers and a trailing flexpool layer  After each convolutional block, weighted random sampling reduces the number of samples of $\mathcal{PC}$ by a factor of four. Feature vectors $v^j$ are concatenated with their respective positions $x^j$ in a vector $\textbf{v}$.}
    \label{fig:flexconv}
    \end{center}
  \end{figure}
@@ -99,7 +100,9 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \begin{figure}
       \begin{center}
       \includegraphics[width=14cm]{gcnpart}
-      \caption{\todo{only gcn}}
+      \caption{$\mathcal{N}_{gcn}$ with initial mesh $\mathcal{M}_i$ as input. Feature vector $\textbf{v}$ is
+       projected onto the mesh $\mathcal{M}_i$ and deformed according to it. Then an unpooling layer increases
+        the number of vertices in $\mathcal{M}_i$. Projecting $\textbf{v}$ onto the graph and deforming it afterward is repeated two more times.}
       \label{fig:gcn}
       \end{center}
    \end{figure}
@@ -127,7 +130,10 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \begin{figure}
       \begin{center}
       \includegraphics[width=10cm]{unpool}
-      \caption{\todo{unpool}}
+      \caption{The \emph{unpooling} layer of $\mathcal{N}_{gcn}$ increases the
+       number of vertices by introducing a new node between each neighboring node
+        (~white~) in $\mathcal{M}_i$. A new node (~green~) is added precisely in 
+        the middle of each old edge. Finally, the new nodes are connected, while also updating the neighborhood of the old nodes.}
       \label{fig:unpool}
       \end{center}
     \end{figure}
@@ -147,12 +153,21 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    from the $\mathcal{PC}$ onto $\mathcal{M}_{i}$. 
 
    \begin{figure}
-      \begin{center}
-      \includegraphics[width=6cm]{align}
+      \centering
+      %\begin{subfigure}[a]{6cm}
+      %   \includegraphics[width=6cm]{align}
+      %   \caption{\todo{graph alignment, unbiased left, biased}}
+      %\end{subfigure}
+      %\begin{subfigure}[b]{6cm}
+      %   \includegraphics[width=6cm]{no_align}
+      %   \caption{Initial ellipsoid, placed in relation to input point cloud $\mathcal{PC}$.}
+      %\end{subfigure}
       \includegraphics[width=6cm]{no_align}
-      \caption{\todo{graph alignment, unbiased left, biased}}
+      \includegraphics[width=6cm]{align}
+      \caption{Initial ellipsoid in relation to input pointcloud $\mathcal{PC}$ before aligning on the left. After \emph{align graph} layer on the right.
+      Thus, eliminating positional bias and letting the mesh shrink during deformation, rather than letting it grow.}
       \label{fig:align}
-      \end{center}
+      %\end{center}
    \end{figure}
 
    
@@ -174,7 +189,8 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    \begin{figure}
       \begin{center}
       \includegraphics[width=5cm]{projection}
-      \caption{\todo{graph projection}}
+      \caption{\emph{graph projection} layer, assigning feature vectors $\textbf{v}^j$ to nodes in
+       $\mathcal{M}_i$ based on the distance to their nearest neighbor in $\mathcal{PC}$.}
       \label{fig:proj}
       \end{center}
    \end{figure}
@@ -259,7 +275,7 @@ Consecutive \emph{unpooling} operations increase the count to $618$, and finally
 \begin{figure}
    \begin{center}
    \includegraphics[width=14cm]{c1}
-   \caption{\todo{c1 description}}
+   \caption{Baseconfiguration $\mathcal{C}_1$ of $\mathcal{N}_{recon}$.}
    \label{fig:c1}
    \end{center}
 \end{figure}
@@ -272,7 +288,8 @@ It is trained on an input $\mathcal{PC}$ with $1024$ as well as $800$ samples an
 \begin{figure}
    \begin{center}
    \includegraphics[width=14cm]{c2}
-   \caption{\todo{c2 description}}
+   \caption{Configuration $\mathcal{C}_2$ of $\mathcal{N}_{recon}$, showing its difference in $\mathcal{N}_{gcn}$ to configuration $\mathcal{C}_1$.
+   $\mathcal{C}_2$ introduces an extra \emph{projection}, \emph{unpooling} layer and a \emph{graph convolution} block. Thus, allowing for a higher detailed approximate mesh $\hat{\mathcal{M}}$ }
    \label{fig:c2}
    \end{center}
 \end{figure}
@@ -301,7 +318,9 @@ leads to interesting reconstructions worthy of evaluating in more detail.
 \begin{figure}
    \begin{center}
    \includegraphics[width=14cm]{c4}
-   \caption{\todo{c4 description}}
+   \caption{Showing only $\mathcal{N}_{gcn}$ of $\mathcal{N}_{recon}$ with $\mathcal{N}_{flex}$ being the same
+    as in configuration $\mathcal{C}_{1-3}$. In contrast to $\mathcal{C}_1$, Configuration $\mathcal{C}_4$ reduces 
+    the number of used layers for deforming the mesh in $\mathcal{N}_{gcn}$.}
    \label{fig:c4}
    \end{center}
 \end{figure}
