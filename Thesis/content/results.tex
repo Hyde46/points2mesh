@@ -1,15 +1,307 @@
 \chapter{Results}
 \label{sec:results}
-to quantify results:
 
-experiment setup
+    An indefinite amount of different meshes can represent the same object.
+    Consequently, even more meshes exist, which approximate that same object. 
+    Therefore, quantifying the quality of reconstructed meshes is a critical aspect for 
+    this application, likewise for similar ones. Only by being able to determine applications
+    with higher qualitative results facilitate improvement in the field of mesh 
+    reconstruction. 
+    \emph{points2mesh} and its described configurations $\mathcal{C}_i$ aim to improve on previous work,
+    reconstructing meshes from point cloud data. Its advantages and drawbacks, in contrast to similar efforts, 
+    or even reconstruction methods working on other data types, rather than point cloud data, have to be clearly
+    defined and evaluated.
+    Even though the goal of this work is to reconstruct visually pleasing reconstructions for mesh approximations, 
+    considering raw numeric evaluations is nevertheless a crucial component.
 
-ergebnisse objektiv durchgehen
+    In section \ref{subsec:exp}, the experimental setup is described, which tries to assess
+    the quality of reconstructed meshes and compare the defined metrics to other reconstruction methods. 
+    Subsequently, the results of the experimental setup are presented in section \ref{subsec:results}, where
+    each experiment is accompanied by renderings of some of the reconstructed meshes.
 
-ellipsoid / torus /
 
-mehr detail erstmal nicht notwendig
+\section{Experimental setup}
+\label{subsec:exp}
 
- could show network trained only with one step not three step gcn, and that its unstable (for resutls)
+    Finding a proper way to quantify the approximation of a mesh in comparison to its reconstruction is no straightforward task.
+    Many different methods exist, each with its advantages and drawbacks. Depending on the specific application like the size of
+    the mesh, the number of vertices and edges, or features to compare, optimal methods of comparisons may differ, if any even
+    exist. For the proposed network \emph{points2mesh}, several metrics are chosen, which may lead to conclusions about the quality 
+    of the reconstructed mesh. Not only are they applicable to \emph{points2mesh}, but to other reconstruction methods as well. 
+    Thus, these metrics can be compared to each other, and an argument may be formed about their reconstruction capacity. This 
+    section specifies aspects to evaluate of \emph{points2mesh}'s configurations $\mathcal{C}_i$. Furthermore, utilized metrics 
+    for the comparison are detailed in the subsequent subsection. Finally, competing methods for reconstruction are specified,
+    to define a frame of reference against which \emph{points2mesh} should be able to hold up or even exceed.
 
- Not only does it help to keep the distribution of vertices on the graph rather uniform, but also learn generalized form
+
+\subsection{Evaluation aspects}
+    There are several aspects to evaluate \emph{points2mesh}. Not only are network configurations $\mathcal{C}_i$ a crucial consideration,
+    but so is training time, computation time, as well as generalization capabilities and starting meshes $\mathcal{M}_i$ (~Ellipsoid, Torus~). Finally,
+    attaining visually pleasing meshes is one such goal too, and thus has to be evaluated as well.
+
+    Therefore, the following aspects are chosen to evaluate.
+    \begin{itemize}
+        \item \textbf{Configurations} $\mathcal{C}_i$: Each configuration, as described in \ref{configurations}, has its purpose 
+                for specific reconstruction capabilities. Evaluating every one of them may lead to conlcusions about objective rankings, and thus
+                to a choice of best network configuration for reconstructions with the highest quality.
+        \item \textbf{Visual quality}: While being subjective, taking a closer look how good the reconstruction seems to represent the ground truth mesh
+        is still relevant.
+        \item \textbf{Computation time}: Determining how fast such a reconstruction can be calculated may change which method to use depending on the application.
+        \item \textbf{Training time}: Measured in iterations, the convergence time offers valuable insight for networkconfigurations $\mathcal{C}_i$ and how it
+        learns from the input data.
+        \item \textbf{Generalization capabilities}: Evaluating how well configrations $\mathcal{C}_i$ are capable of generalize the problem of reconstruction is a crucial aspect
+        for any neural network. 
+        \item \textbf{Changing the basemesh $\mathcal{M}_i$}: \emph{points2mesh} is only able to reconstruct meshes of the same \emph{genus} as the input mesh $\mathcal{M}_i$.
+        Thus, testing configurations $\mathcal{C}_i$ with different $\mathcal{M}_i$ of higher \emph{genus} like a toroidal shape may lead to different results and 
+        reconstructions with higher \emph{genus}.
+    \end{itemize}
+
+    While evaluating configurations, the visual quality and computation time can be compared to other methods, convergence time, generalization and different used basemeshes
+    are isolated during evaluation due to their nature and thus are only compared to each other.
+
+\subsection{Evaluation metrics}
+
+    Choosing proper evaluation metrics is ambiguous, but several are often chosen in recent work of mesh reconstruction with favorable information content. 
+    While some of them may help to lead to objective conclusions about quality, others are subjective in nature. These metrics 
+    are described in the following. 
+
+    \subsubsection*{Meshdistance $d_m$}    
+    In 3D vision, a commonly used metric to compare the quality of meshes is done with completeness and accuracy of the
+    predicted mesh in comparison to the ground truth mesh. Based on uniformly sampled points on both meshes, completeness and
+    accuracy can be defined. While the completeness describes the distance of points of
+    ground truth to the predicted mesh, accuracy describes the distance of points from predicted mesh to ground truth.
+    Stutz et al. \cite{Stutz2017, Stutz2018CVPR} introduce a parallel $C++$ implementation of \emph{meshdistance} which
+    calculates accuracy and completeness, given a ground truth mesh and a prediction. Distances are calculated by a
+    point-to-triangle method by Christopher Batty\footnote{https://github.com/christopherbatty/SDFGen last visited: \today} (~See chapter \ref{back:ptt})
+    \subsubsection*{Chamfer distance $d_C$}
+    Similarly to the \emph{meshdistance} method, to calculate the \emph{chamfer distance}, both meshes have to be uniformly sampled. 
+    In contrast, only the distance to each nearest neighbor from ground truth to reconstruction, as well as from reconstruction 
+    to ground truth, is considered for the metric.
+    While the \emph{chamfer distance} is a more simplified version of the meshdistance, it is still able to provide
+    valuable information about the quality of reconstructions.
+    %\subsubsection*{MAYBE Earthmovers distance}
+    \subsubsection*{Hausdorff distance $d_H$}
+    The \emph{hausdorff distance} describes a more sophisticated, asymmetric metric for measuring distances between two similar meshes. 
+    Anew, the ground truth mesh is sampled with the same amount of samples as the ground truth mesh possesses. For each sample, its 
+    closest point on the predicted mesh is calculated, resulting in minimum, maximum values, as well as mean values for the \emph{hausdorff distance} metric.
+    \begin{align}
+        d_{H}(\mathcal{M}_{gt},\mathcal{M}_i) = \underset{y\in\mathcal{M}_i}{sup} \underset{y\in\mathcal{M}_{gt}}{inf} d(x,y)
+    \end{align}
+    With $d(x,y)$ describing a function, calculating the distance from $x$ to $y$.
+    \subsubsection*{Visual evidence}    
+    Though subective, taking a closer look at, how well a reconstructed mesh seems to represent the ground truth mesh is important too. Relying only on 
+    numeric values may lead to reconstructions with low values, but not visually pleasing results. This is due to the complicated nature of the problem itself.
+    For a given point cloud, an indefinite amount of different reconstructions are possible. Therefore, inspecting the meshes is necessary.
+
+\subsection{Compared methods}
+
+    Restoring polygonal meshes directly from point cloud data is a new domain of geometry reconstruction, 
+    which yet has to be explored deeply. Apart from \emph{points2mesh}, no other methods relying on neural 
+    networks and deep learning techniques have yet been proposed for this kind of mode of data transformation.
+    For this reason, \emph{points2mesh} has to compete against techniques from traditional approaches like
+    \emph{ball-pivoting algorithm} \cite{817351}(~BPA~) and \emph{instant field meshes} \cite{Jakob2015Instant} (~IFM~). Furthermore, by adding
+    an intermediate step of voxelization of $\mathcal{PC}$, this work also can be compared against 
+    \emph{deep marching cubes} \cite{Liao2018CVPR} (~DeepMC~), which transforms voxelized data into meshes based on deep learning approaches and the classical
+    marching cubes algorithm.
+
+\begin{itemize}
+    \item \todo{include pixel2mesh if possible}
+\end{itemize}
+
+\section{Experiment results}
+\label{subsec:results}
+\todo{Bei jeder subsubsection auch visual quality mit zeigen}
+    The evaluation of \emph{points2mesh} and its configuration $\mathcal{C}_i$ is separated into a numerical and visual evaluation.
+    In the following subsection \ref{numericeval}, the previously explained metrics are listed and compiled against each other.
+    Likewise, \emph{points2mesh}'s reconstructions are listed to comparable methods with the same metrics.
+\subsection{Numerical evaluation}
+\label{numericeval}
+    The following subsections present the evaluation of the previously defined metrics. Since \emph{points2mesh} 
+    is trained on the ModelNet dataset, data samples from this dataset are selected for inference. About 20 percent 
+    of the provided point clouds are left out of training and thus used as the test set. Therefore, the network has 
+    never seen it before. In that way, its quality can be measured against the other methods and is comparable in the
+    first place. The other three methods against which \emph{points2mesh} is compared against, should be able to handle
+    point cloud data from ModelNet.
+\subsubsection*{Distance metric results}
+    The first comparison consists of evaluating all distance metrics $[d_m, d_C, d_H]$ for every configuration
+    $\mathcal{C}_i$ and \emph{deep marching cubes}, \emph{ball-pivoting algorithm} and \emph{instant field meshes}.
+    One hundred point clouds of each object category are taken at random from the ModelNet dataset. For each method,
+    an approximation mesh $M_{p}$ is calculated, and all distance measure metrics to its ground truth mesh computed.
+    The mean value of these metrics is noted in the tables. While the first table denotes reconstruction from 1024 
+    samples, the following denotes reconstruction from 7500 points.
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud} \label{tab:distance1024} 
+    \begin{tabular}{| l | p{1.1cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.9cm} | p{0.9cm} | p{0.9cm} |}
+        \hline
+        %airplane
+        Object category& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
+        \multirow{3}{*}{airplane}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bed
+        \multirow{3}{*}{bed}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bottle
+        \multirow{3}{*}{bottle}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bowl
+        \multirow{3}{*}{bowl}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %car
+        \multirow{3}{*}{car}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %chair
+        \multirow{3}{*}{chair}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %sofa
+        \multirow{3}{*}{sofa}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %guitar
+        \multirow{3}{*}{guitar}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %toilet
+        \multirow{3}{*}{toilet}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline\hline
+        %mean vals
+        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&c&c&c&\\
+        &$\bar{d_C}$&b&c&c&c&c&c&\\
+        &$\bar{d_H}$&b&c&c&c&c&c&\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud} \label{tab:distance7500} 
+    \begin{tabular}{| l | p{1.1cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.9cm} | p{0.9cm} | p{0.9cm} |}
+        \hline
+        %airplane
+        Object category& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
+        \multirow{3}{*}{airplane}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bed
+        \multirow{3}{*}{bed}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bottle
+        \multirow{3}{*}{bottle}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %bowl
+        \multirow{3}{*}{bowl}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %car
+        \multirow{3}{*}{car}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %chair
+        \multirow{3}{*}{chair}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+        %sofa
+        \multirow{3}{*}{sofa}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline
+         %guitar
+         \multirow{3}{*}{guitar}&$d_m$&b&c&c&c&c&c&\\
+         &$d_C$&b&c&c&c&c&c&\\
+         &$d_H$&b&c&c&c&c&c&\\
+         \hline
+        %toilet
+        \multirow{3}{*}{toilet}&$d_m$&b&c&c&c&c&c&\\
+        &$d_C$&b&c&c&c&c&c&\\
+        &$d_H$&b&c&c&c&c&c&\\
+        \hline\hline
+        %mean vals
+        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&c&c&c&\\
+        &$\bar{d_C}$&b&c&c&c&c&c&\\
+        &$\bar{d_H}$&b&c&c&c&c&c&\\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\subsubsection*{Generalization capabilities}
+    Making use of reconstruction techniques often requires the method to work in a general setting.
+    The previous experiments already showed reconstruction from \emph{points2mesh} of test samples,
+    which the network has not yet seen. With the same idea of feeding unknown data to the network,
+    the next table of evaluated metrics was created. By extending the generalization concept, 
+    point cloud samples of objects outside of the trained object categories are fed into the network.
+    For that reason, assuming to work on configuration $\mathcal{C}_1$, it has been trained on four different
+    object category collections (~See section \ref{sec:categ}~).
+    Every trained instance of $\mathcal{C}_1$, now is fed one hundred point cloud samples 
+    of \emph{bathtub} and \emph{person}, evaluating every distance metric. Even though, $\mathcal{C}_1$ has never seen any samples of these object categories.
+
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Testing with point clouds from outside of trained object categories} \label{tab:distance7500} 
+    \begin{tabular}{| l | p{1.1cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} |}
+        \hline
+        %airplane
+        Object category& metric& $\mathcal{C}_1^{big}$ & $\mathcal{C}_1^{small}$ & $\mathcal{C}_1^{airplane}$ & $\mathcal{C}_1^{toilet}$\\ \hline
+        \multirow{3}{*}{bathtub}&$d_m$&b&c&c&\\
+        &$d_C$&b&c&c&\\
+        &$d_H$&b&c&c&\\
+        \hline
+        \multirow{3}{*}{person}&$d_m$&b&c&c&\\
+        &$d_C$&b&c&c&\\
+        &$d_H$&b&c&c&\\
+        \hline\hline
+        %mean vals
+        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&\\
+        &$\bar{d_C}$&b&c&c&\\
+        &$\bar{d_H}$&b&c&c&\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection*{Varying basemesh $\mathcal{M}_i$}
+    The previously described configurations all are trained on a spheroid as initial mesh $\mathcal{M}_i$. 
+    By nature of the neural network and the sphere, objects with \emph{genus} higher than zero cannot be
+    reconstructed such that the predicted mesh has the same \emph{genus}. Since it stays constant, 
+    changing the initial mesh to a toroidal mesh may lead to possible reconstructions with \emph{genus} one. 
+    For the following evaluation, $\mathcal{C}_{1}$ is trained on such an initial toroidal mesh.
+
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Initial mesh (~torus mesh~) with a \emph{genus} of one.} \label{tab:distance7500} 
+    \begin{tabular}{| l | p{1.1cm} | p{1.2cm} |}
+        \hline
+        %airplane
+        Object category& metric& $\mathcal{C}_1$\\ \hline
+        \multirow{3}{*}{chair}&$d_m$&b\\ 
+        &$d_C$&b\\
+        &$d_H$&b\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection*{Noise robustness}
+
+\subsubsection*{Training and evaluation time}
+\todo{Den teil hier, falls zeit :)}
+For real time applications like autonomous cars, which rely on ...
+

@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 # flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 451, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
 # flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 
-    logger.set_logger_dir('train_log/fusionProjectionBig7500_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_c3_noalign_7500_big_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
