@@ -24,7 +24,7 @@ flags.DEFINE_string(
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c1_1024_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_1024_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -146,7 +146,7 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c3_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c1_1024_"+c
     counter = 0
     for pc in pcs:
 
