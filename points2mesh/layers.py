@@ -297,36 +297,11 @@ class GraphProjection(Layer):
 
         dist = tfd.Normal
 
-
-
     def projected_neighborhood(self, inputs, num_feature):
         knn_neighbors, knn_features = self.get_neighborhood(
             inputs, num_feature)
-
-        # Repeat [N,3] -> [N,K,3]
-        broadcasted_inputs = tf.stack(
-            [inputs] * knn_neighbors.shape.as_list()[1])
-        broadcasted_inputs = tf.transpose(broadcasted_inputs, [1, 0, 2])
-        vec_to_neighbors = tf.subtract(knn_neighbors, broadcasted_inputs)
-
-        knn_dist = tf.norm(vec_to_neighbors, ord='euclidean', axis=2)
-
-        # Scale vectors towards neighbors depending on technique. Pick one\
-
-        # 1 / 1 + d^2
-        # At some points more detail. Needs longer training 
-        # Litle better with negative spaces
-        # Clearer when genus is a problem
-        target_coord = self.inverse_square_dist(vec_to_neighbors, knn_dist)
-        target_feature = self.inverse_square_dist(knn_features, knn_dist)
-        # Max ?
-        #target_coord = self.gauss_dist(vec_to_neighbors, knn_dist)
-        #target_feature = self.gauss_dist(knn_features, knn_dist)
-
-        # more ?
-
-        target_coord = tf.reduce_mean(target_coord, axis=1) + inputs
-        target_feature = tf.reduce_mean(target_feature, axis=1)
+        target_coord = tf.reduce_mean(knn_neighbors, axis=1) + inputs
+        target_feature = tf.reduce_mean(knn_features, axis=1)
         return target_coord, target_feature
 
     def get_neighborhood(self, inputs, num_feature):

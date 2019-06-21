@@ -68,9 +68,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "2"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "5"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_c3_noalign_7500_big_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_c4_7500_small_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
