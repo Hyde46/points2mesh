@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_1024_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c4_1024_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -118,7 +118,7 @@ def loadTxtFiles(path):
     return files
 
 
-categories =["airplane","bed","bottle","bowl","car","chair","guitar","sofa","toilet"]
+categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","bathtub","person"]
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/single_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/chair_test"
@@ -146,7 +146,7 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c1_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c4_1024_"+c
     counter = 0
     for pc in pcs:
 
