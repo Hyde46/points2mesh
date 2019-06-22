@@ -72,15 +72,14 @@ class FlexmeshModel(ModelDesc):
         self.build_gcn_graph(positions)
 
         #connect graph and get cost
-        eltwise = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25,
-                   31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53,
-                   59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81,
-                   87, 89, 91, 93, 95, 97, 99, 101, 103, 105, 107, 109, 110]
+        eltwise = [3, 5, 7, 9, 11, 13,
+                     19, 21, 23, 25, 27, 29,
+                      35, 37, 39, 41, 43, 45,
+                      51, 53, 55, 57, 59, 61]
         eltwise = [e + 1 for e in eltwise]
         #shortcuts
         #concat = [15, 31]
-        #concat = [16, 32]
-        concat = [28, 56, 84]
+        concat = [16, 32, 48]
         self.activations.append(self.input)
 
         with tf.name_scope("mesh_deformation"):
@@ -96,18 +95,18 @@ class FlexmeshModel(ModelDesc):
         with tf.name_scope("mesh_outputs"):
             # define outputs for multi stage mesh views
             # self.output1 = tf.identity(self.activations[15],name="output1")
-            self.output1 = tf.identity(self.activations[28], name="output1")
+            self.output1 = tf.identity(self.activations[16], name="output1")
             unpool_layer = GraphPooling(
                 placeholders=self.placeholders, gt_pt=positions, pool_id=1)
             self.output_stage_1 = unpool_layer(self.output1)
 
             # self.output2 = tf.identity(self.activations[31],name="output2")
-            self.output2 = tf.identity(self.activations[56], name="output2")
+            self.output2 = tf.identity(self.activations[32], name="output2")
             unpool_layer = GraphPooling(
                 placeholders=self.placeholders, gt_pt=positions, pool_id=2)
             self.output_stage_2 = unpool_layer(self.output2)
 
-            self.output3 = tf.identity(self.activations[84], name="output3")
+            self.output3 = tf.identity(self.activations[48], name="output3")
             unpool_layer = GraphPooling(
                 placeholders=self.placeholders, gt_pt=positions, pool_id=3)
             self.output_stage_3 = unpool_layer(self.output3)
@@ -128,7 +127,7 @@ class FlexmeshModel(ModelDesc):
         def wrs_subsample(positions, features):
             # weighted reservoir sampling
             # Calculate density for each node
-            _, dist, _ = knn_bf_sym(positions, positions, K=32)
+            _, dist, _ = knn_bf_sym(positions, positions, K=8)
             # feed relative density to wrs subsampling
             density = tf.reduce_sum(dist, axis=2)
             density = tf.divide(density, tf.reduce_sum(density, 1))
@@ -203,7 +202,7 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=1,
                                             placeholders=self.placeholders, logging=self.logging))
         # Mesh deformation block with G ResNet
-        for _ in range(24):
+        for _ in range(12):
             self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                                 output_dim=FLAGS.hidden,
                                                 gcn_block_id=1,
@@ -224,7 +223,7 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=2,
                                             placeholders=self.placeholders, logging=self.logging))
         # Mesh deformation block with G ResNet
-        for _ in range(24):
+        for _ in range(12):
             self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                                 output_dim=FLAGS.hidden,
                                                 gcn_block_id=2,
@@ -243,7 +242,7 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=3,
                                             placeholders=self.placeholders, logging=self.logging))
         # Mesh deformation block with G ResNet
-        for _ in range(24):
+        for _ in range(12):
             self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                                 output_dim=FLAGS.hidden,
                                                 gcn_block_id=3,
@@ -263,7 +262,7 @@ class FlexmeshModel(ModelDesc):
                                             gcn_block_id=4,
                                             placeholders=self.placeholders, logging=self.logging))
         # Mesh deformation block with G ResNet
-        for _ in range(25):
+        for _ in range(13):
             self.layers.append(GraphConvolution(input_dim=FLAGS.hidden,
                                                 output_dim=FLAGS.hidden,
                                                 gcn_block_id=4,
@@ -350,9 +349,9 @@ class FlexmeshModel(ModelDesc):
         loss = tf.identity(loss, name="complete_loss")
 
         # GCN loss
-        # conv_layers = range(1, 15) + range(17, 31) + range(33, 48)
-        conv_layers = range(1, 27) + range(29, 55) + \
-            range(57, 83) + range(85, 112)
+        conv_layers = range(1, 15) + range(17, 31) + range(33, 47) + range(50, 64)
+        #conv_layers = range(1, 27) + range(29, 55) + \
+        #    range(57, 83) + range(85, 112)
         conv_layers = [e + 1 for e in conv_layers]
         for layer_id in conv_layers:
             for var in self.layers[layer_id].vars.values():

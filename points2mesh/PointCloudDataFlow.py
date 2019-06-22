@@ -1,3 +1,28 @@
+
+Skip to content
+Pull requests
+Issues
+Marketplace
+Explore
+@Hyde46
+
+1
+0
+
+    0
+
+Hyde46/pc2mesh Private
+Code
+Issues 0
+Pull requests 0
+Projects 0
+Wiki
+Security
+Insights
+Settings
+pc2mesh/points2mesh/PointCloudDataFlow.py
+@Hyde46 Hyde46 Prepare training 6e3f3f7 on May 15
+240 lines (207 sloc) 7.92 KB
 import os
 import multiprocessing
 
@@ -48,7 +73,6 @@ def get_allowed_categories(version):
     26 -  plant
     27 -  radio
     28 -  range_hood
-    df_noisy = noise_data_augmentation(df)
     29 -  sink
     30 -  sofa
     31 -  stairs
@@ -61,13 +85,17 @@ def get_allowed_categories(version):
     38 -  wardrobe
     39 -  xbox
     """
-    assert version in ["small", "big", "airplane"]
+    assert version in ["small", "big", "airplane", "chair", "sofa", "toilet"]
     if version == "big":
-        return [0, 2, 5, 7, 8, 12, 17, 30, 33, 35, 37]
+        return [0, 2, 5, 6, 7, 8, 17, 30, 35]
     if version == "small":
-        return [0, 2, 8, 35]
+        return [0, 7, 8, 35]
     if version == "airplane":
         return [0]
+    if version == "chair":
+        return [8]
+    if version == "sofa":
+        return [20]
     if version == "toilet":
         return [35]
     return 0
@@ -101,29 +129,20 @@ def get_modelnet_dataflow(
     Dataflow tensorpack object consisting of a collection of points in 3d space given by (x,y,z) coordinates
     and normals for each point.
     Each lmdb datafile consists of:
-
     - [x, y, z] Data if normals=False
     - [x, y, z, nx, ny, nz] Data if normals=True
-
     The files consist of the following, depending on the filename:
     model{10,40}-{train,test}-{positions-}{1024,10000}.lmdb
-
     Modelnet generated the point cloud data by sampling many different objects 10000 times thus that many samples are
     available per object. This option of 10000 samples per object is set by default by :param num_points.
     To get faster loading and iteration times, a second option of 1024 is available.
-
     model10 - Consists of about ~4000 different models from 10 different categories
     model40 - Consists of about ~10000 different models from 40 different categories
-
     train and test data set are split 60/40
-
     if normals=True, the data set will include point normals and the resulting data will have the shape [6, num_points]
     otherwise only the 3d coordinates are included resulting in a data shape of [3, num_points]
-
-
     See Modelnet40 for more information on how the samples were generated, and object categories:
     [http://modelnet.cs.princeton.edu/]
-
     :param name: Determines wether to load train or test data. String in {'train','test'}.
      Throws exception if name is neither
     :param batch_size: Size of batches of Dataflow for SGD
@@ -142,15 +161,18 @@ def get_modelnet_dataflow(
     # Two different data sets exist with either 1024 samples per object or 10000 samples per object.
     # Different amounts of samples can still be used by choosing 10000 samples per object and selecting
     # a subset of them with the disadvantage of slower loading and sampling time.
-    assert num_points in [1024, 10000]
-
+    assert num_points in [1024, 7500, 10000]
+    if num_points > 1024:
+        file_num_points = 10000
+    else:
+        file_num_points = num_points
     # Construct correct filename
     normals_str = ""
     if not normals:
         normals_str = "-positions"
 
     file_name = "model" + model_ver + "-" + name + \
-        normals_str + "-" + str(num_points) + ".lmdb"
+        normals_str + "-" + str(file_num_points) + ".lmdb"
     pass
     path = os.path.join(MODEL40PATH, file_name)
 
@@ -165,9 +187,11 @@ def get_modelnet_dataflow(
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     # seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, 1024)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]#, dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
+    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, file_num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
-
+    if num_points > 1024:
+        df = MapData(df, lambda dp: np.array(
+            dp)[:, :, :, 0:num_points].tolist())
     #df_noisy = noise_data_augmentation(df)
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     df.reset_state()
@@ -184,37 +208,33 @@ if __name__ == '__main__':
     #   np.savetxt('/home/heid/tmp/test.asc',
     #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
     #   break
-    df = get_modelnet_dataflow('train', batch_size=1, num_points=1024,
+    df = get_modelnet_dataflow('train', batch_size=1, num_points=10000,
                                model_ver="40", normals=True, prefetch_data=False)
-    # for d in df:
-    #    print " "
-    #    print d[1].shape
-    #    break
+    for d in df:
+        print np.array(d).shape
+        print " "
+        break
     # Test speed!
-    TestDataSpeed(df, 2000).start()
+    #TestDataSpeed(df, 2000).start()
 
     """
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=10000, model_ver="10", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=1024, model_ver="40", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-
         num_points=10000,
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=10000, model_ver="40", normals=False)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=1024, model_ver="10", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=10000, model_ver="10", normals=True)
     # Test speed!
@@ -223,9 +243,23 @@ if __name__ == '__main__':
         'train', batch_size=8, num_points=1024, model_ver="40", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=10000, model_ver="40", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
     """
+
+    © 2019 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Status
+    Help
+
+    Contact GitHub
+    Pricing
+    API
+    Training
+    Blog
+    About
+
