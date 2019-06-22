@@ -237,14 +237,14 @@ class GraphAlignment(Layer):
         self.gt_pt = gt_pt
 
     def _call(self, inputs):
-        #return inputs
-        mean_graph = tf.reduce_mean(inputs, axis=0)
-        mean_gt = tf.reduce_mean(self.gt_pt[0], axis=1)
-        delta_mean = tf.subtract(mean_gt, mean_graph)
-#
-        outputs = tf.add(inputs, delta_mean)
-        outputs = outputs / tf.reduce_max(tf.abs(outputs))
-        return outputs
+        return inputs
+        #mean_graph = tf.reduce_mean(inputs, axis=0)
+        #mean_gt = tf.reduce_mean(self.gt_pt[0], axis=1)
+        #delta_mean = tf.subtract(mean_gt, mean_graph)
+##
+        #outputs = tf.add(inputs, delta_mean)
+        #outputs = outputs / tf.reduce_max(tf.abs(outputs))
+        #return outputs
 
 
 class GraphProjection(Layer):

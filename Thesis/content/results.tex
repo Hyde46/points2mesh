@@ -131,57 +131,52 @@
     samples, the following denotes reconstruction from 7500 points.
 \begin{center}
     \captionof{table}{Distance metric evaluations with 1024 samples per point cloud} \label{tab:distance1024} 
-    \begin{tabular}{| l | p{1.1cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.9cm} | p{0.9cm} | p{0.9cm} |}
+    \begin{tabular}{| l | c | c | c | c | c | c | c | c |}
         \hline
         %airplane
-        Object category& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
-        \multirow{3}{*}{airplane}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        Object& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
+        \multirow{3}{*}{airplane}&$d_m^{acc}$&1491.79&c&c&c&c&c&\\
+        &$d_m^{compl}$&2283.13&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bed
-        \multirow{3}{*}{bed}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bed}&$d_m^{acc}$&87.72&c&c&c&c&c&\\
+        &$d_m^{compl}$&234.04&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bottle
-        \multirow{3}{*}{bottle}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bottle}&$d_m^{acc}$&56.93&c&c&c&c&c&\\
+        &$d_m^{compl}$&124.07&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bowl
-        \multirow{3}{*}{bowl}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bowl}&$d_m^{acc}$&4291.5&c&c&c&c&c&\\
+        &$d_m^{compl}$&4367.5&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %car
-        \multirow{3}{*}{car}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{car}&$d_m^{acc}$&526.99&c&c&c&c&c&\\
+        &$d_m^{compl}$&1996.63&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %chair
-        \multirow{3}{*}{chair}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %sofa
-        \multirow{3}{*}{sofa}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{chair}&$d_m^{acc}$&4256.81&c&c&c&c&c&\\
+        &$d_m^{compl}$&4450.96&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %guitar
-        \multirow{3}{*}{guitar}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{guitar}&$d_m^{acc}$&8243.11&c&c&c&c&c&\\
+        &$d_m^{compl}$&11290.2&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %toilet
-        \multirow{3}{*}{toilet}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{toilet}&$d_m^{acc}$&6.80&c&c&c&c&c&\\
+        &$d_m^{compl}$&28.61&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline\hline
         %mean vals
-        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&c&c&c&\\
-        &$\bar{d_C}$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{mean}&$\bar{d_m^{acc}}$&2370.2&c&c&c&c&c&\\
+        &$\bar{d_m^{compl}}$&3096.89&c&c&c&c&c&\\
         &$\bar{d_H}$&b&c&c&c&c&c&\\
         \hline
     \end{tabular}
@@ -189,57 +184,52 @@
 
 \begin{center}
     \captionof{table}{Distance metric evaluations with 7500 samples per point cloud} \label{tab:distance7500} 
-    \begin{tabular}{| l | p{1.1cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.8cm} | p{0.9cm} | p{0.9cm} | p{0.9cm} |}
+    \begin{tabular}{| l | c | c | c | c | c | c | c | c |}
         \hline
         %airplane
-        Object category& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
-        \multirow{3}{*}{airplane}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        Object& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
+        \multirow{3}{*}{airplane}&$d_m^{acc}$&1491.77&c&c&c&c&c&\\
+        &$d_m^{compl}$&2283.12&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bed
-        \multirow{3}{*}{bed}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bed}&$d_m^{acc}$&87.73&c&c&c&c&c&\\
+        &$d_m^{compl}$&234.17&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bottle
-        \multirow{3}{*}{bottle}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bottle}&$d_m^{acc}$&56.94&c&c&c&c&c&\\
+        &$d_m^{compl}$&125.17&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %bowl
-        \multirow{3}{*}{bowl}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{bowl}&$d_m^{acc}$&4291.54&c&c&c&c&c&\\
+        &$d_m^{compl}$&4367.4&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %car
-        \multirow{3}{*}{car}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{car}&$d_m^{acc}$&526.98&c&c&c&c&c&\\
+        &$d_m^{compl}$&1996.5&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
         %chair
-        \multirow{3}{*}{chair}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{chair}&$d_m^{acc}$&4256.7&c&c&c&c&c&\\
+        &$d_m^{compl}$&4451.03&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
-        %sofa
-        \multirow{3}{*}{sofa}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        %guitar
+        \multirow{3}{*}{guitar}&$d_m^{acc}$&8243.11&c&c&c&c&c&\\
+        &$d_m^{compl}$&11286.2&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline
-         %guitar
-         \multirow{3}{*}{guitar}&$d_m$&b&c&c&c&c&c&\\
-         &$d_C$&b&c&c&c&c&c&\\
-         &$d_H$&b&c&c&c&c&c&\\
-         \hline
         %toilet
-        \multirow{3}{*}{toilet}&$d_m$&b&c&c&c&c&c&\\
-        &$d_C$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{toilet}&$d_m^{acc}$&6.80&c&c&c&c&c&\\
+        &$d_m^{compl}$&28.63&c&c&c&c&c&\\
         &$d_H$&b&c&c&c&c&c&\\
         \hline\hline
         %mean vals
-        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&c&c&c&\\
-        &$\bar{d_C}$&b&c&c&c&c&c&\\
+        \multirow{3}{*}{mean}&$\bar{d_m^{acc}}$&2370.18&c&c&c&c&c&\\
+        &$\bar{d_m^{compl}}$&3096.52&c&c&c&c&c&\\
         &$\bar{d_H}$&b&c&c&c&c&c&\\
         \hline
     \end{tabular}

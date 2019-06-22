@@ -324,7 +324,7 @@ leads to interesting reconstructions worthy of evaluating in more detail.
    \label{fig:c4}
    \end{center}
 \end{figure}
-Finally, configuration $\mathcal{C}_4$ reduces the amount of convolutional layers in $\mathcal{N}_{gcn}$ as seen in figure \ref{fig:c4}.
+Finally, based on configuration $\mathcal{C}_1$, configuration $\mathcal{C}_4$ reduces the amount of convolutional layers in $\mathcal{N}_{gcn}$ as seen in figure \ref{fig:c4}.
 Furthermore, the distance based falloff $\frac{1}{1+d}$ in the \emph{projection layer} is excluded, 
 while also computing only one nearest neighbor, $k=1$ in that particular layer. 
 
@@ -350,7 +350,7 @@ Even though \emph{ModelNet40}, and thus the transformed point cloud dataset by Q
 40 different object categories, only a subset of them is chosen for training purposes of $\mathcal{N}_{recon}$. 
 The four subsets of $\mathcal{D}_{m40}$ are defined as follows:
 \begin{itemize}
-   \item \emph{Big}:[airplane,bed,bottle,bowl,chair,guitar,sofa,toilet]
+   \item \emph{Big}:[airplane,bed,bottle,bowl,chair,guitar,toilet]
    \item \emph{Small}:[airplane,chair,guitar,toilet]
    \item \emph{$single_1$}:[airplane]
    \item \emph{$single_2$}:[toilet]
