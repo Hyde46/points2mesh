@@ -35,10 +35,10 @@ flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
-                   'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
-#                    'Path to base model for mesh deformation')
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+#                   'Path to base model for mesh deformation')
+flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
+                    'Path to base model for mesh deformation')
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
 #                    'Path to base model for mesh deformation')
 
@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_noise_1024_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_torus_1024_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -147,7 +147,7 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c1_noise_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c1_torus_1024_"+c
     counter = 0 
     for pc in pcs:
 
