@@ -55,7 +55,7 @@ def load_pc(pc_path, num_points):
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
-    #data = noise_augment(data)
+    data = noise_augment(data)
     # Add single Batch [B,dp,N]
     data = data[np.newaxis, :, :]
     return data
@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_noalign_1024_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_noise_1024_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -147,7 +147,7 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c1_noalign_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c1_noise_1024_"+c
     counter = 0 
     for pc in pcs:
 

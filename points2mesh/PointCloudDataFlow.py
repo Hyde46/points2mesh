@@ -145,9 +145,11 @@ def get_modelnet_dataflow(
     # Two different data sets exist with either 1024 samples per object or 10000 samples per object.
     # Different amounts of samples can still be used by choosing 10000 samples per object and selecting
     # a subset of them with the disadvantage of slower loading and sampling time.
-    assert num_points in [1024, 7500, 10000]
+    assert num_points in [256, 1024, 7500, 10000]
     if num_points > 1024:
         file_num_points = 10000
+    elif num_points < 1024:
+        file_num_points = 1024
     else:
         file_num_points = num_points
     # Construct correct filename
@@ -173,7 +175,7 @@ def get_modelnet_dataflow(
     # seperate df from labels and seperate into positions and vertex normals
     df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, file_num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
-    if num_points > 1024:
+    if num_points > 1024 or num_points < 1023:
         df = MapData(df, lambda dp: np.array(
             dp)[:, :, :, 0:num_points].tolist())
     #df_noisy = noise_data_augmentation(df)
