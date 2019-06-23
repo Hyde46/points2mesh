@@ -24,7 +24,7 @@ flags.DEFINE_string(
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_integer(
-    'feat_dim', 498, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 483, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
@@ -46,7 +46,7 @@ num_blocks = 3
 num_supports = 2
 
 
-def noise_augment(data, noise_level=0.01):
+def noise_augment(data, noise_level=0.00):
     rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
     return data + rnd
 
@@ -55,13 +55,13 @@ def load_pc(pc_path, num_points):
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
-    data = noise_augment(data)
+    #data = noise_augment(data)
     # Add single Batch [B,dp,N]
     data = data[np.newaxis, :, :]
     return data
 
 
-def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False):
+def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False,save_off=True,num_obj=0):
 
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     #face = np.loadtxt('utils/ellipsoid/face_torus_'+str(num)+'.obj', dtype='|S32')
@@ -72,9 +72,16 @@ def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mes
     result_name = pc.replace(".txt", "_result_p"+str(num)+".obj")
     path_to_mesh = os.path.join(output, result_name)
     np.savetxt(path_to_mesh, mesh, fmt='%s', delimiter=' ')
+    if save_off:
+        obj_class, obj_num = pc.split('_')
+        obj_num = obj_num.split('.')[0]
+        path_off = os.path.join(output, str(num_obj))
+        #os.system('/home/heid/Documents/master/meshconv '+path_to_mesh+' -c off -o '+path_off)
+        os.system('/home/heid/Documents/master/meshconv '+path_to_mesh+' -c off -o '+path_off)
 
     if display_mesh:
         load_pc_meshlab(path_to_mesh)
+
 
 
 def predict(predictor, data, path):
@@ -94,7 +101,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("train_log/fusionHighDetailBig_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/inference/train_log/c2_1024_big/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -113,21 +120,23 @@ def loadTxtFiles(path):
         join(path, f)) and pattern.match(f)]
     return files
 
-
-path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/big/"
-#pcs = ["airplane_0627.txt", "airplane_0628.txt", "airplane_0629.txt", "bathtub_0146.txt", "car_0140.txt", "car_0160.txt", "car_0198.txt", "desk_0214.txt", "guitar_0188.txt", "person1.txt", "piano_0316.txt", "toilet1.txt", "toilet2.txt"]
-pcs = loadTxtFiles(path)
-path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/"
+categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","person","bathtub"]
 
 predictor = loadModel()
 #predictor = 0
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "2"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+for c in categories:
 
-for pc in pcs:
+    path = "/graphics/scratch/students/heid/evaluation_set/"+c
+    pcs = loadTxtFiles(path)
+    path_output = "/graphics/scratch/students/heid/inference/c2_1024_"+c
+    counter = 0
+    for pc in pcs:
 
-    path_pc = os.path.join(path, pc)
-    pc_inp = load_pc(path_pc, num_points=1024)
-    vertices = predict(predictor, pc_inp, path_pc)
-    create_inference_mesh(vertices[3], 4, pc,
-                          path_pc, path_output, display_mesh=False)
+        path_pc = os.path.join(path, pc)
+        pc_inp = load_pc(path_pc, num_points=1024)
+        vertices = predict(predictor, pc_inp, path_pc)
+        create_inference_mesh(vertices[3], 4, pc,
+                            path_pc, path_output, display_mesh=False, num_obj=counter)
+        counter = counter + 1
