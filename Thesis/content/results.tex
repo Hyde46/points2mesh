@@ -66,28 +66,27 @@
     are described in the following. 
 
     \subsubsection*{Meshdistance $d_m$}    
-    In 3D vision, a commonly used metric to compare the quality of meshes is done with completeness and accuracy of the
-    predicted mesh in comparison to the ground truth mesh. Based on uniformly sampled points on both meshes, completeness and
-    accuracy can be defined. While the completeness describes the distance of points of
-    ground truth to the predicted mesh, accuracy describes the distance of points from predicted mesh to ground truth.
+    In 3D vision, a commonly used metric to compare the quality of meshes is done with completeness of the
+    predicted mesh in comparison to the ground truth mesh. Based on uniformly sampled points on both meshes, completeness describes the distance of points of
+    ground truth to the predicted mesh. 
     Stutz et al. \cite{Stutz2017, Stutz2018CVPR} introduce a parallel $C++$ implementation of \emph{meshdistance} which
-    calculates accuracy and completeness, given a ground truth mesh and a prediction. Distances are calculated by a
+    calculates completeness, given a ground truth mesh and a prediction. Distances are calculated by a
     point-to-triangle method by Christopher Batty\footnote{https://github.com/christopherbatty/SDFGen last visited: \today} (~See chapter \ref{back:ptt})
-    \subsubsection*{Chamfer distance $d_C$}
-    Similarly to the \emph{meshdistance} method, to calculate the \emph{chamfer distance}, both meshes have to be uniformly sampled. 
-    In contrast, only the distance to each nearest neighbor from ground truth to reconstruction, as well as from reconstruction 
-    to ground truth, is considered for the metric.
-    While the \emph{chamfer distance} is a more simplified version of the meshdistance, it is still able to provide
-    valuable information about the quality of reconstructions.
+    %\subsubsection*{Chamfer distance $d_C$}
+    %Similarly to the \emph{meshdistance} method, to calculate the \emph{chamfer distance}, both meshes have to be uniformly sampled. 
+    %In contrast, only the distance to each nearest neighbor from ground truth to reconstruction, as well as from reconstruction 
+    %to ground truth, is considered for the metric.
+    %While the \emph{chamfer distance} is a more simplified version of the meshdistance, it is still able to provide
+    %valuable information about the quality of reconstructions.
     %\subsubsection*{MAYBE Earthmovers distance}
-    \subsubsection*{Hausdorff distance $d_H$}
-    The \emph{hausdorff distance} describes a more sophisticated, asymmetric metric for measuring distances between two similar meshes. 
-    Anew, the ground truth mesh is sampled with the same amount of samples as the ground truth mesh possesses. For each sample, its 
-    closest point on the predicted mesh is calculated, resulting in minimum, maximum values, as well as mean values for the \emph{hausdorff distance} metric.
-    \begin{align}
-        d_{H}(\mathcal{M}_{gt},\mathcal{M}_i) = \underset{y\in\mathcal{M}_i}{sup} \underset{y\in\mathcal{M}_{gt}}{inf} d(x,y)
-    \end{align}
-    With $d(x,y)$ describing a function, calculating the distance from $x$ to $y$.
+    %\subsubsection*{Hausdorff distance $d_H$}
+    %The \emph{hausdorff distance} describes a more sophisticated, asymmetric metric for measuring distances between two similar meshes. 
+    %Anew, the ground truth mesh is sampled with the same amount of samples as the ground truth mesh possesses. For each sample, its 
+    %closest point on the predicted mesh is calculated, resulting in minimum, maximum values, as well as mean values for the \emph{hausdorff distance} metric.
+    %\begin{align}
+    %    d_{H}(\mathcal{M}_{gt},\mathcal{M}_i) = \underset{y\in\mathcal{M}_i}{sup} \underset{y\in\mathcal{M}_{gt}}{inf} d(x,y)
+    %\end{align}
+    %With $d(x,y)$ describing a function, calculating the distance from $x$ to $y$.
     \subsubsection*{Visual evidence}    
     Though subective, taking a closer look at, how well a reconstructed mesh seems to represent the ground truth mesh is important too. Relying only on 
     numeric values may lead to reconstructions with low values, but not visually pleasing results. This is due to the complicated nature of the problem itself.
@@ -130,20 +129,20 @@
     The mean value of these metrics is noted in the tables. While the first table denotes reconstruction from 1024 
     samples, the following denotes reconstruction from 7500 points.
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 256 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \captionof{table}{Distance metric evaluations with 256 samples per point cloud. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance1024} 
     \begin{tabular}{| l  | c  | c | c | c | c | c |}
         \hline
         %airplane
-        Object& $\mathcal{C}_1$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.093&&0.153&\\\hline
-        \multirow{1}{*}{bed}&0.028&&0.123&\\\hline 
-        \multirow{1}{*}{bottle}&0.016&&0.134&\\\hline
-        \multirow{1}{*}{bowl}&0.044&&0.133&\\\hline
-        \multirow{1}{*}{car}&0.035&&0.199&\\\hline
-        \multirow{1}{*}{chair}&0.038&&0.188&\\\hline
-        \multirow{1}{*}{guitar}&0.027&&0.325&\\\hline
-        \multirow{1}{*}{toilet}&0.082&&0.135&\\\hline\hline
-        \multirow{1}{*}{mean}&0&c&0&\\        \hline
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & DMC & IFM & BPA \\ \hline
+        \multirow{1}{*}{airplane}&0.093&0.12&&0.153&\\\hline
+        \multirow{1}{*}{bed}&0.028&0.049&&0.123&\\\hline 
+        \multirow{1}{*}{bottle}&0.016&0.014&&0.134&\\\hline
+        \multirow{1}{*}{bowl}&0.044&0.089&&0.133&\\\hline
+        \multirow{1}{*}{car}&0.035&0.058&&0.199&\\\hline
+        \multirow{1}{*}{chair}&0.038&0.045&&0.188&\\\hline
+        \multirow{1}{*}{guitar}&0.027&0.039&&0.325&\\\hline
+        \multirow{1}{*}{toilet}&0.082&0.075&&0.135&\\\hline\hline
+        \multirow{1}{*}{mean}&0.045&0.061&&0.200&\\        \hline
     \end{tabular}
 \end{center}
 \begin{center}
@@ -152,32 +151,32 @@
         \hline
         %airplane
         Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.011&0.091&0.014&0.011&c&0.10&\\\hline
-        \multirow{1}{*}{bed}&0.016&0.012&0.018&0.016&c&0.099&\\        \hline
-        \multirow{1}{*}{bottle}&0.010&0.007&0.010&0.008&c&0.10&\\        \hline
-        \multirow{1}{*}{bowl}&0.025&0.03&0.029&0.022&c&0.097&\\        \hline
-        \multirow{1}{*}{car}&0.021&0.017&0.024&0.021&c&0.163&\\        \hline
-        \multirow{1}{*}{chair}&0.018&0.012&0.020&0.017&c&0.172&\\        \hline
-        \multirow{1}{*}{guitar}&0.014&0.01&0.022&0.017&c&0.234&\\        \hline
-        \multirow{1}{*}{toilet}&0.029&0.016&0.028&0.025&c&0.109&\\        \hline\hline
-        \multirow{1}{*}{mean}&0.018&0.024&0.021&0.018&c&0.134&\\        \hline
+        \multirow{1}{*}{airplane}&0.011&0.091&0.014&0.011&&0.10&\\\hline
+        \multirow{1}{*}{bed}&0.016&0.012&0.018&0.016&&0.099&\\        \hline
+        \multirow{1}{*}{bottle}&0.010&0.007&0.010&0.008&&0.10&\\        \hline
+        \multirow{1}{*}{bowl}&0.025&0.03&0.029&0.022&&0.097&\\        \hline
+        \multirow{1}{*}{car}&0.021&0.017&0.024&0.021&&0.163&\\        \hline
+        \multirow{1}{*}{chair}&0.018&0.012&0.020&0.017&&0.172&\\        \hline
+        \multirow{1}{*}{guitar}&0.014&0.01&0.022&0.017&&0.234&\\        \hline
+        \multirow{1}{*}{toilet}&0.029&0.016&0.028&0.025&&0.109&\\        \hline\hline
+        \multirow{1}{*}{mean}&0.018&0.024&0.021&0.018&&0.134&\\        \hline
     \end{tabular}
 \end{center}
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance1024} 
     \begin{tabular}{| l  | c | c | c | c | c | c | c |}
         \hline
         %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.015&&&&\\\hline
-        \multirow{1}{*}{bed}&0.016&&&&\\\hline
-        \multirow{1}{*}{bottle}&0.011&&&&\\\hline
-        \multirow{1}{*}{bowl}&0.021&&&&\\\hline
-        \multirow{1}{*}{car}&0.019&&&&\\\hline
-        \multirow{1}{*}{chair}&0.018&&&&\\\hline
-        \multirow{1}{*}{guitar}&0.017&&&&\\\hline
-        \multirow{1}{*}{toilet}&0.033&&&&\\\hline
-        \multirow{1}{*}{mean}&&&&&\\\hline
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_4$ & DMC & IFM & BPA \\ \hline
+        \multirow{1}{*}{airplane}&0.015&0.092&&0.090&\\\hline
+        \multirow{1}{*}{bed}&0.016&0.015&&0.089&\\\hline
+        \multirow{1}{*}{bottle}&0.011&0.009&&0.096&\\\hline
+        \multirow{1}{*}{bowl}&0.021&0.021&&0.091&\\\hline
+        \multirow{1}{*}{car}&0.019&0.019&&0.153&\\\hline
+        \multirow{1}{*}{chair}&0.018&0.016&&0.126&\\\hline
+        \multirow{1}{*}{guitar}&0.017&0.013&&0.212&\\\hline
+        \multirow{1}{*}{toilet}&0.033&0.028&&0.101&\\\hline\hline
+        \multirow{1}{*}{mean}&0.018&0.027&&0.119&\\\hline
     \end{tabular}
 \end{center}
 \subsubsection*{Generalization capabilities}
@@ -193,24 +192,15 @@
 
 \begin{center}
     \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Testing with point clouds from outside of trained object categories} \label{tab:distance7500} 
-    \begin{tabular}{| l | p{1.1cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} |}
-        \hline
-        %airplane
-        Object category& metric& $\mathcal{C}_1^{big}$ & $\mathcal{C}_1^{small}$ & $\mathcal{C}_1^{airplane}$ & $\mathcal{C}_1^{toilet}$\\ \hline
-        \multirow{3}{*}{bathtub}&$d_m$&b&c&c&\\
-        &$d_C$&b&c&c&\\
-        &$d_H$&b&c&c&\\
-        \hline
-        \multirow{3}{*}{person}&$d_m$&b&c&c&\\
-        &$d_C$&b&c&c&\\
-        &$d_H$&b&c&c&\\
-        \hline\hline
-        %mean vals
-        \multirow{3}{*}{mean metrics}&$\bar{d_m}$&b&c&c&\\
-        &$\bar{d_C}$&b&c&c&\\
-        &$\bar{d_H}$&b&c&c&\\
-        \hline
-    \end{tabular}
+    \begin{center}
+        \begin{tabular}{| l  | c | c | c | c |}
+            \hline
+            %airplane
+            Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ \\ \hline
+            \multirow{1}{*}{bathtub}&0.021&0.015&0.067&0.024\\\hline
+            \multirow{1}{*}{person}&0.154&0.137&0.181&0.146\\\hline
+        \end{tabular}
+    \end{center}
 \end{center}
 
 \subsubsection*{Varying basemesh $\mathcal{M}_i$}
@@ -221,21 +211,43 @@
     For the following evaluation, $\mathcal{C}_{1}$ is trained on such an initial toroidal mesh.
 
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Initial mesh (~torus mesh~) with a \emph{genus} of one.} \label{tab:distance7500} 
-    \begin{tabular}{| l | p{1.1cm} | p{1.2cm} |}
-        \hline
-        %airplane
-        Object category& metric& $\mathcal{C}_1$\\ \hline
-        \multirow{3}{*}{chair}&$d_m$&b\\ 
-        &$d_C$&b\\
-        &$d_H$&b\\
-        \hline
-    \end{tabular}
+    \captionof{table}{Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Initial mesh (~torus mesh~) with a \emph{genus} of one.} \label{tab:distance7500} 
+    \begin{center}
+        \begin{tabular}{| l  | c | c |}
+            \hline
+            %airplane
+            Object& $\mathcal{C}_1^{torus}$ & $\mathcal{C}_1^{sphere}$ \\ \hline
+            \multirow{1}{*}{airplane}&0.019&0.011\\\hline
+            \multirow{1}{*}{toilet}&0.32&0.029\\\hline
+        \end{tabular}
+    \end{center}
 \end{center}
 
 \subsubsection*{Noise robustness}
-
+\begin{center}
+    \captionof{table}{Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Comparison of configuration $\mathcal{C}_1$ trained with and without noise (\emph{noise level} of 0.01). Inference with noisy data of the same \emph{noise level}.} \label{tab:distance7500} 
+    \begin{center}
+        \begin{tabular}{| l  | c | c |}
+            \hline
+            %airplane
+            Object& $\mathcal{C}_1^{noisy}$ & $\mathcal{C}_1^{clean}$ \\ \hline
+            \multirow{1}{*}{airplane}&0.090&0.012\\\hline
+            \multirow{1}{*}{bed}&0.017&0.011\\\hline
+            \multirow{1}{*}{bottle}&0.017&0.016\\\hline
+            \multirow{1}{*}{bowl}&0.029&0.025\\\hline
+            \multirow{1}{*}{car}&0.023&0.021\\\hline
+            \multirow{1}{*}{chair}&0.018&0.018\\\hline
+            \multirow{1}{*}{guitar}&0.015&0.014\\\hline
+            \multirow{1}{*}{toilet}&0.041&0.016\\\hline\hline
+            \multirow{1}{*}{mean}&0.031&0.018\\\hline
+        \end{tabular}
+    \end{center}
+\end{center}
 \subsubsection*{Training and evaluation time}
 \todo{Den teil hier, falls zeit :)}
 For real time applications like autonomous cars, which rely on ...
+pc2mesh:
+
+0.046394 seconds fuer 1024
+
 
