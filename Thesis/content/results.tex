@@ -130,112 +130,56 @@
     The mean value of these metrics is noted in the tables. While the first table denotes reconstruction from 1024 
     samples, the following denotes reconstruction from 7500 points.
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud} \label{tab:distance1024} 
-    \begin{tabular}{| l | c | c | c | c | c | c | c | c |}
+    \captionof{table}{Distance metric evaluations with 256 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \begin{tabular}{| l  | c  | c | c | c | c | c |}
         \hline
         %airplane
-        Object& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
-        \multirow{3}{*}{airplane}&$d_m^{acc}$&1491.79&c&c&c&c&c&\\
-        &$d_m^{compl}$&2283.13&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bed
-        \multirow{3}{*}{bed}&$d_m^{acc}$&87.72&c&c&c&c&c&\\
-        &$d_m^{compl}$&234.04&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bottle
-        \multirow{3}{*}{bottle}&$d_m^{acc}$&56.93&c&c&c&c&c&\\
-        &$d_m^{compl}$&124.07&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bowl
-        \multirow{3}{*}{bowl}&$d_m^{acc}$&4291.5&c&c&c&c&c&\\
-        &$d_m^{compl}$&4367.5&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %car
-        \multirow{3}{*}{car}&$d_m^{acc}$&526.99&c&c&c&c&c&\\
-        &$d_m^{compl}$&1996.63&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %chair
-        \multirow{3}{*}{chair}&$d_m^{acc}$&4256.81&c&c&c&c&c&\\
-        &$d_m^{compl}$&4450.96&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %guitar
-        \multirow{3}{*}{guitar}&$d_m^{acc}$&8243.11&c&c&c&c&c&\\
-        &$d_m^{compl}$&11290.2&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %toilet
-        \multirow{3}{*}{toilet}&$d_m^{acc}$&6.80&c&c&c&c&c&\\
-        &$d_m^{compl}$&28.61&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline\hline
-        %mean vals
-        \multirow{3}{*}{mean}&$\bar{d_m^{acc}}$&2370.2&c&c&c&c&c&\\
-        &$\bar{d_m^{compl}}$&3096.89&c&c&c&c&c&\\
-        &$\bar{d_H}$&b&c&c&c&c&c&\\
-        \hline
+        Object& $\mathcal{C}_1$ & DMC & IFM & BPA \\ \hline
+        \multirow{1}{*}{airplane}&0.093&&0.153&\\\hline
+        \multirow{1}{*}{bed}&0.028&&0.123&\\\hline 
+        \multirow{1}{*}{bottle}&0.016&&0.134&\\\hline
+        \multirow{1}{*}{bowl}&0.044&&0.133&\\\hline
+        \multirow{1}{*}{car}&0.035&&0.199&\\\hline
+        \multirow{1}{*}{chair}&0.038&&0.188&\\\hline
+        \multirow{1}{*}{guitar}&0.027&&0.325&\\\hline
+        \multirow{1}{*}{toilet}&0.082&&0.135&\\\hline\hline
+        \multirow{1}{*}{mean}&0&c&0&\\        \hline
     \end{tabular}
 \end{center}
-
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud} \label{tab:distance7500} 
-    \begin{tabular}{| l | c | c | c | c | c | c | c | c |}
+    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \begin{tabular}{| l  | c | c | c | c | c | c | c |}
         \hline
         %airplane
-        Object& metric& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & BPA & IFM \\ \hline
-        \multirow{3}{*}{airplane}&$d_m^{acc}$&1491.77&c&c&c&c&c&\\
-        &$d_m^{compl}$&2283.12&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bed
-        \multirow{3}{*}{bed}&$d_m^{acc}$&87.73&c&c&c&c&c&\\
-        &$d_m^{compl}$&234.17&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bottle
-        \multirow{3}{*}{bottle}&$d_m^{acc}$&56.94&c&c&c&c&c&\\
-        &$d_m^{compl}$&125.17&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %bowl
-        \multirow{3}{*}{bowl}&$d_m^{acc}$&4291.54&c&c&c&c&c&\\
-        &$d_m^{compl}$&4367.4&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %car
-        \multirow{3}{*}{car}&$d_m^{acc}$&526.98&c&c&c&c&c&\\
-        &$d_m^{compl}$&1996.5&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %chair
-        \multirow{3}{*}{chair}&$d_m^{acc}$&4256.7&c&c&c&c&c&\\
-        &$d_m^{compl}$&4451.03&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %guitar
-        \multirow{3}{*}{guitar}&$d_m^{acc}$&8243.11&c&c&c&c&c&\\
-        &$d_m^{compl}$&11286.2&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline
-        %toilet
-        \multirow{3}{*}{toilet}&$d_m^{acc}$&6.80&c&c&c&c&c&\\
-        &$d_m^{compl}$&28.63&c&c&c&c&c&\\
-        &$d_H$&b&c&c&c&c&c&\\
-        \hline\hline
-        %mean vals
-        \multirow{3}{*}{mean}&$\bar{d_m^{acc}}$&2370.18&c&c&c&c&c&\\
-        &$\bar{d_m^{compl}}$&3096.52&c&c&c&c&c&\\
-        &$\bar{d_H}$&b&c&c&c&c&c&\\
-        \hline
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & IFM & BPA \\ \hline
+        \multirow{1}{*}{airplane}&0.011&0.091&0.014&0.011&c&0.10&\\\hline
+        \multirow{1}{*}{bed}&0.016&0.012&0.018&0.016&c&0.099&\\        \hline
+        \multirow{1}{*}{bottle}&0.010&0.007&0.010&0.008&c&0.10&\\        \hline
+        \multirow{1}{*}{bowl}&0.025&0.03&0.029&0.022&c&0.097&\\        \hline
+        \multirow{1}{*}{car}&0.021&0.017&0.024&0.021&c&0.163&\\        \hline
+        \multirow{1}{*}{chair}&0.018&0.012&0.020&0.017&c&0.172&\\        \hline
+        \multirow{1}{*}{guitar}&0.014&0.01&0.022&0.017&c&0.234&\\        \hline
+        \multirow{1}{*}{toilet}&0.029&0.016&0.028&0.025&c&0.109&\\        \hline\hline
+        \multirow{1}{*}{mean}&0.018&0.024&0.021&0.018&c&0.134&\\        \hline
     \end{tabular}
 \end{center}
-
-
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \begin{tabular}{| l  | c | c | c | c | c | c | c |}
+        \hline
+        %airplane
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & DMC & IFM & BPA \\ \hline
+        \multirow{1}{*}{airplane}&0.015&&&&\\\hline
+        \multirow{1}{*}{bed}&0.016&&&&\\\hline
+        \multirow{1}{*}{bottle}&0.011&&&&\\\hline
+        \multirow{1}{*}{bowl}&0.021&&&&\\\hline
+        \multirow{1}{*}{car}&0.019&&&&\\\hline
+        \multirow{1}{*}{chair}&0.018&&&&\\\hline
+        \multirow{1}{*}{guitar}&0.017&&&&\\\hline
+        \multirow{1}{*}{toilet}&0.033&&&&\\\hline
+        \multirow{1}{*}{mean}&&&&&\\\hline
+    \end{tabular}
+\end{center}
 \subsubsection*{Generalization capabilities}
     Making use of reconstruction techniques often requires the method to work in a general setting.
     The previous experiments already showed reconstruction from \emph{points2mesh} of test samples,

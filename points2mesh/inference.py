@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_torus_1024_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c3_noise_1024_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -147,11 +147,11 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c1_torus_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c1_noise_1024_"+c
     counter = 0 
     for pc in pcs:
 
-        path_pc = os.path.join(path, pc)
+        path_pc = os.path.join(path, pc)    
         pc_inp = load_pc(path_pc, num_points=1024)
         vertices = predict(predictor, pc_inp, path_pc)
         create_inference_mesh(vertices[2], 3, pc,
