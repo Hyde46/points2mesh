@@ -1,26 +1,48 @@
 
 % write content here or...
 \chapter{Introduction}
+  For humans to interact with the world depends on many variables. 
+  An important aspect is to recognize, analyze, and estimate the position,
+  as well as the shape of objects positioned in the world around. For many years,
+  to this day, artificial agents have been developed and deployed in the real world\cite{1087032,10.1007978-981-13-0224-4_40} 
+  to imitate how humans interact with it. Similarly, a robot has to understand its environment
+  by analyzing and interpreting its surroundings. Understanding exactly this requires first and 
+  foremost prior comprehension of the shape of nearby objects. 
+  Similar to general robotic applications, the by now more feasible solution for autonomous driving
+  needs analogous information of its obstacles to prevent collisions and thus allow for safe guidance
+  through traffic.
+  Typically, objects are recorded in a way, which results in unstructured, three-dimensional point
+  cloud data, for example, with the help of range scanners or structured light.
 
 
-\begin{enumerate}
-    \item robotics, interact with real world
-    \item understand env
-    \item what is it, they are working with
-    \item autonomous driving 
-    \item thus object analysis 
-    \item digitize objects somehow
-    \item round about of different kinds already present
-    %\item List different representations of objects (meshes, pointcloud, voxels,structured light, kinect depth..)
-    \item lots of data readily available
-    \item present novel network configurations deep learning based
-    \item end to end solution for shape inference from PC to mesh
-    \item some modified loss functions for good results
-    \item determine how well it is doing this functions
-    \item compare to work doing similar things
-    \item non learning based/ learning based
-    \item maybe small user study??
-  \end{enumerate}
-\section{Problem Statement}
-mathmatic formulation
-\section{chapter recapitulation}
+  Though obtaining information about samples of an object already provides a way to process a three-dimensional object;
+  still, the preferred way to operate is in the form of surface information like tri-or quad-meshes.
+  Transforming such point cloud data into meshes is a prevalent problem in the context of computer vision. Thus, numerous
+  methods have been developed, aiming to solve that problem\cite{817351,Jakob2015Instant}.
+
+  With recent advancements in deep learning and the abundance of readily available data, much work has been poured
+  into neural networks which can process the real world robustly. Consequently, solving the same problem of processing 
+  unstructured points in three-dimensional space and obtaining polygonal meshes has garnered attention. Though, many methods 
+  rely on voxelized data, since neural networks can naturally process structured data better than unstructured spatial data.
+
+  In this work, a novel convolutional neural network configuration is proposed which obtains tri-meshes from unstructured point cloud data.
+  By deforming an initial base-mesh based on learned tension feature vectors from the data, the network can reliably generate approximations
+  even with low-resolution or noisy data. 
+  Since this network is the first of its kind, it is essential to assess its capabilities in comparison to the traditional methods. 
+  Therefore, part of this work is to identify its strengths and weaknesses and determine where it may find use and how to build upon it.
+
+  \subsubsection*{Chapter revision}
+  \todo{ueberarbeiten. ist schon wieder nicht aktuell}
+  First, a revision of techniques and methods are described in chapter \ref{sec:background} to lay the groundwork for this thesis. In chapter \ref{sec:relatedwork}, 
+  numerous traditional, as well as machine learning based methods, are reviewed, which work on the transformation of three-dimensional data to polygonal
+  meshes.
+  After that, the graph based neural network \emph{points2mesh} is explained in detail, how it handles and learns from point cloud data but also how
+   it deforms a base-mesh to approximate the underlying object represented by the data.
+  Then, in chapter \ref{chap:results} based on different configurations for the neural network, an assortment of resulting meshes are presented and
+   contrasted to each other.
+  Followed by section \ref{chap:evaluation}, a numerical evaluation, and discussion are conducted to assess the capabilities of the network and its 
+  varied proposed configurations. By defining a comparable metric for evaluation, related methods achieving similar results can be analyzed and thus 
+  measured against each other.
+  To conclude, in chapter \ref{sec:outlook}, the thesis is resolved by taking a look at possible ways of expanding on the network and outlining what
+   has been achieved.
+  

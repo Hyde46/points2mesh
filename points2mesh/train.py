@@ -18,7 +18,7 @@ enable_argscope_for_module(tf.layers)
 # TOTAL_BATCH_SIZE = 16
 TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
-NUM_EPOCH = 125
+NUM_EPOCH = 1
 
 PC = {'num': 256, 'dp': 3, 'ver': "40"}
 
@@ -35,10 +35,8 @@ FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 # flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
-    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
-# flags.DEFINE_integer('feat_dim', 451, 'Number of units in FlexConv Feature layer')
-# flags.DEFINE_integer('feat_dim', 15, 'Number of units in FlexConv Feature layer')
-# flags.DEFINE_integer('feat_dim', 230, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
@@ -70,7 +68,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "4"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_c3_256_big_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_only_sphere_big_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

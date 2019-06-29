@@ -1,253 +1,205 @@
 \chapter{Results}
-\label{sec:results}
+\label{chap:results}
 
-    An indefinite amount of different meshes can represent the same object.
-    Consequently, even more meshes exist, which approximate that same object. 
-    Therefore, quantifying the quality of reconstructed meshes is a critical aspect for 
-    this application, likewise for similar ones. Only by being able to determine applications
-    with higher qualitative results facilitate improvement in the field of mesh 
-    reconstruction. 
-    \emph{points2mesh} and its described configurations $\mathcal{C}_i$ aim to improve on previous work,
-    reconstructing meshes from point cloud data. Its advantages and drawbacks, in contrast to similar efforts, 
-    or even reconstruction methods working on other data types, rather than point cloud data, have to be clearly
-    defined and evaluated.
-    Even though the goal of this work is to reconstruct visually pleasing reconstructions for mesh approximations, 
-    considering raw numeric evaluations is nevertheless a crucial component.
+    By the nature of the defined configurations $\mathcal{C}_i$, the neural network
+    \emph{points2mesh} has several reconstructions for each input point cloud $\mathcal{PC}$.
+    Since it is not easy to estimate the quality of reconstructed meshes only based on numerical
+    values, it is vital to assess their visual quality, tough highly subjective.
+    Therefore, in this chapter, a wide range of reconstructed objects of various categories $\mathcal{C}_i$
+    are presented and displayed next to their input point cloud $\mathcal{PC}$ and their ground 
+    truth mesh. Some interesting features of reconstructions are pointed out, and presented with reconstructions of comparable
+    reconstruction methods.
+    
+\section{Compared methods}
 
-    In section \ref{subsec:exp}, the experimental setup is described, which tries to assess
-    the quality of reconstructed meshes and compare the defined metrics to other reconstruction methods. 
-    Subsequently, the results of the experimental setup are presented in section \ref{subsec:results}, where
-    each experiment is accompanied by renderings of some of the reconstructed meshes.
+Restoring polygonal meshes directly from point cloud data is a new domain of geometry reconstruction, 
+which yet has to be explored deeply. Apart from \emph{points2mesh}, no other methods relying on neural 
+networks and deep learning techniques have yet been proposed for this kind of mode of data transformation.
+For this reason, \emph{points2mesh} has to compete against techniques from traditional approaches like
+\emph{ball-pivoting algorithm} \cite{817351}(~BPA~) and \emph{instant field meshes} \cite{Jakob2015Instant} (~IFM~). Furthermore, by adding
+an intermediate step of voxelization of $\mathcal{PC}$, this work also can be compared against 
+\emph{deep marching cubes} \cite{Liao2018CVPR} (~DMC~), which transforms voxelized data into meshes based on deep learning approaches and the classical
+marching cubes algorithm.
+
+\section{Result visualization}
+% 1024Figure
+  \ref{fig:1} shows the reconstruction from a point cloud sample size of 1024 from the \emph{category}
+  \emph{airplane}. \ref{fig:1a} shows the ground truth mesh, and \ref{fig:1d} its sampled point cloud. Figures
+  \ref{fig:1b}, \ref{fig:1c}, \ref{fig:1e}, \ref{fig:1f} show the reconstruction from $\mathcal{N}_{recon}$ with 
+  configurations $\mathcal{C}_1$ through $\mathcal{C}_4$.
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:1a}]{\includegraphics[width=0.32\textwidth]{gt_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:1b}]{\includegraphics[width=0.32\textwidth]{c1_1024_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:1c}]{\includegraphics[width=0.32\textwidth]{c2_1024_airplane_1.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:1d}]{\includegraphics[width=0.32\textwidth]{airplane_1_pc.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:1e}]{\includegraphics[width=0.32\textwidth]{c3_1024_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:1f}]{\includegraphics[width=0.32\textwidth]{c4_1024_airplane_1.png}}\\
+  \subfloat[Reconstrucion with \emph{BPA}.\label{fig:1g}]{\includegraphics[width=0.32\textwidth]{airplane_bpa_1024.png}}
+  \subfloat[Reconstruction with \emph{IFM}.\label{fig:1h}]{\includegraphics[width=0.32\textwidth]{ifm_1024_airplane_1.png}}
+  \subfloat[Reconstruction with \emph{DMC}.\label{fig:1i}]{\includegraphics[width=0.32\textwidth]{dmc_airplane.png}}
+  \caption{Reconstruction of an airplane from point cloud with 1024 samples.} \label{fig:1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:2a}]{\includegraphics[width=0.32\textwidth]{gt_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:2b}]{\includegraphics[width=0.32\textwidth]{c1_1024_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:2c}]{\includegraphics[width=0.32\textwidth]{c2_1024_chair_1.png}}\\
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:2d}]{\includegraphics[width=0.32\textwidth]{c3_1024_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:2epro}]{\includegraphics[width=0.32\textwidth]{c4_1024_chair_1.png}}
+  \caption{Reconstruction of a chair from point cloud with 1024 samples.} \label{fig:2}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:3a}]{\includegraphics[width=0.32\textwidth]{gt_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:3b}]{\includegraphics[width=0.32\textwidth]{c1_1024_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:3c}]{\includegraphics[width=0.32\textwidth]{c2_1024_guitar_1.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:3d}]{\includegraphics[width=0.32\textwidth]{guitar_pc00.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:3e}]{\includegraphics[width=0.32\textwidth]{c3_1024_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:3f}]{\includegraphics[width=0.32\textwidth]{c4_1024_guitar_1.png}}\\
+  \subfloat[\emph{IFM} guitar reconstruction.\label{fig:3g}]{\includegraphics[width=0.32\textwidth]{ifm_1024_guitar_1.png}}
+  \subfloat[\emph{DMC} guitar reconstruction.\label{fig:3h}]{\includegraphics[width=0.32\textwidth]{dmc_guitar.png}}
+  \caption{Reconstruction of a guitar from point cloud with 1024 samples.} \label{fig:3}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:4a}]{\includegraphics[width=0.32\textwidth]{gt_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:4b}]{\includegraphics[width=0.32\textwidth]{c1_1024_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:4c}]{\includegraphics[width=0.32\textwidth]{c2_1024_bowl_1.png}}\\
+  \subfloat[Reconstruction with \emph{DMC}\label{fig:4d}]{\includegraphics[width=0.32\textwidth]{dmc_bowl.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:4e}]{\includegraphics[width=0.32\textwidth]{c3_1024_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:4f}]{\includegraphics[width=0.32\textwidth]{c4_1024_bowl_1.png}}
+  \caption{Reconstruction of a bowl from point cloud with 1024 samples.} \label{fig:4}
+\end{figure}
+
+  The last row depicts reconstructions with \emph{BPA}, \emph{IFM}, and \emph{DMC}. While the reconstruction with configuration 
+  $\mathcal{C}_1$ represents the most interesting features of the airplane, especially the small winglets, it still has some errors. 
+  One of the errors is at the rear of the plane with an edge dangling in the air, spanning over it. The same error happens with configuration
+  $\mathcal{C}_3$ and $\mathcal{C}_4$ too. Configuration $\mathcal{C}_2$ seems to represent the airplane's features the best, though the least
+  smooth of all reconstructions. As seen in figures \ref{fig:1f} and \ref{fig:2c}, configuration $\mathcal{C}_2$ is generally depicting the ground
+    truth mesh in a good way, though not smooth.
+  Considering other reconstruction methods, different problems, but also positives can be seen. \emph{BPA} reproduces smooth results as seen 
+  in figure \ref{fig:1g}, while \emph{IFM} does not perform as well on low samples (~256 and 1024~) as seen in figure \ref{fig:1h}. Generally 
+  \emph{DMC} does not perform good either as seen in figures \ref{fig:1i} and \ref{fig:3h}.
+
+  Similarly, figure \ref{fig:2} through \ref{fig:5} show reconstructions with the same configurations $\mathcal{C}_i$ from $\mathcal{N}_{recon}$,
+  but with an object from the \emph{categories} \emph{chair}, \emph{guitar}, \emph{bowl}. These \emph{categories} were included
+  in the training set of $\mathcal{N}_{recon}$, though every reconstructed object sample originate from a test set, and thus have not be seen
+  during the training stage.
+  Similar behavior of the four network configurations, as described above, can be seen again, including the spanning of edges over empty space,
+  like in figure \ref{fig:2d}, between the legs of the chair.
 
 
-\section{Experimental setup}
-\label{subsec:exp}
+% 256
+\begin{figure}[htbp]
+  \centering
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:5a}]{\includegraphics[width=0.5\textwidth]{gt_chair_256_1.png}}
+  \subfloat[Ground truth mesh.\label{fig:5b}]{\includegraphics[width=0.5\textwidth]{gt_chair_7500.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:5b}]{\includegraphics[width=0.5\textwidth]{chair_256_pc06.png}}
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:5c}]{\includegraphics[width=0.5\textwidth]{chair_256_pc00.png}}\\
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:5d}]{\includegraphics[width=0.5\textwidth]{c1_256_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:5e}]{\includegraphics[width=0.5\textwidth]{c1_256_chair_2.png}}\\
+  \caption{Reconstruction of chairs from point cloud with 256 samples.} \label{fig:5}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:51a}]{\includegraphics[width=0.5\textwidth]{gt_car_1.png}}
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:51b}]{\includegraphics[width=0.5\textwidth]{car_pc05.png}}\\
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:51c}]{\includegraphics[width=0.5\textwidth]{c1_256_car_1.png}}
+  \subfloat[Reconstruction of car with \emph{IFM},.\label{fig:51d}]{\includegraphics[width=0.5\textwidth]{dmc_car.png}}
+  \caption{Reconstruction of a car from point cloud with 256 samples.} \label{fig:51}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:52a}]{\includegraphics[width=0.33\textwidth]{gt_256_toilet.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:52b}]{\includegraphics[width=0.33\textwidth]{c1_256_toilet.png}}
+  \subfloat[Reconstruction with \emph{BPA}\label{fig:52c}]{\includegraphics[width=0.33\textwidth]{bpa_256_toilet.png}}
+  \caption{Reconstruction of a toilet from point cloud with 256 samples.} \label{fig:52}
+\end{figure}
+  Figures \ref{fig:5} and \ref{fig:51} show reconstruction with a sample size of 256. Depicted are reconstructions with configurations
+  $\mathcal{C}_1$ and $\mathcal{C}_2$ 
+  and their corresponding ground truth mesh and sampled point cloud.
+  While still able to reconstruct the general shape of the object, the spanning problem is still visible.
+  Additionally, \emph{DMC} is not able to handle bigger empty spaces in the sparse cloud well enough to create a proper reconstruction,
+  as seen in figure \ref{fig:51d}.
 
-    Finding a proper way to quantify the approximation of a mesh in comparison to its reconstruction is no straightforward task.
-    Many different methods exist, each with its advantages and drawbacks. Depending on the specific application like the size of
-    the mesh, the number of vertices and edges, or features to compare, optimal methods of comparisons may differ, if any even
-    exist. For the proposed network \emph{points2mesh}, several metrics are chosen, which may lead to conclusions about the quality 
-    of the reconstructed mesh. Not only are they applicable to \emph{points2mesh}, but to other reconstruction methods as well. 
-    Thus, these metrics can be compared to each other, and an argument may be formed about their reconstruction capacity. This 
-    section specifies aspects to evaluate of \emph{points2mesh}'s configurations $\mathcal{C}_i$. Furthermore, utilized metrics 
-    for the comparison are detailed in the subsequent subsection. Finally, competing methods for reconstruction are specified,
-    to define a frame of reference against which \emph{points2mesh} should be able to hold up or even exceed.
+
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Ground truth mesh.\label{fig:6a}]{\includegraphics[width=0.4\textwidth]{gt_chair_7500.png}}
+    \subfloat[Sampled point cloud from ground truth mesh.\label{fig:6b}]{\includegraphics[width=0.4\textwidth]{chair_pc00.png}}\\
+    \subfloat[Configuration $\mathcal{C}_1$.\label{fig:6c}]{\includegraphics[width=0.4\textwidth]{c1_7500_chair_2.png}}
+    \subfloat[Configuration $\mathcal{C}_4$.\label{fig:6d}]{\includegraphics[width=0.4\textwidth]{c4_7500_chair_2.png}}
+    \caption{Reconstruction of a chair from point cloud with 7500 samples.} \label{fig:6}
+  \end{figure}
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Ground truth mesh.\label{fig:61a}]{\includegraphics[width=0.4\textwidth]{gt_airplane_7500.png}}
+    \subfloat[Samples pointc loud from ground truth mesh.\label{fig:6d}]{\includegraphics[width=0.4\textwidth]{plane2_pc04.png}}\\
+    \subfloat[Configuration $\mathcal{C}_1$.\label{fig:6e}]{\includegraphics[width=0.4\textwidth]{c4_7500_airplane_2.png}}
+    \subfloat[Configuration $\mathcal{C}_4$.\label{fig:6f}]{\includegraphics[width=0.4\textwidth]{c1_7500_airplane_2.png}}
+    \caption{Reconstruction of an airplane from point cloud with 7500 samples.} \label{fig:61}
+  \end{figure}
+  
+  Figures \ref{fig:6} and \ref{fig:61} show reconstruction of a chair and an airplane from 7500 samples. Depicted are configurations 
+  $\mathcal{C}_1$ and $\mathcal{C}_4$.
 
 
-\subsection{Evaluation aspects}
-    There are several aspects to evaluate \emph{points2mesh}. Not only are network configurations $\mathcal{C}_i$ a crucial consideration,
-    but so is training time, computation time, as well as generalization capabilities and starting meshes $\mathcal{M}_i$ (~Ellipsoid, Torus~). Finally,
-    attaining visually pleasing meshes is one such goal too, and thus has to be evaluated as well.
+% 7500
 
-    Therefore, the following aspects are chosen to evaluate.
-    \begin{itemize}
-        \item \textbf{Configurations} $\mathcal{C}_i$: Each configuration, as described in \ref{configurations}, has its purpose 
-                for specific reconstruction capabilities. Evaluating every one of them may lead to conlcusions about objective rankings, and thus
-                to a choice of best network configuration for reconstructions with the highest quality.
-        \item \textbf{Visual quality}: While being subjective, taking a closer look how good the reconstruction seems to represent the ground truth mesh
-        is still relevant.
-        \item \textbf{Computation time}: Determining how fast such a reconstruction can be calculated may change which method to use depending on the application.
-        \item \textbf{Training time}: Measured in iterations, the convergence time offers valuable insight for networkconfigurations $\mathcal{C}_i$ and how it
-        learns from the input data.
-        \item \textbf{Generalization capabilities}: Evaluating how well configrations $\mathcal{C}_i$ are capable of generalize the problem of reconstruction is a crucial aspect
-        for any neural network. 
-        \item \textbf{Changing the basemesh $\mathcal{M}_i$}: \emph{points2mesh} is only able to reconstruct meshes of the same \emph{genus} as the input mesh $\mathcal{M}_i$.
-        Thus, testing configurations $\mathcal{C}_i$ with different $\mathcal{M}_i$ of higher \emph{genus} like a toroidal shape may lead to different results and 
-        reconstructions with higher \emph{genus}.
-    \end{itemize}
+%256-1024-7500
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:7a}]{\includegraphics[width=0.5\textwidth]{gt_airplane_7500.png}}
+  \subfloat[$\mathcal{C}_1$ with sample size 256.\label{fig:7b}]{\includegraphics[width=0.5\textwidth]{c1_256_airplane_2.png}}\\
+  \subfloat[$\mathcal{C}_1$ with sample size 1024.\label{fig:7c}]{\includegraphics[width=0.5\textwidth]{c1_1024_airplane_2.png}}
+  \subfloat[$\mathcal{C}_1$ with sample size 7500.\label{fig:7d}]{\includegraphics[width=0.5\textwidth]{c4_7500_airplane_2.png}}\\
+  \subfloat[\emph{BPA} with sample size 7500.\label{fig:7e}]{\includegraphics[width=0.5\textwidth]{airplane2_ifm_7500.png}}
+  \subfloat[\emph{IFM} with sample size 7500.\label{fig:7f}]{\includegraphics[width=0.5\textwidth]{airplane2_bpa_7500.png}}
+  \caption{Reconstruction of an airplane with different sample sizes, but the same configuration $\mathcal{C}_1$.} \label{fig:7}
+\end{figure}
 
-    While evaluating configurations, the visual quality and computation time can be compared to other methods, convergence time, generalization and different used basemeshes
-    are isolated during evaluation due to their nature and thus are only compared to each other.
+  For easier comparisons, figure \ref{fig:7} shows the reconstruction of the same airplane with configuration $\mathcal{C}_1$ but with
+  different sample sizes, as well as reconstructions from \emph{BPA} and \emph{IFM} with the same sample size, showing their ostensible
+  superiority with more samples.
 
-\subsection{Evaluation metrics}
 
-    Choosing proper evaluation metrics is ambiguous, but several are often chosen in recent work of mesh reconstruction with favorable information content. 
-    While some of them may help to lead to objective conclusions about quality, others are subjective in nature. These metrics 
-    are described in the following. 
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Noisy airplane 1.\label{fig:81a}]{\includegraphics[width=0.5\textwidth]{c1_1024_noise_airplane_1.png}}
+    \subfloat[Noisy airplane 2.\label{fig:81b}]{\includegraphics[width=0.5\textwidth]{c1_1024_noise_airplane_2.png}}\\
+    \subfloat[Noisy airplane 3.\label{fig:81c}]{\includegraphics[width=0.5\textwidth]{c1_1024_noise_airplane_3.png}}
+    \subfloat[Noisy airplane 4.\label{fig:81d}]{\includegraphics[width=0.5\textwidth]{c1_1024_noise_airplane_4.png}}
+    \caption{Reconstruction of airplanes with $\mathcal{C}_1$ from noisy point cloud with noise factor of $0.01$. } \label{fig:81}
+  \end{figure}
+  Next, in figure \ref{fig:81}, reconstruction of airplanes and with configuration $\mathcal{C}_1$ can be seen. Each point in the point 
+  cloud has random
+  jitter noise between $-0.01$ and $0.01$ added on top of it.
 
-    \subsubsection*{Meshdistance $d_m$}    
-    In 3D vision, a commonly used metric to compare the quality of meshes is done with completeness of the
-    predicted mesh in comparison to the ground truth mesh. Based on uniformly sampled points on both meshes, completeness describes the distance of points of
-    ground truth to the predicted mesh. 
-    Stutz et al. \cite{Stutz2017, Stutz2018CVPR} introduce a parallel $C++$ implementation of \emph{meshdistance} which
-    calculates completeness, given a ground truth mesh and a prediction. Distances are calculated by a
-    point-to-triangle method by Christopher Batty\footnote{https://github.com/christopherbatty/SDFGen last visited: \today} (~See chapter \ref{back:ptt})
-    %\subsubsection*{Chamfer distance $d_C$}
-    %Similarly to the \emph{meshdistance} method, to calculate the \emph{chamfer distance}, both meshes have to be uniformly sampled. 
-    %In contrast, only the distance to each nearest neighbor from ground truth to reconstruction, as well as from reconstruction 
-    %to ground truth, is considered for the metric.
-    %While the \emph{chamfer distance} is a more simplified version of the meshdistance, it is still able to provide
-    %valuable information about the quality of reconstructions.
-    %\subsubsection*{MAYBE Earthmovers distance}
-    %\subsubsection*{Hausdorff distance $d_H$}
-    %The \emph{hausdorff distance} describes a more sophisticated, asymmetric metric for measuring distances between two similar meshes. 
-    %Anew, the ground truth mesh is sampled with the same amount of samples as the ground truth mesh possesses. For each sample, its 
-    %closest point on the predicted mesh is calculated, resulting in minimum, maximum values, as well as mean values for the \emph{hausdorff distance} metric.
-    %\begin{align}
-    %    d_{H}(\mathcal{M}_{gt},\mathcal{M}_i) = \underset{y\in\mathcal{M}_i}{sup} \underset{y\in\mathcal{M}_{gt}}{inf} d(x,y)
-    %\end{align}
-    %With $d(x,y)$ describing a function, calculating the distance from $x$ to $y$.
-    \subsubsection*{Visual evidence}    
-    Though subective, taking a closer look at, how well a reconstructed mesh seems to represent the ground truth mesh is important too. Relying only on 
-    numeric values may lead to reconstructions with low values, but not visually pleasing results. This is due to the complicated nature of the problem itself.
-    For a given point cloud, an indefinite amount of different reconstructions are possible. Therefore, inspecting the meshes is necessary.
 
-\subsection{Compared methods}
-
-    Restoring polygonal meshes directly from point cloud data is a new domain of geometry reconstruction, 
-    which yet has to be explored deeply. Apart from \emph{points2mesh}, no other methods relying on neural 
-    networks and deep learning techniques have yet been proposed for this kind of mode of data transformation.
-    For this reason, \emph{points2mesh} has to compete against techniques from traditional approaches like
-    \emph{ball-pivoting algorithm} \cite{817351}(~BPA~) and \emph{instant field meshes} \cite{Jakob2015Instant} (~IFM~). Furthermore, by adding
-    an intermediate step of voxelization of $\mathcal{PC}$, this work also can be compared against 
-    \emph{deep marching cubes} \cite{Liao2018CVPR} (~DeepMC~), which transforms voxelized data into meshes based on deep learning approaches and the classical
-    marching cubes algorithm.
-
-\begin{itemize}
-    \item \todo{include pixel2mesh if possible}
-\end{itemize}
-
-\section{Experiment results}
-\label{subsec:results}
-\todo{Bei jeder subsubsection auch visual quality mit zeigen}
-    The evaluation of \emph{points2mesh} and its configuration $\mathcal{C}_i$ is separated into a numerical and visual evaluation.
-    In the following subsection \ref{numericeval}, the previously explained metrics are listed and compiled against each other.
-    Likewise, \emph{points2mesh}'s reconstructions are listed to comparable methods with the same metrics.
-\subsection{Numerical evaluation}
-\label{numericeval}
-    The following subsections present the evaluation of the previously defined metrics. Since \emph{points2mesh} 
-    is trained on the ModelNet dataset, data samples from this dataset are selected for inference. About 20 percent 
-    of the provided point clouds are left out of training and thus used as the test set. Therefore, the network has 
-    never seen it before. In that way, its quality can be measured against the other methods and is comparable in the
-    first place. The other three methods against which \emph{points2mesh} is compared against, should be able to handle
-    point cloud data from ModelNet.
-\subsubsection*{Distance metric results}
-    The first comparison consists of evaluating all distance metrics $[d_m, d_C, d_H]$ for every configuration
-    $\mathcal{C}_i$ and \emph{deep marching cubes}, \emph{ball-pivoting algorithm} and \emph{instant field meshes}.
-    One hundred point clouds of each object category are taken at random from the ModelNet dataset. For each method,
-    an approximation mesh $M_{p}$ is calculated, and all distance measure metrics to its ground truth mesh computed.
-    The mean value of these metrics is noted in the tables. While the first table denotes reconstruction from 1024 
-    samples, the following denotes reconstruction from 7500 points.
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 256 samples per point cloud. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance1024} 
-    \begin{tabular}{| l  | c  | c | c | c | c | c |}
-        \hline
-        %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.093&0.12&&0.153&\\\hline
-        \multirow{1}{*}{bed}&0.028&0.049&&0.123&\\\hline 
-        \multirow{1}{*}{bottle}&0.016&0.014&&0.134&\\\hline
-        \multirow{1}{*}{bowl}&0.044&0.089&&0.133&\\\hline
-        \multirow{1}{*}{car}&0.035&0.058&&0.199&\\\hline
-        \multirow{1}{*}{chair}&0.038&0.045&&0.188&\\\hline
-        \multirow{1}{*}{guitar}&0.027&0.039&&0.325&\\\hline
-        \multirow{1}{*}{toilet}&0.082&0.075&&0.135&\\\hline\hline
-        \multirow{1}{*}{mean}&0.045&0.061&&0.200&\\        \hline
-    \end{tabular}
-\end{center}
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
-    \begin{tabular}{| l  | c | c | c | c | c | c | c |}
-        \hline
-        %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.011&0.091&0.014&0.011&&0.10&\\\hline
-        \multirow{1}{*}{bed}&0.016&0.012&0.018&0.016&&0.099&\\        \hline
-        \multirow{1}{*}{bottle}&0.010&0.007&0.010&0.008&&0.10&\\        \hline
-        \multirow{1}{*}{bowl}&0.025&0.03&0.029&0.022&&0.097&\\        \hline
-        \multirow{1}{*}{car}&0.021&0.017&0.024&0.021&&0.163&\\        \hline
-        \multirow{1}{*}{chair}&0.018&0.012&0.020&0.017&&0.172&\\        \hline
-        \multirow{1}{*}{guitar}&0.014&0.01&0.022&0.017&&0.234&\\        \hline
-        \multirow{1}{*}{toilet}&0.029&0.016&0.028&0.025&&0.109&\\        \hline\hline
-        \multirow{1}{*}{mean}&0.018&0.024&0.021&0.018&&0.134&\\        \hline
-    \end{tabular}
-\end{center}
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance1024} 
-    \begin{tabular}{| l  | c | c | c | c | c | c | c |}
-        \hline
-        %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_4$ & DMC & IFM & BPA \\ \hline
-        \multirow{1}{*}{airplane}&0.015&0.092&&0.090&\\\hline
-        \multirow{1}{*}{bed}&0.016&0.015&&0.089&\\\hline
-        \multirow{1}{*}{bottle}&0.011&0.009&&0.096&\\\hline
-        \multirow{1}{*}{bowl}&0.021&0.021&&0.091&\\\hline
-        \multirow{1}{*}{car}&0.019&0.019&&0.153&\\\hline
-        \multirow{1}{*}{chair}&0.018&0.016&&0.126&\\\hline
-        \multirow{1}{*}{guitar}&0.017&0.013&&0.212&\\\hline
-        \multirow{1}{*}{toilet}&0.033&0.028&&0.101&\\\hline\hline
-        \multirow{1}{*}{mean}&0.018&0.027&&0.119&\\\hline
-    \end{tabular}
-\end{center}
-\subsubsection*{Generalization capabilities}
-    Making use of reconstruction techniques often requires the method to work in a general setting.
-    The previous experiments already showed reconstruction from \emph{points2mesh} of test samples,
-    which the network has not yet seen. With the same idea of feeding unknown data to the network,
-    the next table of evaluated metrics was created. By extending the generalization concept, 
-    point cloud samples of objects outside of the trained object categories are fed into the network.
-    For that reason, assuming to work on configuration $\mathcal{C}_1$, it has been trained on four different
-    object category collections (~See section \ref{sec:categ}~).
-    Every trained instance of $\mathcal{C}_1$, now is fed one hundred point cloud samples 
-    of \emph{bathtub} and \emph{person}, evaluating every distance metric. Even though, $\mathcal{C}_1$ has never seen any samples of these object categories.
-
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud. Testing with point clouds from outside of trained object categories} \label{tab:distance7500} 
-    \begin{center}
-        \begin{tabular}{| l  | c | c | c | c |}
-            \hline
-            %airplane
-            Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ \\ \hline
-            \multirow{1}{*}{bathtub}&0.021&0.015&0.067&0.024\\\hline
-            \multirow{1}{*}{person}&0.154&0.137&0.181&0.146\\\hline
-        \end{tabular}
-    \end{center}
-\end{center}
-
-\subsubsection*{Varying basemesh $\mathcal{M}_i$}
-    The previously described configurations all are trained on a spheroid as initial mesh $\mathcal{M}_i$. 
-    By nature of the neural network and the sphere, objects with \emph{genus} higher than zero cannot be
-    reconstructed such that the predicted mesh has the same \emph{genus}. Since it stays constant, 
-    changing the initial mesh to a toroidal mesh may lead to possible reconstructions with \emph{genus} one. 
-    For the following evaluation, $\mathcal{C}_{1}$ is trained on such an initial toroidal mesh.
-
-\begin{center}
-    \captionof{table}{Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Initial mesh (~torus mesh~) with a \emph{genus} of one.} \label{tab:distance7500} 
-    \begin{center}
-        \begin{tabular}{| l  | c | c |}
-            \hline
-            %airplane
-            Object& $\mathcal{C}_1^{torus}$ & $\mathcal{C}_1^{sphere}$ \\ \hline
-            \multirow{1}{*}{airplane}&0.019&0.011\\\hline
-            \multirow{1}{*}{toilet}&0.32&0.029\\\hline
-        \end{tabular}
-    \end{center}
-\end{center}
-
-\subsubsection*{Noise robustness}
-\begin{center}
-    \captionof{table}{Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Comparison of configuration $\mathcal{C}_1$ trained with and without noise (\emph{noise level} of 0.01). Inference with noisy data of the same \emph{noise level}.} \label{tab:distance7500} 
-    \begin{center}
-        \begin{tabular}{| l  | c | c |}
-            \hline
-            %airplane
-            Object& $\mathcal{C}_1^{noisy}$ & $\mathcal{C}_1^{clean}$ \\ \hline
-            \multirow{1}{*}{airplane}&0.090&0.012\\\hline
-            \multirow{1}{*}{bed}&0.017&0.011\\\hline
-            \multirow{1}{*}{bottle}&0.017&0.016\\\hline
-            \multirow{1}{*}{bowl}&0.029&0.025\\\hline
-            \multirow{1}{*}{car}&0.023&0.021\\\hline
-            \multirow{1}{*}{chair}&0.018&0.018\\\hline
-            \multirow{1}{*}{guitar}&0.015&0.014\\\hline
-            \multirow{1}{*}{toilet}&0.041&0.016\\\hline\hline
-            \multirow{1}{*}{mean}&0.031&0.018\\\hline
-        \end{tabular}
-    \end{center}
-\end{center}
-\subsubsection*{Training and evaluation time}
-\todo{Den teil hier, falls zeit :)}
-For real time applications like autonomous cars, which rely on ...
-pc2mesh:
-
-0.046394 seconds fuer 1024
-
+% generalization
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:8a}]{\includegraphics[width=0.32\textwidth]{gt_person_1.png}}
+  \subfloat[$\mathcal{C}_1$.\label{fig:8b}]{\includegraphics[width=0.32\textwidth]{c1_1024_person_1.png}}
+  \subfloat[$\mathcal{C}_2$.\label{fig:8c}]{\includegraphics[width=0.32\textwidth]{c2_1024_person_1.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:8d}]{\includegraphics[width=0.32\textwidth]{person_pc00.png}}
+  \subfloat[$\mathcal{C}_3$.\label{fig:8e}]{\includegraphics[width=0.32\textwidth]{c3_1024_person_1.png}}
+  \subfloat[$\mathcal{C}_4$.\label{fig:8f}]{\includegraphics[width=0.32\textwidth]{c4_1024_person_1.png}}
+  \caption{Reconstruction from point clouds of untrained category \emph{person}.} \label{fig:8}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[$\mathcal{C}_1$.\label{fig:9a}]{\includegraphics[width=0.5\textwidth]{c1_1024_bathtub_1.png}}
+  \subfloat[$\mathcal{C}_2$.\label{fig:9b}]{\includegraphics[width=0.5\textwidth]{c2_1024_bathtub_1.png}}\\
+  \subfloat[$\mathcal{C}_3$.\label{fig:9c}]{\includegraphics[width=0.5\textwidth]{c3_1024_bathtub_1.png}}
+  \subfloat[$\mathcal{C}_4$.\label{fig:9d}]{\includegraphics[width=0.5\textwidth]{c4_1024_bathtub_1.png}}
+  \caption{Reconstruction from point clouds of untrained category \emph{bathutb}.} \label{fig:9}
+\end{figure}
+  Finally, figures \ref{fig:8} and figure \ref{fig:9} show the reconstruction of a person and a bathtub, based on point cloud samples 
+  which $\mathcal{N}_{recon}$ has not been trained with.
 

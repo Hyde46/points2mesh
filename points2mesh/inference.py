@@ -8,6 +8,7 @@ from fetcher import *
 from pc_meshlab_loader import *
 import re
 import cPickle as pickle
+import time
 
 enable_argscope_for_module(tf.layers)
 
@@ -15,8 +16,8 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40"}
-# settings
+PC = {'num': 1024, 'dp': 3, 'ver': "40"}
+# setting
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_string(
@@ -30,7 +31,7 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-flags.DEFINE_integer('pc_num', 7500, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
@@ -46,8 +47,8 @@ num_blocks = 3
 num_supports = 2
 
 
-def noise_augment(data, noise_level=0.00):
-    rnd = np.random.rand(3, 7500)*2*noise_level - noise_level
+def noise_augment(data, noise_level=0.01):
+    rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
     return data + rnd
 
 def load_pc(pc_path, num_points):
@@ -55,7 +56,7 @@ def load_pc(pc_path, num_points):
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
-    data = noise_augment(data)
+    #data = noise_augment(data)
     # Add single Batch [B,dp,N]
     data = data[np.newaxis, :, :]
     return data
@@ -99,7 +100,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_c1_7500_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_only_sphere_big_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -118,9 +119,7 @@ def loadTxtFiles(path):
     return files
 
 
-categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","person","bathtub"]
-categories = ["person","bathtub"]
-#categories =["person","bathtub","sofa"]
+categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","bathtub","person"]
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/single_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/chair_test"
@@ -139,7 +138,7 @@ categories = ["person","bathtub"]
 #path_output = "/graphics/scratch/students/heid/inference/single_class_7500_3"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/big_class_1024_3/"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/single_class_1024_3/"
-
+categories = ["airplane"]
 predictor = loadModel()
 #predictor = 0
 
@@ -148,13 +147,14 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c3_7500_"+c
-    counter = 0 
+    path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
+    counter = 0
     for pc in pcs:
 
-        path_pc = os.path.join(path, pc)    
-        pc_inp = load_pc(path_pc, num_points=7500)
+        path_pc = os.path.join(path, pc)
+        pc_inp = load_pc(path_pc, num_points=1024)
         vertices = predict(predictor, pc_inp, path_pc)
         create_inference_mesh(vertices[2], 3, pc,
                             path_pc, path_output, display_mesh=False, num_obj=counter)
         counter = counter + 1
+        break

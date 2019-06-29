@@ -89,6 +89,7 @@ class FlexmeshModel(ModelDesc):
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
+            self.output1 = tf.identity(self.activations[0], name="output0")
             # define outputs for multi stage mesh views
             # self.output1 = tf.identity(self.activations[15],name="output1")
             self.output1 = tf.identity(self.activations[28], name="output1")
@@ -103,6 +104,7 @@ class FlexmeshModel(ModelDesc):
             self.output_stage_2 = unpool_layer(self.output2)
 
             self.output3 = tf.identity(self.activations[-1], name="output3")
+            
 
         variables = tf.get_collection(
             tf.GraphKeys.GLOBAL_VARIABLES, scope=self.name)

@@ -1,4 +1,4 @@
-\chapter{Methods}
+\chapter{Graph-based surface reconstruction network}
 \label{sec:methods}
 In this work, a novel approach for an end-to-end application for explicit surface 
 reconstruction from unstructured point cloud data is proposed, based on a graph convolutional network (~GCN~) by Wang et al. \cite{wang2018pixel2mesh}, transforming images 
@@ -275,8 +275,10 @@ Consecutive \emph{unpooling} operations increase the count to $618$, and finally
 \begin{figure}
    \begin{center}
    \includegraphics[width=14cm]{c1}
-   \caption{Baseconfiguration $\mathcal{C}_1$ of $\mathcal{N}_{recon}$.}
-   \label{fig:c1}
+   \caption{Baseconfiguration $\mathcal{C}_1$ of $\mathcal{N}_{recon}$ showing flex conv feature extraction $\mathcal{N}_{flex}$ in the upper half, and
+   graph deformation network $\mathcal{N}_{gcn}$ in the lower part. The complete network $\mathcal{N}_{recon}$ takes a point cloud and an initial mesh as input, 
+   approximating the underlying surface information of the point cloud with $\hat{\mathcal{M}_i}$ after deforming the mesh, based on features learned in the point cloud}
+    \label{fig:c1}
    \end{center}
 \end{figure}
 Configuration $\mathcal{C}_1$, as described in this chapter and seen in figure \ref{fig:c1},
@@ -343,25 +345,15 @@ while also computing only one nearest neighbor, $k=1$ in that particular layer.
    enhance the dataset.
 
 \subsection{Dataset generation}
+\todo{hier?}
 \subsection{Utilized object categories}
 \label{sec:categ}
 \todo{Bilder fuer object categories or interesting features}
-Even though \emph{ModelNet40}, and thus the transformed point cloud dataset by Qi et al. offers, as the name suggests,
+Even though \emph{ModelNet40}, and therefore the transformed point cloud dataset by Qi et al. offers, as the name suggests,
 40 different object categories, only a subset of them is chosen for training purposes of $\mathcal{N}_{recon}$. 
-The four subsets of $\mathcal{D}_{m40}$ are defined as follows:
-\begin{itemize}
-   \item \emph{Big}:[airplane,bed,bottle,bowl,chair,guitar,toilet]
-   \item \emph{Small}:[airplane,chair,guitar,toilet]
-   \item \emph{$single_1$}:[airplane]
-   \item \emph{$single_2$}:[toilet]
-\end{itemize}
-\emph{Big} is chosen based on the goal of learning a generalized deformation operation by showing preferably vastly different object categories
+The subset of $\mathcal{D}_{m40}$ is defined as $\mathcal{D}_{big}=[airplane,bed,bottle,bowl,chair,guitar,toilet]$
+It is chosen based on the goal of learning a generalized deformation operation by showing preferably vastly different object categories
 to the network, all with interesting object features, which $\mathcal{N}_{recon}$ should learn.
-\emph{Small} serves as a verification for \emph{Big}, by checking the difference between reconstructed objects of categories contained in both.
-Comparing these objects while also considering objects reconstructed with \emph{Big} may lead to information about how well $\mathcal{N}_{recon}$ is
-able to generalize. 
-Additionally $single_1$ and $single_2$ serve as a verification dataset, showing how well $\mathcal{N}_{recon}$ is able to learn specific categories of 
-objects with interesting and hard to reconstruct features.
 
 Point cloud data used for inference is not always sampled perfectly on the surface of an object. Random noise on these coordinates is common occurance.
 For that reason, to aid $\mathcal{N}_{recon}$ learning a more generalized reconstruction, each of the dataset categories are
