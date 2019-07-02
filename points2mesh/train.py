@@ -20,7 +20,7 @@ TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
 NUM_EPOCH = 125
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40"}
+PC = {'num': 1024, 'dp': 3, 'ver': "40", 'gt': 10000}
 
 seed = 1024
 np.random.seed(seed)
@@ -44,12 +44,11 @@ flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
 # original 3e-5
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
-flags.DEFINE_integer('pc_num', 7500, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', PC['num'], 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
-flags.DEFINE_integer('feature_depth', 132,
+flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of fir1st flexconv feature layer')
-flags.DEFINE_integer(1
-    'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
+flags.DEFINE_integer('num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
                     'Path to base model for mesh deformation')
@@ -68,9 +67,10 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "5"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/fusion_c4_7500_small_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c4_1024_big2_%s' % (args.fusion))
+
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

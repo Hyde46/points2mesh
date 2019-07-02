@@ -1,14 +1,18 @@
 import os
 import multiprocessing
 
+import tensorflow as tf
 from tensorpack.dataflow import (
     PrintData, BatchData, PrefetchDataZMQ, TestDataSpeed, MapData, JoinData)
 from tensorpack.utils import logger
 from tensorpack.dataflow.serialize import LMDBSerializer
+from sklearn.neighbors import NearestNeighbors
 
 import numpy as np
 
 import random as rnd
+
+from sampler import *
 
 ############################################
 # Important! Set path to .lmdb data:
@@ -89,6 +93,31 @@ def prepare_df(df, parallel, prefetch_data, batch_size):
     return df
 
 
+def wrs_sample(positions, factor, sess):
+    return positions[:,0:factor]
+    pos_tf = tf.convert_to_tensor(positions[np.newaxis, :, :], dtype=tf.float32)
+    # dist.shape = (1, 10000, 8 )
+    #_, dist, _ = knn_bf_sym(pos_tf,pos_tf, K=8)\
+    pos = np.array(positions, )
+    pos = np.transpose(pos)
+    nbrs = NearestNeighbors(n_neighbors=8, algorithm='kd_tree').fit(pos)
+    distances, _ = nbrs.kneighbors(pos)
+    dist = tf.convert_to_tensor(distances[np.newaxis, :, :], dtype=tf.float32)
+    # feed relative density to wrs subsampling
+    density = tf.reduce_sum(dist, axis=2)
+    density = tf.divide(density, tf.reduce_sum(density, 1))
+    wrs_idxs = wrs_downsample_ids(
+        density, factor)
+    # density, positions.shape.as_list()[2]//factor)
+    # choose positions and features based on indices
+    coarse_positions = downsample_by_id(pos_tf, wrs_idxs)
+    #coarse_features = downsample_by_id(features, wrs_idxs)
+    # return sampled positions and features=
+    pos_sampled = tf.transpose(coarse_positions[0], perm=[1, 0])
+    pos_sampled_np = sess.run(coarse_positions[0])
+    return pos_sampled_np
+
+
 def get_modelnet_dataflow(
     name, batch_size=6,
     num_points=10000,
@@ -145,18 +174,22 @@ def get_modelnet_dataflow(
     # Two different data sets exist with either 1024 samples per object or 10000 samples per object.
     # Different amounts of samples can still be used by choosing 10000 samples per object and selecting
     # a subset of them with the disadvantage of slower loading and sampling time.
-    assert num_points in [1024, 7500, 10000]
-    if num_points > 1024:
-        file_num_points = 10000
-    else:
-        file_num_points = num_points
+    #assert num_points in [256, 1024, 7500, 10000]
+    assert num_points <= 10000
+    # if num_points > 1024:
+    #    file_num_points = 10000
+    # elif num_points < 1024:
+    #    file_num_points = 1024
+    # else:
+    #    file_num_points = num_points
     # Construct correct filename
     normals_str = ""
     if not normals:
         normals_str = "-positions"
 
     file_name = "model" + model_ver + "-" + name + \
-        normals_str + "-" + str(file_num_points) + ".lmdb"
+        normals_str + "-10000.lmdb"
+    #normals_str + "-" + str(file_num_points) + ".lmdb"
     pass
     path = os.path.join(MODEL40PATH, file_name)
 
@@ -165,18 +198,22 @@ def get_modelnet_dataflow(
         parallel = min(40, multiprocessing.cpu_count() // 2)
         logger.info("Using " + str(parallel) + " processing cores")
 
-    allowed_categories = get_allowed_categories("small")
+    allowed_categories = get_allowed_categories("big")
+
+    wrs_session = tf.Session()
+
 
     # Construct dataflow object by loading lmdb file
     df = LMDBSerializer.load(path, shuffle=shuffle)
-
+        
     # seperate df from labels and seperate into positions and vertex normals
-    df = MapData(df, lambda dp: [[dp[1][:3] + (np.random.rand(3, file_num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
+    #df = MapData(df, lambda dp: dp[1][:, :, 0:8000].tolist())
+    df = MapData(df, lambda dp: [[wrs_sample(dp[1][:3], num_points, wrs_session) + (np.random.rand(3, num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
-    if num_points > 1024:
-        df = MapData(df, lambda dp: np.array(
-            dp)[:, :, :, 0:num_points].tolist())
-    #df_noisy = noise_data_augmentation(df)
+    # if num_points > 1024 or num_points < 1023:
+    #    df = MapData(df, lambda dp: np.array(
+    #        dp)[:, :, :, 0:num_points].tolist())
+    # df_noisy = noise_data_augmentation(df)
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     df.reset_state()
     return df
@@ -185,21 +222,21 @@ def get_modelnet_dataflow(
 if __name__ == '__main__':
     #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
     #df = LMDBSerializer.load("/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
-    #for d in df:
+    # for d in df:
     #    #print d[0]
     #    #print d[1]
     #   print np.concatenate((d[0], d[1]), axis=1)
     #   np.savetxt('/home/heid/tmp/test.asc',
     #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
     #   break
-    df = get_modelnet_dataflow('train', batch_size=1, num_points=10000,
+    df = get_modelnet_dataflow('train', batch_size=1, num_points=6500,
                                model_ver="40", normals=True, prefetch_data=False)
-    for d in df:
-        print np.array(d).shape
-        print " "
-        break
+    #for d in df:
+    #    print np.array(d[0]).shape
+    #    print " "
+    #   break
     # Test speed!
-    #TestDataSpeed(df, 2000).start()
+    TestDataSpeed(df, 2000).start()
 
     """
     df = get_modelnet_dataflow(

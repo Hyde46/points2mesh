@@ -53,8 +53,8 @@ class FlexmeshModel(ModelDesc):
 
     def inputs(self):
         return [tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "gt_positions"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "vertex_normals"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "gt_positions"),
                 ]
 
     def build_graph(self, positions, vertex_normals, gt_positions):
