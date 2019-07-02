@@ -53,8 +53,8 @@ class FlexmeshModel(ModelDesc):
 
     def inputs(self):
         return [tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "vertex_normals"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "gt_positions"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "vertex_normals"),
+                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "gt_positions"),
                 ]
 
     def build_graph(self, positions, vertex_normals, gt_positions):
@@ -89,7 +89,6 @@ class FlexmeshModel(ModelDesc):
                 self.activations.append(hidden)
 
         with tf.name_scope("mesh_outputs"):
-            self.output1 = tf.identity(self.activations[0], name="output0")
             # define outputs for multi stage mesh views
             # self.output1 = tf.identity(self.activations[15],name="output1")
             self.output1 = tf.identity(self.activations[28], name="output1")
@@ -120,7 +119,6 @@ class FlexmeshModel(ModelDesc):
         def wrs_subsample(positions, features):
             # weighted reservoir sampling
             # Calculate density for each node
-            # TODO: hier rumprobieren
             _, dist, _ = knn_bf_sym(positions, positions, K=8)
             # feed relative density to wrs subsampling
             density = tf.reduce_sum(dist, axis=2)

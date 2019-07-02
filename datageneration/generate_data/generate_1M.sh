@@ -15,11 +15,12 @@ for l in "$@"
 do
     echo "$l"
 
-    parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train --part_id ::: {0..19}
-    python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train
+    #parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train --part_id ::: {0..19}
+    #python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --num_parts 20 --samples 10000 --mode train
 
-    #parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/10 --num_parts 20 --samples 10 --mode test --part_id ::: {0..19}
-    #python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/10 --num_parts 20 --samples 10 --mode test
+ #parallel python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/100/ --num_parts 20 --samples 100 --mode test --part_id ::: {0..19}
+    python generate_gt.py --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/10k/ --samples 10000 --mode train
+    #python generate_gt.py --merge --label $l --dir /graphics/scratch/datasets/ShapeNetCorev2/data/100/ --num_parts 20 --samples 100 --mode test
 done
 
 # cd /graphics/scratch/datasets/ModelNet40/advanced/1M

@@ -250,6 +250,7 @@ def bbnormalize(mesh):
 
 def get_synsetid(filter_class):
     synsetId = 0
+    filter_class = filter_class.encode('ascii', 'replace')
     with open('../taxonomy.json') as json_file:
         data = json.load(json_file)
 
@@ -301,7 +302,6 @@ if __name__ == '__main__':
         '--num_parts', help='number of part to process (default: 10)', default=10, type=int)
 
     args = parser.parse_args()
-
     class_syntid = get_synsetid(shape_names[args.label])
     snc55dir = '/graphics/scratch/datasets/ShapeNetCorev2/ShapeNetCore.v2/'
     snc55dir = os.path.join(snc55dir, str(class_syntid))
@@ -323,6 +323,7 @@ if __name__ == '__main__':
         ds = ConcatData(df_list)
         LMDBSerializer.save(ds, getFN_final())
     else:
+        print('generating data..')
         # work_dir = os.path.join(snc55dir, str(class_syntid))
         # filtered_files = filter_files(
         #    shape_names[args.label], args.mode, snc55dir)
@@ -335,9 +336,10 @@ if __name__ == '__main__':
 
         if rest_objects < num_objects:
             num_objects = rest_objects
-
         ds = ShapeNetCore55ClassDataFlow(snc55dir, label=args.label, start=start_object,
                                          objects=num_objects, mode=args.mode, samples=args.samples, sphere_samples=args.sphere_samples)
 
         out_file = getFN_parts(args.part_id)
+        out_file = getFN_final()
+        out_file = "/graphics/scratch/datasets/ShapeNetCorev2/data/10k/train_airplane_N10000_S200.lmdb"
         LMDBSerializer.save(ds, out_file)

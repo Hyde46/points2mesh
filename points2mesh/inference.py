@@ -16,7 +16,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 1024, 'dp': 3, 'ver': "40"}
+PC = {'num': 256, 'dp': 3, 'ver': "40", 'gt':10000}
 # setting
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -25,13 +25,13 @@ flags.DEFINE_string(
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', PC['num'], 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
@@ -48,7 +48,7 @@ num_supports = 2
 
 
 def noise_augment(data, noise_level=0.01):
-    rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
+    rnd = np.random.rand(3, PC['num'])*2*noise_level - noise_level
     return data + rnd
 
 def load_pc(pc_path, num_points):
@@ -100,7 +100,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/fusion_only_sphere_big_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c1_256_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -138,7 +138,7 @@ categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","b
 #path_output = "/graphics/scratch/students/heid/inference/single_class_7500_3"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/big_class_1024_3/"
 #path_output = "/home/heid/Documents/master/pc2mesh/points2mesh/utils/examples/results/single_class_1024_3/"
-categories = ["airplane"]
+#categories = ["airplane"]
 predictor = loadModel()
 #predictor = 0
 
@@ -147,14 +147,14 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
+    #path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
+    path_output = "/graphics/scratch/students/heid/inference/c1_n_256_" + c #sphere"+c
     counter = 0
     for pc in pcs:
 
         path_pc = os.path.join(path, pc)
-        pc_inp = load_pc(path_pc, num_points=1024)
+        pc_inp = load_pc(path_pc, num_points=PC['num'])
         vertices = predict(predictor, pc_inp, path_pc)
         create_inference_mesh(vertices[2], 3, pc,
                             path_pc, path_output, display_mesh=False, num_obj=counter)
         counter = counter + 1
-        break
