@@ -20,7 +20,7 @@ TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
 NUM_EPOCH = 125
 
-PC = {'num': 256, 'dp': 3, 'ver': "40", 'gt': 10000}
+PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt': 10000}
 
 seed = 1024
 np.random.seed(seed)
@@ -50,11 +50,11 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
-                    'Path to base model for mesh deformation')
+#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
+#                    'Path to base model for mesh deformation')
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
 #                    'Path to base model for mesh deformation')
-flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
+flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid_2.dat',
                     'Path to base model for mesh deformation')
 
 if __name__ == '__main__':
@@ -67,9 +67,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "3"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c2_256_big2_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c2_7500_big2_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
