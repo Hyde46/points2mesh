@@ -20,7 +20,7 @@ TOTAL_BATCH_SIZE = 1
 BATCH_SIZE = 1
 NUM_EPOCH = 125
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt': 10000}
+PC = {'num': 1024, 'dp': 3, 'ver': "40", 'gt': 10000}
 
 seed = 1024
 np.random.seed(seed)
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "3"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c2_7500_big2_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c2_1024_big2_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,

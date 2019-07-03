@@ -101,7 +101,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/inference/train_log/c2_1024_big/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/inference/train_log/c2_n_1024_big/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
