@@ -68,7 +68,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c3_1024_big2_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c3_7500_big2_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
@@ -96,7 +96,7 @@ if __name__ == '__main__':
             RunUpdateOps()
         ],
         steps_per_epoch=steps_per_epoch,
-        starting_epoch=2,
+        starting_epoch=59,
         max_epoch=NUM_EPOCH
     )
     launch_train_with_config(config, SimpleTrainer())

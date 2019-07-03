@@ -52,20 +52,47 @@ Choosing suitable configurations, proper hyperparameters tunings,
           \end{bmatrix} \in [-1,1]^3
    \end{align}
 
- Overall, the network structure is separated into two distinct parts,
-  each with its specific purpose to fulfill. As seen in Figure \ref{fig:generalconfig}, the neural 
-  network $\mathcal{N}_{recon}$ gets two different inputs, whereas each input is processed in a different part of the network.
- First, the input data $\mathcal{PC}$ is fed into the upper half of the network, called \emph{flexconv feature extraction}
-  $\mathcal{N}_{flex}$ ~(~ See Figure \ref{fig:generalconfig} ~). In a multiscale convolutional operation,
+   Overall, the network structure is separated into two distinct parts,
+   each with its specific purpose to fulfill. As seen in Figure \ref{fig:generalconfig}, the neural 
+   network $\mathcal{N}_{recon}$ gets two different inputs, whereas each input is processed in a different part of the network.
+   First, the input data $\mathcal{PC}$ is fed into the upper half of the network, called \emph{flexconv feature extraction}
+   $\mathcal{N}_{flex}$ ~(~ See Figure \ref{fig:generalconfig} ~). In a multiscale convolutional operation,
    a collection of feature vectors $v_{x_n}$ is extracted, 
-which is fed into the lower part of the network.
+   which is fed into the lower part of the network.
 
-  The second part, as seen in the lower half of figure \ref{fig:generalconfig}, illustrates 
-  a \emph{graph convolutional network} $\mathcal{N}_{gcn}$. Given an initial ellipsoid
-  polygonal mesh $\mathcal{M}_{e}$, $\mathcal{N}_{gcn}$ deforms it, estimating $\hat{\mathcal{M}}$.
+   The second part, as seen in the lower half of figure \ref{fig:generalconfig}, illustrates 
+   a \emph{graph convolutional network} $\mathcal{N}_{gcn}$. Given an initial ellipsoid
+   polygonal mesh $\mathcal{M}_{e}$, $\mathcal{N}_{gcn}$ deforms it, estimating $\hat{\mathcal{M}}$.
    Where $\hat{\mathcal{M}}$ is the best matching estimate for the ground truth mesh $\mathcal{M}_{gt}$ given $\mathcal{PC}$.
    The deformation process is assisted by supplying feature vectors $v_{x_n}$ from $\mathcal{N}_{flex}$, also adding more
-    vertices to the initial ellipsoid $\mathcal{M}_{e}$ in three steps during the deformation process.
+   vertices to the initial ellipsoid $\mathcal{M}_{e}$ in three steps during the deformation process.
+
+   \subsection{Network training process}
+   \label{trainings}
+   Traditionally, in a supervised training configuration, ground truth data is separated from the input, the input fed to the neural network,
+   and a prediction is calculated based on that data. This is illustrated in figure \ref{fig:training1}. In the case of $\mathcal{N}_{recon}$, the ground
+   truth consists of sampled point cloud data from the original mesh, containing 10000 samples per object. From which a subset is sampled, 
+   and used as input for $\mathcal{N}_{recon}$. The predicted mesh is evaluated with a loss function against ground truth data, leading to 
+   the network to learn generalizations for reconstruction based on a lower amount of samples.
+
+   \begin{figure}
+      \centering
+      \includegraphics[width=0.5\textwidth]{basic_learning.png}
+      \caption{Traditional way to train neural network. Ground truth data and input are separated. Input may be infered from ground truth data.} \label{fig:training1}
+    \end{figure}
+
+   In contrast, an alternative approach $\mathcal{N}_{opt}$ for training is considered as well, leaning closer to unsupervised training, though not in a traditional sense.
+   More like an optimization process, this second approach disregards the need for ground truth data and operates solely on input data, as seen in
+   figure \ref{fig:training2}. $\mathcal{N}_{opt}$ takes an already sampled point cloud as input, predicts a mesh based on that data; however, evaluates the 
+   loss function of the prediction against the same input as already sampled.
+   Though, its focus is less on generalization, more on learning optimization within the same subset of data and thus also considered in this work.
+
+   \begin{figure}[htbp]
+   \centering
+   \includegraphics[width=0.5\textwidth]{stupid_training.png}
+   \caption{Alternative approach to train $\mathcal{N}_{opt}$. Input and ground truth data are the same in this example.} \label{fig:training2}
+   \end{figure}
+
 \subsection{Flexconv feature extraction}
 \label{fconv}
 
@@ -348,7 +375,6 @@ while also computing only one nearest neighbor, $k=1$ in that particular layer.
 \todo{hier?}
 \subsection{Utilized object categories}
 \label{sec:categ}
-\todo{Bilder fuer object categories or interesting features}
 Even though \emph{ModelNet40}, and therefore the transformed point cloud dataset by Qi et al. offers, as the name suggests,
 40 different object categories, only a subset of them is chosen for training purposes of $\mathcal{N}_{recon}$. 
 The subset of $\mathcal{D}_{m40}$ is defined as $\mathcal{D}_{big}=[airplane,bed,bottle,bowl,chair,guitar,toilet]$

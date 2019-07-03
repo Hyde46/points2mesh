@@ -12,7 +12,7 @@
   foremost prior comprehension of the shape of nearby objects. 
   Similar to general robotic applications, the by now more feasible solution for autonomous driving
   needs analogous information of its obstacles to prevent collisions and thus allow for safe guidance
-  through traffic.
+  through traffic. 
   Typically, objects are recorded in a way, which results in unstructured, three-dimensional point
   cloud data, for example, with the help of range scanners or structured light.
 
@@ -21,13 +21,15 @@
   still, the preferred way to operate is in the form of surface information like tri-or quad-meshes.
   Transforming such point cloud data into meshes is a prevalent problem in the context of computer vision. Thus, numerous
   methods have been developed, aiming to solve that problem\cite{817351,Jakob2015Instant}.
+  However, finding use in applications like autonomous driving, reconstructing watertight meshes is a crucial step. Calculating robust collisions or
+  analyzing an object's surface requires such a complete mesh, without holes, or undefined spots on its surface.
 
   With recent advancements in deep learning and the abundance of readily available data, much work has been poured
   into neural networks which can process the real world robustly. Consequently, solving the same problem of processing 
   unstructured points in three-dimensional space and obtaining polygonal meshes has garnered attention. Though, many methods 
   rely on voxelized data, since neural networks can naturally process structured data better than unstructured spatial data.
 
-  In this work, a novel convolutional neural network configuration is proposed which obtains tri-meshes from unstructured point cloud data.
+  In this work, a novel convolutional neural network configuration is proposed which computes watertight tri-meshes from unstructured point cloud data.
   By deforming an initial base-mesh based on learned tension feature vectors from the data, the network can reliably generate approximations
   even with low-resolution or noisy data. 
   Since this network is the first of its kind, it is essential to assess its capabilities in comparison to the traditional methods. 

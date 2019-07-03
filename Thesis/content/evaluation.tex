@@ -32,6 +32,7 @@
     section specifies aspects to evaluate of \emph{points2mesh}'s configurations $\mathcal{C}_i$. Furthermore, utilized metrics 
     for the comparison are detailed in the subsequent subsection. Finally, competing methods for reconstruction are specified,
     to define a frame of reference against which \emph{points2mesh} should be able to hold up or even exceed.
+    Finally, a collection of inference examples of the second approach for network training as detailed in \ref{trainings} are listed as well.
 
 
 \subsection{Evaluation aspects}
@@ -45,6 +46,9 @@
         \item \textbf{Configurations} $\mathcal{C}_i$: Each configuration, as described in \ref{configurations}, has its purpose 
                 for specific reconstruction capabilities. Evaluating every one of them may lead to conlcusions about objective rankings, and thus
                 to a choice of best network configuration for reconstructions with the highest quality.
+        \item \textbf{Input sample size}: Based on the input sample size of the point cloud, harder, or easier tasks for deforming the ellipsoid are assumed. 
+                Evaluating the quality of the reconstructions may lead to conclusions about the amount of necessary samples for proper inference.
+                The input sample sizes are $\in[256,1024,7500]$. 
         \item \textbf{Visual quality}: While being subjective, taking a closer look how good the reconstruction seems to represent the ground truth mesh
         is still relevant.
         \item \textbf{Computation time}: Determining how fast such a reconstruction can be calculated may change which method to use depending on the application.
@@ -163,10 +167,26 @@
     feature (~fron wheel~) at the last step and thus could explain for higher or equal mean values 
     of $d_m$.
 
-
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 256 samples per point cloud for $\mathcal{N}_{recon}$. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256} 
+    \begin{tabular}{| l  | c  | c | c | c || c |}
+        \hline
+        %airplane
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & BPA & $IFM$  & None\\ \hline
+        airplane&0.090&&0.013&0.153&0.251\\\hline
+        bed&0.019&&0.016&0.123&0.163\\\hline 
+        bottle&0.011&&0.007&0.134&0.201\\\hline
+        bowl&0.024&&0.022&0.133&0.148\\\hline
+        car&0.20&&0.020&0.199&0.155\\\hline
+        chair&0.019&&0.027&0.188&0.195\\\hline
+        guitar&0.015&&0.005&0.325&0.338\\\hline
+        toilet&0.043&&0.016&0.135&0.138\\\hline\hline
+        mean&&&0.016&0.200&0.1986\\        \hline
+    \end{tabular}
+\end{center}
 
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 256 samples per point cloud. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256} 
+    \captionof{table}{Distance metric evaluations with 256 samples per point cloud for $\mathcal{N}_{opt}$. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256} 
     \begin{tabular}{| l  | c  | c | c | c || c |}
         \hline
         %airplane
@@ -324,7 +344,8 @@ is not possible for \emph{DMC}, resulting in big chunks of missing surface infor
         \end{tabular}
     \end{center}
 \end{center}
-\subsection{Training and evaluation time}
+\subsection{Evaluation time}
+\todo{hypericum stats and graphics card used}
 For real-time applications like guiding autonomous cars through traffic without collision,
  reconstruction should happen virtually instantaneously for it to be advantageous. 
  The computation time may be critical, and thus has been evaluated, as seen in table
