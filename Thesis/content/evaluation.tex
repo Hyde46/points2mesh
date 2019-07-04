@@ -51,9 +51,6 @@
                 The input sample sizes are $\in[256,1024,7500]$. 
         \item \textbf{Visual quality}: While being subjective, taking a closer look how good the reconstruction seems to represent the ground truth mesh
         is still relevant.
-        \item \textbf{Computation time}: Determining how fast such a reconstruction can be calculated may change which method to use depending on the application.
-        %\item \textbf{Training time}: Measured in iterations, the convergence time offers valuable insight for networkconfigurations $\mathcal{C}_i$ and how it
-        %learns from the input data.
         \item \textbf{Generalization capabilities}: Evaluating how well configrations $\mathcal{C}_i$ are capable of generalize the problem of reconstruction is a crucial aspect
         for any neural network. 
         \item \textbf{Changing the basemesh $\mathcal{M}_i$}: \emph{points2mesh} is only able to reconstruct meshes of the same \emph{genus} as the input mesh $\mathcal{M}_i$.
@@ -62,7 +59,7 @@
         \item \textbf{Noise robustness}: Acquiring unstructured points in three-dimensional space from real-world object often entails noisy data.
          The perfect acquisition is already nearly impossible due to imperfection in the hardware. Thus, training $\mathcal{N}_{recon}$ with noisy data 
          is an essential part of the evaluation.
-        \item \textbf{Computation time}: If such reconstruction methods are fit for time critical application, their computation time is important to evaluate.
+        \item \textbf{Computation time}: When reconstruction methods are used for time critical application, their computation time is important to evaluate.
     \end{itemize}
 
     While evaluating configurations, the visual quality and computation time can be compared to other methods, generalization and different used basemeshes
@@ -151,15 +148,18 @@
     and $\mathcal{C}_4$ do not have the problem with edges in empty space like configuration $\mathcal{C}_3$, as seen in figure \ref{fig:2}.
     The general low values of $\mathcal{C}_2$, with a higher amount of vertices for the reconstructed object can also be confirmed visually,
     if compared to \ref{fig:1c}, \ref{fig:2c} and \ref{fig:3c}. Though representing the features the best, the general smoothness factor of the object is 
-    lower than the other configurations.
+    way lower than the other configurations. Configurations $\mathcal{C}_1$, $\mathcal{C}_3$ and $\mathcal{C}_4$ seem visually more pleasing caused by the smoothness of the surface, though 
+    $\mathcal{C}_2$ is able to represent the objects in a better way, if the smoothness is disregarded.
 
     Furthermore, comparing the results of $d_m$ between 256, 1024 and 7500 samples of each configuration, a more significant gap 
     between 256 to 1024 is present, than between 1024 and 7500 samples.
     While the mean value of $d_m$ gets lower using 1024 samples rather than 256, this is generally not true anymore for changing 
-    from 1024 samples to 7500.
-    Notably, in the case of configuration $\mathcal{C}_1$, its mean value for $d_m$ for all object categories is $0.046$ for 256 samples,
-    reducing to $0.018$ at 1024 samples, but staying constant for 7500 samples, also at $0.018$. Additionally, configuration $\mathcal{C}_4$
-    has worse results at 7500 samples than at 1024 samples.
+    from 1024 samples to 7500. Since solving the problem of reconstruction is objectively harder the more points are present. 
+    However, solving the same problem with only 256 samples may also lead to higher values for $d_m$, since at some amount of samples, there are not enough present
+    anymore to represent the ground truth mesh at an appropriate level.
+    Notably, in the case of configuration $\mathcal{C}_1$, its mean value for $d_m$ for all object categories is $0.020$ for 256 samples,
+    reducing to $0.017$ at 1024 samples, but increasing again to $0.024$ for 7500 samples. Additionally, configuration $\mathcal{C}_3$
+    has worse results at 7500 samples than at 1024 samples as well.
 
     Confirming these numerical results with the visual evidence in figure \ref{fig:7}, 
     while a big jump in visual quality is evident, changing the sample size from 256 to 1024, 
@@ -167,7 +167,7 @@
     feature (~fron wheel~) at the last step and thus could explain for higher or equal mean values 
     of $d_m$.
 
-    Tables \ref{distance256opt}, \ref{distance1024opt} and \ref{distance256opt} show the same evaluation of $d_m$ for $\mathcal{N}_{opt}$, though only the mean value
+    Tables \ref{distance256opt}, \ref{distance1024opt} and \ref{distance7500opt} show the same evaluation of $d_m$ for $\mathcal{N}_{opt}$, though only the mean value
     is indicated for each configuration. As seen in the reconstructions in figures \ref{10}, \ref{11} and \ref{12}, the results are generally worse. The reconstructions
     have less smooth surfaces, less distinct features shown, and higher values for $d_m$. A complete evaluation for $d_m$ can be found in the appendix \ref{completeopt}
 
@@ -177,15 +177,15 @@
         \hline
         %airplane
         Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & BPA & $IFM$  & None\\ \hline
-        airplane&0.013&&0.011&0.011&0.013&0.153&0.251\\\hline
-        bed&0.019&&0.018&0.017&0.016&0.123&0.163\\\hline 
-        bottle&0.011&&0.011&0.010&0.007&0.134&0.201\\\hline
-        bowl&0.024&&0.018&0.022&0.022&0.133&0.148\\\hline
-        car&0.0 20&&0.019&0.020&0.020&0.199&0.155\\\hline
-        chair&0.019&&0.018&0.016&0.027&0.188&0.195\\\hline
-        guitar&0.015&&0.015&0.013&0.005&0.325&0.338\\\hline
-        toilet&0.043&&0.052&0.027&0.016&0.135&0.138\\\hline\hline
-        mean&0.020&&0.021&0.016&0.016&0.200&0.1986\\\hline
+        airplane&0.013&0.009&0.011&0.011&0.013&0.153&0.251\\\hline
+        bed&0.019&0.014&0.018&0.017&0.016&0.123&0.163\\\hline 
+        bottle&0.011&0.008&0.011&0.010&0.007&0.134&0.201\\\hline
+        bowl&0.024&0.018&0.018&0.022&0.022&0.133&0.148\\\hline
+        car&0.020&0.015&0.019&0.020&0.020&0.199&0.155\\\hline
+        chair&0.019&0.013&0.018&0.016&0.027&0.188&0.195\\\hline
+        guitar&0.015&0.009&0.015&0.013&0.005&0.325&0.338\\\hline
+        toilet&0.043&0.020&0.052&0.027&0.016&0.135&0.138\\\hline\hline
+        mean&0.020&0.013&0.021&0.016&0.016&0.200&0.1986\\\hline
     \end{tabular}
 \end{center}
 \begin{center}
@@ -194,15 +194,32 @@
         \hline
         %airplane
         Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & BPA & $IFM$ & None\\ \hline
-        airplane&0.011&&0.012&0.011&0.089&0.10 & 0.251\\\hline
-        bed&0.016&&0.016&0.014&0.008&0.099 & 0.163\\        \hline
-        bottle&0.009&&0.011&0.008&0.003&0.10 & 0.201\\        \hline
-        bowl&0.022&&0.020&0.019&0.006&0.097& 0.148\\        \hline
-        car&0.019&&0.018&0.018&0.009&0.163& 0.155\\        \hline
-        chair&0.016&&0.017&0.015&0.008&0.172& 0.195\\        \hline
-        guitar&0.013&&0.022&0.012&0.002&0.234 & 0.338\\        \hline
-        toilet&0.037&&0.048&0.024&0.006&0.109 & 0.138\\        \hline\hline
-        mean&0.017&&0.021&0.015&0.016&0.134 & 0.1986\\        \hline
+        airplane&0.011&0.006&0.012&0.011&0.089&0.10 & 0.251\\\hline
+        bed&0.016&0.010&0.016&0.014&0.008&0.099 & 0.163\\        \hline
+        bottle&0.009&0.007&0.011&0.008&0.003&0.10 & 0.201\\        \hline
+        bowl&0.022&0.013&0.020&0.019&0.006&0.097& 0.148\\        \hline
+        car&0.019&0.012&0.018&0.018&0.009&0.163& 0.155\\        \hline
+        chair&0.016&0.009&0.017&0.015&0.008&0.172& 0.195\\        \hline
+        guitar&0.013&0.006&0.022&0.012&0.002&0.234 & 0.338\\        \hline
+        toilet&0.037&0.013&0.048&0.024&0.006&0.109 & 0.138\\        \hline\hline
+        mean&0.017&0.010&0.021&0.015&0.016&0.134 & 0.1986\\        \hline
+    \end{tabular}
+\end{center}
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500} 
+    \begin{tabular}{| l  | c | c | c | c | c | c |}
+        \hline
+        %airplane
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ &$\mathcal{C}_4$ & BPA & $IFM$  \\ \hline
+        airplane&0.015&&0.031&0.011&0.090&0.090\\\hline
+        bed&0.021&&0.10&0.015&0.005&0.089\\\hline
+        bottle&0.014&&0.115&0.007&0.001&0.096\\\hline
+        bowl&0.026&&0.127&0.017&0.003&0.091\\\hline
+        car&0.024&&0.111&0.018&0.003&0.153\\\hline
+        chair&0.022&&0.064&0.016&0.001&0.126\\\hline
+        guitar&0.022&&0.025&0.012&0.001&0.212\\\hline
+        toilet&0.047&&0.178&0.031&0.003&0.101\\\hline\hline
+        mean&0.024&&0.083&0.016&0.013&0.119\\\hline
     \end{tabular}
 \end{center}
 
@@ -224,7 +241,14 @@
         mean&0.018&0.024&0.021&0.018&0.016&0.134 & 0.1986\\        \hline
     \end{tabular}
 \end{center}
-
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500} 
+    \begin{tabular}{| l  | c | c | c | c  | c | c |}
+        \hline
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ &  $\mathcal{C}_4$ & BPA & $IFM$  \\ \hline
+        mean&0.018&0.015 & 0.025 & 0.027&0.013&0.119\\\hline
+    \end{tabular}
+\end{center}
     In contrast, the traditional methods, as in \emph{BPA} and \emph{IFM}, get better results; the more samples are provided, both
     numerically as well as visually.
     \emph{IFM} seems to generally struggle to reconstruct visually pleasing results when the number of samples is below 7500.
@@ -232,36 +256,18 @@
     object (~See table \ref{tab:distance256} and \ref{tab:distance1024},  mean value for \emph{car}~). Generally, the metrics have
     higher values for \emph{IFM}, while \emph{BPA} and $\emph{N}_{recon}$ are much closer to each other.
 
-    Not only are they closer to each other, but rather \emph{BPA} produces lower mean values than any configuration of  $\emph{N}_{recon}$.
+    Not only are they closer to each other, but rather \emph{BPA} produces lower mean values than any configuration of  $\emph{N}_{recon}$ with the exception of $\mathcal{C}_2$.
     Though implicating better results for any case, visually for 256 samples and 1024 samples, $\mathcal{C}_1$ looks in some cases more
     organic, or closer to the ground truth than \emph{BPA} (~Compare figures \ref{fig:7b} with \ref{fig:7c}, and figures \ref{fig:1c} 
     with \ref{fig:1g}~). However, most reconstructions with either \emph{BPA} or \emph{IFM} have holes in the meshes, thus are not watertight.
 
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500} 
-    \begin{tabular}{| l  | c | c | c | c | c | c | c |}
-        \hline
-        %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_4$ & BPA & $IFM$  \\ \hline
-        airplane&0.015&0.092&0.090&0.090\\\hline
-        bed&0.016&0.015&0.005&0.089\\\hline
-        bottle&0.011&0.009&0.001&0.096\\\hline
-        bowl&0.021&0.021&0.003&0.091\\\hline
-        car&0.019&0.019&0.003&0.153\\\hline
-        chair&0.018&0.016&0.001&0.126\\\hline
-        guitar&0.017&0.013&0.001&0.212\\\hline
-        toilet&0.033&0.028&0.003&0.101\\\hline\hline
-        mean&0.018&0.027&0.013&0.119\\\hline
-    \end{tabular}
-\end{center}
 
-
-Finally, inspecting reconstructions from \emph{DMC} demonstrates generally bad results. The low amount of samples used, less than 7500,
-seems not to be enough for the deep learning based approach to reconstruct a precise object. At figure \ref{fig:51d}, \emph{DMC} somewhat
-reconstruct the general outline of the object, though producing big holes in the side of the object, while also hollowing out the interior
-of the car. Additionally, reconstructing a guitar, see figure \ref{fig:3h}, a second, independent \emph{blob} of incoherent triangles is 
-produced, unrelated to the ground truth. Lastly, as seen in figure \ref{fig:1i}, reconstructing flat surfaces, like the wings of the airplane
-is not possible for \emph{DMC}, resulting in big chunks of missing surface information. However, reconstructed objects with \emph{DMC} are watertight.
+    Finally, inspecting reconstructions from \emph{DMC} demonstrates generally bad results. The low amount of samples used, less than 7500,
+    seems not to be enough for the deep learning based approach to reconstruct a precise object. At figure \ref{fig:51d}, \emph{DMC} somewhat
+    reconstruct the general outline of the object, though producing big holes in the side of the object, while also hollowing out the interior
+    of the car. Additionally, reconstructing a guitar, see figure \ref{fig:3h}, a second, independent \emph{blob} of incoherent triangles is 
+    produced, unrelated to the ground truth. Lastly, as seen in figure \ref{fig:1i}, reconstructing flat surfaces, like the wings of the airplane
+    is not possible for \emph{DMC}, resulting in big chunks of missing surface information. However, reconstructed objects with \emph{DMC} are watertight.
 
 \subsection{Generalization capabilities}
     Making use of reconstruction techniques often requires the method to work in a general setting.
