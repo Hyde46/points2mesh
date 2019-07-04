@@ -7,45 +7,45 @@ Warning--empty journal in articlefusionnet
 Warning--empty title in PointGrid
 Warning--empty booktitle in inproceedingsparse
 Warning--empty booktitle in inproceedings
-You've used 47 entries,
+You've used 48 entries,
             2543 wiz_defined-function locations,
-            818 strings with 14485 characters,
-and the built_in function-call counts, 21698 in all, are:
-= -- 2026
-> -- 1515
-< -- 12
-+ -- 561
-- -- 556
-* -- 1672
-:= -- 3738
-add.period$ -- 145
-call.type$ -- 47
-change.case$ -- 396
-chr.to.int$ -- 46
-cite$ -- 51
-duplicate$ -- 766
-empty$ -- 1309
-format.name$ -- 589
-if$ -- 4303
+            825 strings with 14615 characters,
+and the built_in function-call counts, 21963 in all, are:
+= -- 2052
+> -- 1523
+< -- 13
++ -- 563
+- -- 558
+* -- 1683
+:= -- 3780
+add.period$ -- 148
+call.type$ -- 48
+change.case$ -- 401
+chr.to.int$ -- 47
+cite$ -- 52
+duplicate$ -- 777
+empty$ -- 1334
+format.name$ -- 592
+if$ -- 4360
 int.to.chr$ -- 2
 int.to.str$ -- 0
 missing$ -- 45
-newline$ -- 238
-num.names$ -- 143
-pop$ -- 395
+newline$ -- 243
+num.names$ -- 146
+pop$ -- 403
 preamble$ -- 1
-purify$ -- 445
+purify$ -- 451
 quote$ -- 0
-skip$ -- 666
+skip$ -- 678
 stack$ -- 0
-substring$ -- 686
-swap$ -- 137
-text.length$ -- 12
+substring$ -- 693
+swap$ -- 138
+text.length$ -- 13
 text.prefix$ -- 2
 top$ -- 0
-type$ -- 372
+type$ -- 380
 warning$ -- 4
-while$ -- 165
-width$ -- 52
-write$ -- 601
+while$ -- 167
+width$ -- 53
+write$ -- 613
 (There were 4 warnings)

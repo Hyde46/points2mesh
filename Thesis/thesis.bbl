@@ -7,6 +7,11 @@ Nina Amenta, Sunghee Choi, and Ravi~Krishna Kolluri.
 \newblock In {\em Proceedings of the Sixth ACM Symposium on Solid Modeling and
   Applications}, SMA '01, pages 249--266, New York, NY, USA, 2001. ACM.
 
+\bibitem[Ar11]{Ranellucci2011}
+Joseph~Lenox Alessandro~ranellucci.
+\newblock Slic3r.
+\newblock \url{https://github.com/slic3r/Slic3r}, 2011.
+
 \bibitem[BL18]{bukenberger2018hierarchical}
 Dennis~R. Bukenberger and Hendrik P.~A. Lensch.
 \newblock {Hierarchical Quad Meshing of 3D Scanned Surfaces}.

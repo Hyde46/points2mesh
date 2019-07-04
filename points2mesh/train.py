@@ -35,7 +35,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 # flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
@@ -66,9 +66,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "3"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c3_7500_big2_%s' % (args.fusion))
+    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c1_1024_small_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
@@ -96,7 +96,7 @@ if __name__ == '__main__':
             RunUpdateOps()
         ],
         steps_per_epoch=steps_per_epoch,
-        starting_epoch=59,
+        starting_epoch=0,
         max_epoch=NUM_EPOCH
     )
     launch_train_with_config(config, SimpleTrainer())

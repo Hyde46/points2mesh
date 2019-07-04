@@ -86,6 +86,7 @@ Choosing suitable configurations, proper hyperparameters tunings,
    figure \ref{fig:training2}. $\mathcal{N}_{opt}$ takes an already sampled point cloud as input, predicts a mesh based on that data; however, evaluates the 
    loss function of the prediction against the same input as already sampled.
    Though, its focus is less on generalization, more on learning optimization within the same subset of data and thus also considered in this work.
+   $\mathcal{N}_{opt}$ may thus even be trained on natural point cloud data, where no real ground truth is available.
 
    \begin{figure}[htbp]
    \centering

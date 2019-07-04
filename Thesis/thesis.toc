@@ -14,27 +14,27 @@
 \contentsline {section}{\numberline {4.1}Neural network structure}{21}
 \contentsline {subsection}{\numberline {4.1.1}General system overview}{21}
 \contentsline {subsection}{\numberline {4.1.2}Network training process}{23}
-\contentsline {subsection}{\numberline {4.1.3}Flexconv feature extraction}{24}
-\contentsline {subsection}{\numberline {4.1.4}GCN mesh deformation}{24}
+\contentsline {subsection}{\numberline {4.1.3}Flexconv feature extraction}{23}
+\contentsline {subsection}{\numberline {4.1.4}GCN mesh deformation}{25}
 \contentsline {subsection}{\numberline {4.1.5}Loss functions}{28}
-\contentsline {subsection}{\numberline {4.1.6}Network configurations $\mathcal {C}$}{28}
-\contentsline {section}{\numberline {4.2}Dataset}{30}
-\contentsline {subsection}{\numberline {4.2.1}Dataset generation}{31}
-\contentsline {subsection}{\numberline {4.2.2}Utilized object categories}{31}
+\contentsline {subsection}{\numberline {4.1.6}Network configurations $\mathcal {C}$}{29}
+\contentsline {section}{\numberline {4.2}Dataset}{31}
+\contentsline {subsection}{\numberline {4.2.1}Dataset generation}{32}
+\contentsline {subsection}{\numberline {4.2.2}Utilized object categories}{32}
 \contentsline {chapter}{\numberline {5}Results}{33}
 \contentsline {section}{\numberline {5.1}Compared methods}{33}
 \contentsline {section}{\numberline {5.2}Result visualization}{33}
-\contentsline {chapter}{\numberline {6}Evaluation}{43}
-\contentsline {section}{\numberline {6.1}Experimental setup}{43}
-\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{44}
-\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{45}
-\contentsline {section}{\numberline {6.2}Experiment results}{45}
-\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{46}
-\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{49}
-\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{50}
-\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{50}
-\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{51}
-\contentsline {chapter}{\numberline {7}Discussion}{53}
-\contentsline {chapter}{\numberline {8}Conclusion}{55}
-\contentsline {chapter}{\numberline {9}Outlook}{57}
-\contentsline {chapter}{\numberline {A}Appendix}{59}
+\contentsline {chapter}{\numberline {6}Evaluation}{37}
+\contentsline {section}{\numberline {6.1}Experimental setup}{37}
+\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{38}
+\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{39}
+\contentsline {section}{\numberline {6.2}Experiment results}{39}
+\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{40}
+\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{43}
+\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{44}
+\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{44}
+\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{45}
+\contentsline {chapter}{\numberline {7}Discussion}{47}
+\contentsline {chapter}{\numberline {8}Conclusion}{49}
+\contentsline {chapter}{\numberline {9}Outlook}{51}
+\contentsline {chapter}{\numberline {A}Appendix}{53}

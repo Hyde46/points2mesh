@@ -1,8 +1,6 @@
 
 % write content here or...
 \chapter{Introduction}
-\todo{watertight meshes}
-\todo{ in case, incomplete training, mehr optimierung}
   For humans to interact with the world depends on many variables. 
   An important aspect is to recognize, analyze, and estimate the position,
   as well as the shape of objects positioned in the world around. For many years,
@@ -21,9 +19,9 @@
   still, the preferred way to operate is in the form of surface information like tri-or quad-meshes.
   Transforming such point cloud data into meshes is a prevalent problem in the context of computer vision. Thus, numerous
   methods have been developed, aiming to solve that problem\cite{817351,Jakob2015Instant}.
-  However, finding use in applications like autonomous driving, reconstructing watertight meshes is a crucial step. Calculating robust collisions or
-  analyzing an object's surface requires such a complete mesh, without holes, or undefined spots on its surface.
-
+  However, finding use in applications like autonomous driving, reconstructing watertight meshes is a crucial step. Calculating robust collisions,
+  analyzing an object's surface or poviding a 3D printable object requires such a complete mesh, without holes, or undefined spots on its surface.
+ 
   With recent advancements in deep learning and the abundance of readily available data, much work has been poured
   into neural networks which can process the real world robustly. Consequently, solving the same problem of processing 
   unstructured points in three-dimensional space and obtaining polygonal meshes has garnered attention. Though, many methods 
@@ -31,7 +29,8 @@
 
   In this work, a novel convolutional neural network configuration is proposed which computes watertight tri-meshes from unstructured point cloud data.
   By deforming an initial base-mesh based on learned tension feature vectors from the data, the network can reliably generate approximations
-  even with low-resolution or noisy data. 
+  even with low-resolution or noisy data. Additionally, a supervised and an unsupervised version of the training process is proposed and evaluated. 
+  By providing multi-class training, both versions of the network learn the general reconstruction of objects, even allowing for out of class reconstruction.
   Since this network is the first of its kind, it is essential to assess its capabilities in comparison to the traditional methods. 
   Therefore, part of this work is to identify its strengths and weaknesses and determine where it may find use and how to build upon it.
 

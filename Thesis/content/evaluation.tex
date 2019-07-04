@@ -167,6 +167,10 @@
     feature (~fron wheel~) at the last step and thus could explain for higher or equal mean values 
     of $d_m$.
 
+    Tables \ref{distance256opt}, \ref{distance1024opt} and \ref{distance256opt} show the same evaluation of $d_m$ for $\mathcal{N}_{opt}$, though only the mean value
+    is indicated for each configuration. As seen in the reconstructions in figures \ref{10}, \ref{11} and \ref{12}, the results are generally worse. The reconstructions
+    have less smooth surfaces, less distinct features shown, and higher values for $d_m$. A complete evaluation for $d_m$ can be found in the appendix \ref{completeopt}
+
 \begin{center}
     \captionof{table}{Distance metric evaluations with 256 samples per point cloud for $\mathcal{N}_{recon}$. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256} 
     \begin{tabular}{| l  | c  | c | c | c | c | c || c |}
@@ -177,32 +181,13 @@
         bed&0.019&&0.018&0.017&0.016&0.123&0.163\\\hline 
         bottle&0.011&&0.011&0.010&0.007&0.134&0.201\\\hline
         bowl&0.024&&0.018&0.022&0.022&0.133&0.148\\\hline
-        car&0.20&&0.019&0.020&0.020&0.199&0.155\\\hline
+        car&0.0 20&&0.019&0.020&0.020&0.199&0.155\\\hline
         chair&0.019&&0.018&0.016&0.027&0.188&0.195\\\hline
         guitar&0.015&&0.015&0.013&0.005&0.325&0.338\\\hline
         toilet&0.043&&0.052&0.027&0.016&0.135&0.138\\\hline\hline
-        mean&&&&&0.016&0.200&0.1986\\\hline
+        mean&0.020&&0.021&0.016&0.016&0.200&0.1986\\\hline
     \end{tabular}
 \end{center}
-
-\begin{center}
-    \captionof{table}{Distance metric evaluations with 256 samples per point cloud for $\mathcal{N}_{opt}$. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256opt} 
-    \begin{tabular}{| l  | c  | c | c | c || c |}
-        \hline
-        %airplane
-        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & BPA & $IFM$  & None\\ \hline
-        airplane&0.013&0.12&0.013&0.153&0.251\\\hline
-        bed&0.028&0.049&0.016&0.123&0.163\\\hline 
-        bottle&0.016&0.014&0.007&0.134&0.201\\\hline
-        bowl&0.044&0.089&0.022&0.133&0.148\\\hline
-        car&0.035&0.058&0.020&0.199&0.155\\\hline
-        chair&0.038&0.045&0.027&0.188&0.195\\\hline
-        guitar&0.027&0.039&0.005&0.325&0.338\\\hline
-        toilet&0.082&0.075&0.016&0.135&0.138\\\hline\hline
-        mean&&0.061&0.016&0.200&0.1986\\        \hline
-    \end{tabular}
-\end{center}
-
 \begin{center}
     \captionof{table}{Distance metric evaluations with 1024 samples per point cloud for $\mathcal{N}_{recon}$. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
     \begin{tabular}{| l  | c | c | c | c | c | c || c |}
@@ -217,24 +202,25 @@
         chair&0.016&&0.017&0.015&0.008&0.172& 0.195\\        \hline
         guitar&0.013&&0.022&0.012&0.002&0.234 & 0.338\\        \hline
         toilet&0.037&&0.048&0.024&0.006&0.109 & 0.138\\        \hline\hline
-        mean&&&&&0.016&0.134 & 0.1986\\        \hline
+        mean&0.017&&0.021&0.015&0.016&0.134 & 0.1986\\        \hline
     \end{tabular}
 \end{center}
 
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud for $\mathcal{N}_{opt}$. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024} 
+    \captionof{table}{Distance metric evaluations with 256 samples per point cloud for $\mathcal{N}_{opt}$. Caluclated with \emph{meshdistance} metric. Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance256opt} 
+    \begin{tabular}{| l  | c  | c | c | c || c |}
+        \hline
+        %airplane
+        Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & BPA & $IFM$  & None\\ \hline
+        mean&0.035&0.061&0.016&0.200&0.1986\\        \hline
+    \end{tabular}
+\end{center}
+\begin{center}
+    \captionof{table}{Distance metric evaluations with 1024 samples per point cloud for $\mathcal{N}_{opt}$. Caluclated with \emph{meshdistance} metric. Lower values are better.} \label{tab:distance1024opt} 
     \begin{tabular}{| l  | c | c | c | c | c | c || c |}
         \hline
         %airplane
         Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ & $\mathcal{C}_4$ & BPA & $IFM$ & None\\ \hline
-        airplane&0.011&0.091&0.014&0.011&0.089&0.10 & 0.251\\\hline
-        bed&0.016&0.012&0.018&0.016&0.008&0.099 & 0.163\\        \hline
-        bottle&0.010&0.007&0.010&0.008&0.003&0.10 & 0.201\\        \hline
-        bowl&0.025&0.03&0.029&0.022&0.006&0.097& 0.148\\        \hline
-        car&0.021&0.017&0.024&0.021&0.009&0.163& 0.155\\        \hline
-        chair&0.018&0.012&0.020&0.017&0.008&0.172& 0.195\\        \hline
-        guitar&0.014&0.01&0.022&0.017&0.002&0.234 & 0.338\\        \hline
-        toilet&0.029&0.016&0.028&0.025&0.006&0.109 & 0.138\\        \hline\hline
         mean&0.018&0.024&0.021&0.018&0.016&0.134 & 0.1986\\        \hline
     \end{tabular}
 \end{center}
@@ -249,7 +235,7 @@
     Not only are they closer to each other, but rather \emph{BPA} produces lower mean values than any configuration of  $\emph{N}_{recon}$.
     Though implicating better results for any case, visually for 256 samples and 1024 samples, $\mathcal{C}_1$ looks in some cases more
     organic, or closer to the ground truth than \emph{BPA} (~Compare figures \ref{fig:7b} with \ref{fig:7c}, and figures \ref{fig:1c} 
-    with \ref{fig:1g}~).
+    with \ref{fig:1g}~). However, most reconstructions with either \emph{BPA} or \emph{IFM} have holes in the meshes, thus are not watertight.
 
 \begin{center}
     \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500} 
@@ -274,8 +260,8 @@ Finally, inspecting reconstructions from \emph{DMC} demonstrates generally bad r
 seems not to be enough for the deep learning based approach to reconstruct a precise object. At figure \ref{fig:51d}, \emph{DMC} somewhat
 reconstruct the general outline of the object, though producing big holes in the side of the object, while also hollowing out the interior
 of the car. Additionally, reconstructing a guitar, see figure \ref{fig:3h}, a second, independent \emph{blob} of incoherent triangles is 
-produces, unrelated to the ground truth. Lastly, as seen in figure \ref{fig:1i}, reconstructing flat surfaces, like the wings of the airplane
-is not possible for \emph{DMC}, resulting in big chunks of missing surface information.
+produced, unrelated to the ground truth. Lastly, as seen in figure \ref{fig:1i}, reconstructing flat surfaces, like the wings of the airplane
+is not possible for \emph{DMC}, resulting in big chunks of missing surface information. However, reconstructed objects with \emph{DMC} are watertight.
 
 \subsection{Generalization capabilities}
     Making use of reconstruction techniques often requires the method to work in a general setting.
@@ -305,8 +291,7 @@ is not possible for \emph{DMC}, resulting in big chunks of missing surface infor
     As seen in table \ref{tab:generalize}, all configurations except for $\mathcal{C}_3$ result in low values for $d_m$ if
     compared to the same metrics of no reconstruction at all. Figures \ref{fig:8} and \ref{fig:9} confirm this contention.
     $\mathcal{C}_2$ keeps the same problem as described above, the general roughness of the surface. $\mathcal{C}_1$ and
-    $\mathcal{C}_4$ produce rather similar results, while $\mathcal{C}_3$ fails in every regard to reconstructing anything
-    close to the ground truth mesh. 
+    $\mathcal{C}_4$ produce rather similar results, while $\mathcal{C}_3$ seems to struggle the most to construct a proper mesh.
 
 \subsection{Varying basemesh $\mathcal{M}_i$}
     The previously described configurations all are trained on a spheroid as initial mesh $\mathcal{M}_i$. 
@@ -389,5 +374,4 @@ Generally, \emph{IFM} has the fastest computation times at the same amount of sa
              $BPA$ & 0.062 \\\hline
         \end{tabular}
 \end{center}
-
 
