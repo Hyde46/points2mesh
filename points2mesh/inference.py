@@ -15,7 +15,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 1024, 'dp': 3, 'ver': "40", 'gt':10000}
+PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt':10000}
 # settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -101,7 +101,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c2_1024_big2_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c2_7500_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -130,7 +130,7 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c2_n_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c2_n_7500_"+c
     counter = 0
     for pc in pcs:
 
