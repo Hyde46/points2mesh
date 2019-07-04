@@ -15,7 +15,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 1024, 'dp': 3, 'ver': "40"}
+PC = {'num': 1024, 'dp': 3, 'ver': "40", 'gt':10000}
 # settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -30,7 +30,7 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-flags.DEFINE_integer('pc_num', 1024, 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', PC['num'], 'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
@@ -47,7 +47,7 @@ num_supports = 2
 
 
 def noise_augment(data, noise_level=0.00):
-    rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
+    rnd = np.random.rand(3, PC['num'])*2*noise_level - noise_level
     return data + rnd
 
 def load_pc(pc_path, num_points):
@@ -101,7 +101,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/inference/train_log/c2_n_1024_big/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c2_1024_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -130,12 +130,12 @@ for c in categories:
 
     path = "/graphics/scratch/students/heid/evaluation_set/"+c
     pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c2_1024_"+c
+    path_output = "/graphics/scratch/students/heid/inference/c2_n_1024_"+c
     counter = 0
     for pc in pcs:
 
         path_pc = os.path.join(path, pc)
-        pc_inp = load_pc(path_pc, num_points=1024)
+        pc_inp = load_pc(path_pc, num_points=PC['num'])
         vertices = predict(predictor, pc_inp, path_pc)
         create_inference_mesh(vertices[3], 4, pc,
                             path_pc, path_output, display_mesh=False, num_obj=counter)
