@@ -1,26 +1,37 @@
 \chapter{Discussion}
 \label{sec:dicussion}
-ergebnisse interpretieren
+\todo{kurze einleitung und zusammenfassung}
+\subsection*{Own network}
+The proposed supervised as well as \emph{un}supervised neural network $\mathcal{N}_{recon}$,
+ and $\mathcal{N}_{opt}$ respectively, reconstruct a tri-mesh from point cloud data.
+  The underlying object to reconstruct has to be singular. Both versions of the neural 
+  network are trained on multiple classes at the same time, producing watertight meshes.
+First, configurations $\mathcal{C}_i$ for $\mathcal{N}_{recon}$ are considered. As already
+ established in \ref{chapter:evaluation}
 
-\emph{deep marching cubes} (~\emph{DMC}~) runter machen
+ 
+(zu allem erklaeren wie das mit gcn und flexconv zusammenhaengen kann)
+both N reconstruct a singular object from pc to trimesh
+multi class training, producing watertight meshes
 
-Ergebnisse subjektiver betrachten
-zu anderen paper vergleichen ( visuell mit einspielen von den anderen methoden)
-torus schlecht
-gibt es einen vorteil gegenueber den andern techniken, die im vergleich aufgetaucht sind?
+on same level ofdetail, c134 vergleichen, gut und schlecht
 
-das spann problem mit bildern und beispielen. welche config es gut / schlecht kann
+c2 higher detail visually and numerically, difference to other, but not smooth.
 
-glatte recons vs weniger glatte hauptsaechlich c1 - c3
-nur ein object rekonstruieren.
-deep mc direkter kompetitor
+c1 c3 fast gleich, zeigt, dass c1 a form of nearest neighbors lernt, aber bisschen anders.
+c4 zu simple. considering only c1 and c2 henceforth
 
-traditional way of training vs non traditional
+spannproblem bei allen anzeigen, wo es am meisten gibt
 
-genus problem
+generalisierung betrachten
 
-was anders machen
-wie erweitern
+genus problem besprechen
+
+supervised/non supervised, supervisedbesser, aber non supervised still quiet capable
+\subsection*{Comparison to others}
+bpa/ifm/dmc vergleiche, numerically and vsiually
+deepmc important
+\subsection*{General critique}
 
 konzept an sich kritisieren
 
