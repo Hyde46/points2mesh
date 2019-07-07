@@ -3,13 +3,14 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: thesis.aux
 The style file: alpha.bst
 Database file #1: bibliography.bib
+Warning--I didn't find a database entry for "IFM"
 Warning--empty journal in articlefusionnet
 Warning--empty title in PointGrid
 Warning--empty booktitle in inproceedingsparse
 Warning--empty booktitle in inproceedings
 You've used 48 entries,
             2543 wiz_defined-function locations,
-            825 strings with 14615 characters,
+            827 strings with 14621 characters,
 and the built_in function-call counts, 21963 in all, are:
 = -- 2052
 > -- 1523
@@ -48,4 +49,4 @@ warning$ -- 4
 while$ -- 167
 width$ -- 53
 write$ -- 613
-(There were 4 warnings)
+(There were 5 warnings)

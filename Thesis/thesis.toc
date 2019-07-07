@@ -35,6 +35,7 @@
 \contentsline {subsection}{\numberline {6.2.4}Noise robustness}{44}
 \contentsline {subsection}{\numberline {6.2.5}Evaluation time}{45}
 \contentsline {chapter}{\numberline {7}Discussion}{47}
-\contentsline {chapter}{\numberline {8}Conclusion}{49}
-\contentsline {chapter}{\numberline {9}Outlook}{51}
+\contentsline {section}{\numberline {7.1}Pioneer network \emph {points2mesh}}{47}
+\contentsline {section}{\numberline {7.2}Conclusion}{51}
+\contentsline {section}{\numberline {7.3}Outlook}{51}
 \contentsline {chapter}{\numberline {A}Appendix}{53}
