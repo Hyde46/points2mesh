@@ -24,6 +24,12 @@
   unstructured points in three-dimensional space and obtaining polygonal meshes has garnered attention. Though, many methods 
   rely on voxelized data, since neural networks can naturally process structured data better than unstructured spatial data.
 
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{intro_img.png}
+    \caption{High-level depiction of \emph{points2mesh} neural network, transforming scanned point cloud data to watertight meshes.} \label{fig:intro}
+  \end{figure}
+
   In this work, a novel convolutional neural network configuration is proposed which computes watertight tri-meshes from unstructured point cloud data.
   By deforming an initial base-mesh based on learned tension feature vectors from the data, the network can reliably generate approximations
   even with low-resolution or noisy data. Additionally, a supervised and an unsupervised version of the training process is proposed and evaluated. 
