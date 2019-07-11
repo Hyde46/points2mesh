@@ -1,5 +1,29 @@
 \newcommand{\etalchar}[1]{$^{#1}$}
-\begin{thebibliography}{JTPSH15}
+\begin{thebibliography}{SvKK{\etalchar{+}}11}
+
+\bibitem[ACK01]{Amenta:2001:PC:376957.376986}
+Nina Amenta, Sunghee Choi, and Ravi~Krishna Kolluri.
+\newblock The power crust.
+\newblock In {\em Proceedings of the Sixth ACM Symposium on Solid Modeling and
+  Applications}, SMA '01, pages 249--266, New York, NY, USA, 2001. ACM.
+
+\bibitem[Ar11]{Ranellucci2011}
+Joseph~Lenox Alessandro~ranellucci.
+\newblock Slic3r.
+\newblock \url{https://github.com/slic3r/Slic3r}, 2011.
+
+\bibitem[BL18]{bukenberger2018hierarchical}
+Dennis~R. Bukenberger and Hendrik P.~A. Lensch.
+\newblock {Hierarchical Quad Meshing of 3D Scanned Surfaces}.
+\newblock {\em Computer Graphics Forum}, 37(5):131--141, 2018.
+\newblock
+  \url{https://diglib.eg.org/bitstream/handle/10.1111/cgf13497/v37i5pp131-141.pdf}.
+
+\bibitem[BLRW16]{DBLP:journals/corr/BrockLRW16}
+Andr{\'{e}} Brock, Theodore Lim, James~M. Ritchie, and Nick Weston.
+\newblock Generative and discriminative voxel modeling with convolutional
+  neural networks.
+\newblock {\em CoRR}, abs/1608.04236, 2016.
 
 \bibitem[BMR{\etalchar{+}}99]{817351}
 F.~{Bernardini}, J.~{Mittleman}, H.~{Rushmeier}, C.~{Silva}, and G.~{Taubin}.
@@ -13,17 +37,95 @@ R.~{Brooks}.
 \newblock {\em IEEE Journal on Robotics and Automation}, 2(1):14--23, March
   1986.
 
+\bibitem[CFG{\etalchar{+}}15]{shapenet2015}
+Angel~X. Chang, Thomas Funkhouser, Leonidas Guibas, Pat Hanrahan, Qixing Huang,
+  Zimo Li, Silvio Savarese, Manolis Savva, Shuran Song, Hao Su, Jianxiong Xiao,
+  Li~Yi, and Fisher Yu.
+\newblock {ShapeNet: An Information-Rich 3D Model Repository}.
+\newblock Technical Report arXiv:1512.03012 [cs.GR], Stanford University ---
+  Princeton University --- Toyota Technological Institute at Chicago, 2015.
+
+\bibitem[DCS{\etalchar{+}}17a]{dai2017scannet}
+Angela Dai, Angel~X. Chang, Manolis Savva, Maciej Halber, Thomas Funkhouser,
+  and Matthias Nie{\ss}ner.
+\newblock Scannet: Richly-annotated 3d reconstructions of indoor scenes.
+\newblock In {\em Proc. Computer Vision and Pattern Recognition (CVPR), IEEE},
+  2017.
+
+\bibitem[DCS{\etalchar{+}}17b]{DBLP:journals/corr/DaiCSHFN17}
+Angela Dai, Angel~X. Chang, Manolis Savva, Maciej Halber, Thomas~A. Funkhouser,
+  and Matthias Nie{\ss}ner.
+\newblock Scannet: Richly-annotated 3d reconstructions of indoor scenes.
+\newblock {\em CoRR}, abs/1702.04405, 2017.
+
+\bibitem[DN18]{DBLP:journals/corr/abs-1803-10409}
+Angela Dai and Matthias Nie{\ss}ner.
+\newblock 3dmv: Joint 3d-multi-view prediction for 3d semantic scene
+  segmentation.
+\newblock {\em CoRR}, abs/1803.10409, 2018.
+
+\bibitem[DRB{\etalchar{+}}17]{DBLP:journals/corr/abs-1712-10215}
+Angela Dai, Daniel Ritchie, Martin Bokeloh, Scott Reed, J{\"{u}}rgen Sturm, and
+  Matthias Nie{\ss}ner.
+\newblock Scancomplete: Large-scale scene completion and semantic segmentation
+  for 3d scans.
+\newblock {\em CoRR}, abs/1712.10215, 2017.
+
+\bibitem[FFY{\etalchar{+}}18]{feng2018meshnet}
+Yutong Feng, Yifan Feng, Haoxuan You, Xibin Zhao, and Yue Gao.
+\newblock Meshnet: Mesh neural network for 3d shape representation.
+\newblock {\em AAAI 2019}, 2018.
+
 \bibitem[GRL17]{Groh2017}
 Fabian Groh, Benjamin Resch, and Hendrik P.~A. Lensch.
 \newblock {\em Multi-view Continuous Structured Light Scanning}, pages
   377--388.
 \newblock Springer International Publishing, Cham, 2017.
 
+\bibitem[HTT{\etalchar{+}}17]{objectnn-shrec17}
+Binh-Son Hua, Quang-Trung Truong, Minh-Khoi Tran, Quang-Hieu Pham, Asako
+  Kanezaki, Tang Lee, HungYueh Chiang, Winston Hsu, Bo~Li, Yijuan Lu, Henry
+  Johan, Shoki Tashiro, Masaki Aono, Minh-Triet Tran, Viet-Khoi Pham, Hai-Dang
+  Nguyen, Vinh-Tiep Nguyen, Quang-Thang Tran, Thuyen~V. Phan, Bao Truong,
+  Minh~N. Do, Anh-Duc Duong, Lap-Fai Yu, Duc~Thanh Nguyen, and Sai-Kit Yeung.
+\newblock Shrec'17: Rgb-d to cad retrieval with objectnn dataset, 2017.
+
+\bibitem[HZ16]{articlefusionnet}
+Vishakh Hegde and Reza Zadeh.
+\newblock Fusionnet: 3d object classification using multiple data
+  representations.
+\newblock 07 2016.
+
 \bibitem[JTPSH15]{Jakob2015Instant}
 Wenzel Jakob, Marco Tarini, Daniele Panozzo, and Olga Sorkine-Hornung.
 \newblock Instant field-aligned meshes.
 \newblock {\em ACM Transactions on Graphics (Proceedings of SIGGRAPH ASIA)},
   34(6), November 2015.
+
+\bibitem[KAMC17]{Kalogerakis:2017:ShapePFCN}
+Evangelos Kalogerakis, Melinos Averkiou, Subhransu Maji, and Siddhartha
+  Chaudhuri.
+\newblock 3{D} shape segmentation with projective convolutional networks.
+\newblock In {\em Proc. IEEE Computer Vision and Pattern Recognition (CVPR)},
+  2017.
+
+\bibitem[KBH06]{Kazhdan:2006:PSR:1281957.1281965}
+Michael Kazhdan, Matthew Bolitho, and Hugues Hoppe.
+\newblock Poisson surface reconstruction.
+\newblock In {\em Proceedings of the Fourth Eurographics Symposium on Geometry
+  Processing}, SGP '06, pages 61--70, Aire-la-Ville, Switzerland, Switzerland,
+  2006. Eurographics Association.
+
+\bibitem[KHS10]{Kalogerakis:2010:labelMeshes}
+Evangelos Kalogerakis, Aaron Hertzmann, and Karan Singh.
+\newblock {L}earning {3}{D} {M}esh {S}egmentation and {L}abeling.
+\newblock {\em ACM Transactions on Graphics}, 29(3), 2010.
+
+\bibitem[KL17]{DBLP:journals/corr/KlokovL17}
+Roman Klokov and Victor~S. Lempitsky.
+\newblock Escape from cells: Deep kd-networks for the recognition of 3d point
+  cloud models.
+\newblock {\em CoRR}, abs/1704.01222, 2017.
 
 \bibitem[KMS19]{10.1007978-981-13-0224-4_40}
 Nayan~M. Kakoty, Mridusmita Mazumdar, and Durlav Sonowal.
@@ -34,13 +136,170 @@ Nayan~M. Kakoty, Mridusmita Mazumdar, and Durlav Sonowal.
   Intelligent Engineering}, pages 441--451, Singapore, 2019. Springer
   Singapore.
 
+\bibitem[KTEM18]{cmrKanazawa18}
+Angjoo Kanazawa, Shubham Tulsiani, Alexei~A. Efros, and Jitendra Malik.
+\newblock Learning category-specific mesh reconstruction from image
+  collections.
+\newblock In {\em ECCV}, 2018.
+
 \bibitem[KW16]{DBLP:journals/corr/KipfW16}
 Thomas~N. Kipf and Max Welling.
 \newblock Semi-supervised classification with graph convolutional networks.
 \newblock {\em CoRR}, abs/1609.02907, 2016.
 
+\bibitem[LBSC18]{DBLP:journals/corr/abs-1801-07791}
+Yangyan Li, Rui Bu, Mingchao Sun, and Baoquan Chen.
+\newblock Pointcnn.
+\newblock {\em CoRR}, abs/1801.07791, 2018.
+
+\bibitem[LC87]{Lorensen:1987:MCH:37402.37422}
+William~E. Lorensen and Harvey~E. Cline.
+\newblock Marching cubes: A high resolution 3d surface construction algorithm.
+\newblock {\em SIGGRAPH Comput. Graph.}, 21(4):163--169, August 1987.
+
+\bibitem[LD18]{PointGrid}
+Truc Le and Ye~Duan.
+\newblock {\em IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, June 2018.
+
+\bibitem[LDG18]{Liao2018CVPR}
+Yiyi Liao, Simon Donn\'{e}, and Andreas Geiger.
+\newblock Deep marching cubes: Learning explicit surface representations.
+\newblock In {\em Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, 2018.
+
+\bibitem[LLZ{\etalchar{+}}17]{inproceedingsparse}
+Fangyu Liu, Shuaipeng Li, Liqiang Zhang, Chenghu Zhou, Rongtian Ye, Wang
+  Yuebin, and Jiwen Lu.
+\newblock 3dcnn-dqn-rnn: A deep reinforcement learning framework for semantic
+  parsing of large-scale 3d point clouds.
+\newblock 07 2017.
+
+\bibitem[LPT13]{lpt2013ikea}
+Joseph~J. Lim, Hamed Pirsiavash, and Antonio Torralba.
+\newblock {Parsing IKEA Objects: Fine Pose Estimation}.
+\newblock {\em ICCV}, 2013.
+
+\bibitem[MS15]{Maturana2015VoxNet}
+Daniel Maturana and Sebastian Scherer.
+\newblock Voxnet: A 3d convolutional neural network for real-time object
+  recognition.
+\newblock In {\em Ieee/rsj International Conference on Intelligent Robots and
+  Systems}, pages 922--928, 2015.
+
+\bibitem[NSF12]{Silberman:ECCV12}
+Pushmeet~Kohli Nathan~Silberman, Derek~Hoiem and Rob Fergus.
+\newblock Indoor segmentation and support inference from rgbd images.
+\newblock In {\em ECCV}, 2012.
+
+\bibitem[PKS{\etalchar{+}}17]{DBLP:journals/corr/abs-1711-10669}
+Jhony~K. Pontes, Chen Kong, Sridha Sridharan, Simon Lucey, Anders~P. Eriksson,
+  and Clinton Fookes.
+\newblock Image2mesh: {A} learning framework for single image 3d
+  reconstruction.
+\newblock {\em CoRR}, abs/1711.10669, 2017.
+
+\bibitem[QSMG16]{DBLP:journals/corr/QiSMG16}
+Charles~Ruizhongtai Qi, Hao Su, Kaichun Mo, and Leonidas~J. Guibas.
+\newblock Pointnet: Deep learning on point sets for 3d classification and
+  segmentation.
+\newblock {\em CoRR}, abs/1612.00593, 2016.
+
+\bibitem[QSN{\etalchar{+}}16]{DBLP:journals/corr/QiSNDYG16}
+Charles~Ruizhongtai Qi, Hao Su, Matthias Nie{\ss}ner, Angela Dai, Mengyuan Yan,
+  and Leonidas~J. Guibas.
+\newblock Volumetric and multi-view cnns for object classification on 3d data.
+\newblock {\em CoRR}, abs/1604.03265, 2016.
+
+\bibitem[QYSG17]{qi2017pointnetplusplus}
+Charles~R Qi, Li~Yi, Hao Su, and Leonidas~J Guibas.
+\newblock Pointnet++: Deep hierarchical feature learning on point sets in a
+  metric space.
+\newblock {\em arXiv preprint arXiv:1706.02413}, 2017.
+
+\bibitem[SFH18]{DBLP:journals/corr/abs-1804-06032}
+Daeyun Shin, Charless~C. Fowlkes, and Derek Hoiem.
+\newblock Pixels, voxels, and views: {A} study of shape representations for
+  single view 3d object shape prediction.
+\newblock {\em CoRR}, abs/1804.06032, 2018.
+
+\bibitem[SG18]{Stutz2018CVPR}
+David Stutz and Andreas Geiger.
+\newblock Learning 3d shape completion from laser scan data with weak
+  supervision.
+\newblock In {\em IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}. IEEE Computer Society, 2018.
+
+\bibitem[SMKF04]{Shilane:2004:TPS}
+Philip Shilane, Patrick Min, Michael Kazhdan, and Thomas Funkhouser.
+\newblock The {Princeton} shape benchmark.
+\newblock In {\em Shape Modeling International}, June 2004.
+
+\bibitem[SS15]{sunrgb}
+J.Xiao S.~Song, S.~Lichtenberg.
+\newblock {SUN RGB-D: A RGB-D Scene Understanding Benchmark Suite}.
+\newblock {\em CVPR2015}, 2015.
+
+\bibitem[Stu17]{Stutz2017}
+David Stutz.
+\newblock Learning shape completion from bounding boxes with cad shape priors.
+\newblock http://davidstutz.de/, September 2017.
+
+\bibitem[SvKK{\etalchar{+}}11]{Sidi:2011:UCS:2024156.2024160}
+Oana Sidi, Oliver van Kaick, Yanir Kleiman, Hao Zhang, and Daniel Cohen-Or.
+\newblock Unsupervised co-segmentation of a set of shapes via descriptor-space
+  spectral clustering.
+\newblock In {\em Proceedings of the 2011 SIGGRAPH Asia Conference}, SA '11,
+  pages 126:1--126:10, New York, NY, USA, 2011. ACM.
+
+\bibitem[SZAB17]{SZB17a}
+N.~Sedaghat, M.~Zolfaghari, E.~Amiri, and T.~Brox.
+\newblock Orientation-boosted voxel nets for 3d object recognition.
+\newblock In {\em British Machine Vision Conference (BMVC)}, 2017.
+
+\bibitem[TCA{\etalchar{+}}17]{DBLP:journals/corr/abs-1710-07563}
+Lyne~P. Tchapmi, Christopher~B. Choy, Iro Armeni, JunYoung Gwak, and Silvio
+  Savarese.
+\newblock Segcloud: Semantic segmentation of 3d point clouds.
+\newblock {\em CoRR}, abs/1710.07563, 2017.
+
+\bibitem[TEM18]{mvcTulsiani18}
+Shubham Tulsiani, Alexei~A. Efros, and Jitendra Malik.
+\newblock Multi-view consistency as supervisory signal for learning shape and
+  pose prediction.
+\newblock In {\em Computer Vision and Pattern Regognition (CVPR)}, 2018.
+
 \bibitem[Vie14]{vieira2014gumbel}
 Tim Vieira.
 \newblock Gumbel-max trick and weighted reservoir sampling, 2014.
+
+\bibitem[WSK{\etalchar{+}}15]{inproceedings}
+Zhirong Wu, Shuran Song, Aditya Khosla, Fisher Yu, Linguang Zhang, Xiaoou Tang,
+  and Jianxiong Xiao.
+\newblock 3d shapenets: A deep representation for volumetric shapes.
+\newblock pages 1912--1920, 06 2015.
+
+\bibitem[WZL{\etalchar{+}}18]{wang2018pixel2mesh}
+Nanyang Wang, Yinda Zhang, Zhuwen Li, Yanwei Fu, Wei Liu, and Yu-Gang Jiang.
+\newblock Pixel2mesh: Generating 3d mesh models from single rgb images.
+\newblock In {\em ECCV}, 2018.
+
+\bibitem[XKC{\etalchar{+}}16]{xiang2016objectnet3d}
+Yu~Xiang, Wonhui Kim, Wei Chen, Jingwei Ji, Christopher Choy, Hao Su, Roozbeh
+  Mottaghi, Leonidas Guibas, and Silvio Savarese.
+\newblock Objectnet3d: A large scale database for 3d object recognition.
+\newblock In {\em European Conference Computer Vision (ECCV)}, 2016.
+
+\bibitem[ZJ16]{Thingi10K}
+Qingnan Zhou and Alec Jacobson.
+\newblock Thingi10k: A dataset of 10,000 3d-printing models.
+\newblock {\em arXiv preprint arXiv:1605.04797}, 2016.
+
+\bibitem[ZSK{\etalchar{+}}15]{7298801}
+{Zhirong Wu}, S.~{Song}, A.~{Khosla}, {Fisher Yu}, {Linguang Zhang}, {Xiaoou
+  Tang}, and J.~{Xiao}.
+\newblock 3d shapenets: A deep representation for volumetric shapes.
+\newblock In {\em 2015 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 1912--1920, June 2015.
 
 \end{thebibliography}
