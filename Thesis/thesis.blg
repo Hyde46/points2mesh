@@ -3,46 +3,49 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: thesis.aux
 The style file: alpha.bst
 Database file #1: bibliography.bib
-Warning--can't use both author and editor fields in Groh2017
-You've used 4 entries,
+Warning--empty journal in articlefusionnet
+Warning--empty title in PointGrid
+Warning--empty booktitle in inproceedingsparse
+Warning--empty booktitle in inproceedings
+You've used 45 entries,
             2543 wiz_defined-function locations,
-            594 strings with 5432 characters,
-and the built_in function-call counts, 1931 in all, are:
-= -- 191
-> -- 98
-< -- 1
-+ -- 35
-- -- 34
-* -- 158
-:= -- 324
-add.period$ -- 13
-call.type$ -- 4
-change.case$ -- 27
-chr.to.int$ -- 4
-cite$ -- 5
-duplicate$ -- 67
-empty$ -- 132
-format.name$ -- 37
-if$ -- 391
-int.to.chr$ -- 1
+            803 strings with 13993 characters,
+and the built_in function-call counts, 20700 in all, are:
+= -- 1927
+> -- 1465
+< -- 10
++ -- 544
+- -- 540
+* -- 1595
+:= -- 3580
+add.period$ -- 138
+call.type$ -- 45
+change.case$ -- 384
+chr.to.int$ -- 44
+cite$ -- 49
+duplicate$ -- 725
+empty$ -- 1238
+format.name$ -- 570
+if$ -- 4091
+int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 5
-newline$ -- 25
-num.names$ -- 12
-pop$ -- 21
+missing$ -- 43
+newline$ -- 228
+num.names$ -- 135
+pop$ -- 384
 preamble$ -- 1
-purify$ -- 32
+purify$ -- 431
 quote$ -- 0
-skip$ -- 57
+skip$ -- 632
 stack$ -- 0
-substring$ -- 128
-swap$ -- 14
-text.length$ -- 1
-text.prefix$ -- 0
+substring$ -- 624
+swap$ -- 126
+text.length$ -- 10
+text.prefix$ -- 1
 top$ -- 0
-type$ -- 28
-warning$ -- 1
-while$ -- 19
-width$ -- 7
-write$ -- 58
-(There was 1 warning)
+type$ -- 356
+warning$ -- 4
+while$ -- 155
+width$ -- 50
+write$ -- 573
+(There were 4 warnings)

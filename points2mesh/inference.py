@@ -15,7 +15,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt': 10000}
+PC = {'num': 1024, 'dp': 3, 'ver': "40", 'gt': 10000}
 # settings
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -99,7 +99,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c4_7500_big2_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c4_1024_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -118,7 +118,7 @@ def loadTxtFiles(path):
     return files
 
 
-categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","bathtub","person"]
+categories =["airplane"]#,"bed","bottle","bowl","car","chair","guitar","toilet","bathtub","person"]
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/single_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/chair_test"
@@ -141,28 +141,34 @@ categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","b
 predictor = loadModel()
 #predictor = 0
 
-#os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-#for c in categories:
-#
-#    path = "/graphics/scratch/students/heid/evaluation_set/"+c
-#    pcs = loadTxtFiles(path)
-#    path_output = "/graphics/scratch/students/heid/inference/c4_n_7500_"+c
-#    counter = 0
-#    for pc in pcs:
-#
-#        path_pc = os.path.join(path, pc)
-#        pc_inp = load_pc(path_pc, num_points=PC['num'])
-#        vertices = predict(predictor, pc_inp, path_pc)
-#        create_inference_mesh(vertices[2], 3, pc,
-#                            path_pc, path_output, display_mesh=False, num_obj=counter)
-#        counter = counter + 1
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+for c in categories:
 
-path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
-counter = 0
-pc = '/graphics/scratch/students/heid/evaluation_set/custom/bap7500.txt'
-path_pc = pc
-pc_inp = load_pc(path_pc, num_points=PC['num'])
-vertices = predict(predictor, pc_inp, path_pc)
-create_inference_mesh(vertices[2], 3, pc,
-                    path_pc, path_output, display_mesh=False, num_obj=counter)
-counter = counter + 1
+    path = "/graphics/scratch/students/heid/evaluation_set/"+c
+    pcs = loadTxtFiles(path)
+    path_output = "/graphics/scratch/students/heid/inference/c4_n_1024_"+c
+    counter = 0
+    for pc in pcs:
+
+        path_pc = os.path.join(path, pc)
+        pc_inp = load_pc(path_pc, num_points=PC['num'])
+        vertices = predict(predictor, pc_inp, path_pc)
+        create_inference_mesh(vertices[0], 1, pc,
+                            path_pc, path_output, display_mesh=False, num_obj=counter)
+        create_inference_mesh(vertices[1], 2, pc,
+                            path_pc, path_output, display_mesh=False, num_obj=counter)
+        create_inference_mesh(vertices[2], 3, pc,
+                            path_pc, path_output, display_mesh=False, num_obj=counter)
+        counter = counter + 1
+        if counter > 20:
+            break
+
+#path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
+#counter = 0
+#pc = '/graphics/scratch/students/heid/evaluation_set/custom/bap7500.txt'
+#path_pc = pc
+#pc_inp = load_pc(path_pc, num_points=PC['num'])
+#vertices = predict(predictor, pc_inp, path_pc)
+#create_inference_mesh(vertices[2], 3, pc,
+#                    path_pc, path_output, display_mesh=False, num_obj=counter)
+#counter = counter + 1
