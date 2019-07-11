@@ -141,18 +141,28 @@ categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","b
 predictor = loadModel()
 #predictor = 0
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-for c in categories:
+#os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+#for c in categories:
+#
+#    path = "/graphics/scratch/students/heid/evaluation_set/"+c
+#    pcs = loadTxtFiles(path)
+#    path_output = "/graphics/scratch/students/heid/inference/c4_n_7500_"+c
+#    counter = 0
+#    for pc in pcs:
+#
+#        path_pc = os.path.join(path, pc)
+#        pc_inp = load_pc(path_pc, num_points=PC['num'])
+#        vertices = predict(predictor, pc_inp, path_pc)
+#        create_inference_mesh(vertices[2], 3, pc,
+#                            path_pc, path_output, display_mesh=False, num_obj=counter)
+#        counter = counter + 1
 
-    path = "/graphics/scratch/students/heid/evaluation_set/"+c
-    pcs = loadTxtFiles(path)
-    path_output = "/graphics/scratch/students/heid/inference/c4_n_7500_"+c
-    counter = 0
-    for pc in pcs:
-
-        path_pc = os.path.join(path, pc)
-        pc_inp = load_pc(path_pc, num_points=PC['num'])
-        vertices = predict(predictor, pc_inp, path_pc)
-        create_inference_mesh(vertices[2], 3, pc,
-                            path_pc, path_output, display_mesh=False, num_obj=counter)
-        counter = counter + 1
+path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
+counter = 0
+pc = '/graphics/scratch/students/heid/evaluation_set/custom/b7500.txt'
+path_pc = pc
+pc_inp = load_pc(path_pc, num_points=PC['num'])
+vertices = predict(predictor, pc_inp, path_pc)
+create_inference_mesh(vertices[2], 3, pc,
+                    path_pc, path_output, display_mesh=False, num_obj=counter)
+counter = counter + 1
