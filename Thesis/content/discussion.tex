@@ -1,75 +1,123 @@
 \chapter{Discussion}
-\label{sec:dicussion}
-\todo{kurze einleitung und zusammenfassung}
+\label{chap:discussion}
+In the previous chapters, several configurations were presented, as well as a \emph{supervised} and \emph{unsupervised} 
+version of \emph{points2mesh}. Section \ref{pioneer} discusses their advantages and disadvantages, and analyses which one of them is the most reliable
+ and works in the most general way. Additionally, it is compared to state of the art traditional reconstruction methods and a direct deep learning 
+ based competitor.
 
-\section{Pioneer network \emph{points2mesh}}
+Furthermore, section \ref{conclusion} summarizes the scientific gap, which has been bridged by this work, as well as 
+some general critique of the approach.
+
+Finally, section \ref{outlook} gives a short outlook about what could follow, and how to improve on this work for potential 
+future work.
+
+\section{Variety of \emph{points2mesh}}
+\label{pioneer}
+
 \subsection*{variations}
-
   The proposed supervised as well as \emph{un}supervised neural network $\mathcal{N}_{recon}$, and $\mathcal{N}_{opt}$ respectively, 
   reconstruct a tri-mesh from point cloud data. The underlying object to reconstruct has to be singular. Both versions of the neural 
   network are trained on multiple classes at the same time, producing watertight meshes.
-  First, configurations $\mathcal{C}_i$ are considered. As already established in \ref{chapter:evaluation}, the main difference, visually and 
+  First, configurations $\mathcal{C}_i$ are considered. As already established in \ref{chap:evaluation}, the main difference, visually and 
   numerically are when configurations $\mathcal{C}_1$, $\mathcal{C}_3$ and $\mathcal{C}_4$ are compared to $\mathcal{C}_2$. When only looking
   at evaluations of $d_m$, configuration $\mathcal{C}_2$ has far lower values than any other configuration, impartial to training with 
-  $\mathcal{N}_{recon}$ or $\mathcal{N}_{opt}$. Tables \ref{} through \ref{} confirm this proposition. By extending the number of used
+  $\mathcal{N}_{recon}$ or $\mathcal{N}_{opt}$. Tables \ref{tab:distance256} through \ref{tab:distance7500} confirm this proposition. By extending the number of used
   samples for the reconstruction in the base mesh $\mathcal{M}_i$, with an extra \emph{unpooling} step to \char`\~10k vertices, instead of
   \char`\~2.4k vertices.  , the prediction may then display more detail. 
   However, considering visual predictions of $\mathcal{C}_2$ in contrast to configurations with only \char`\~2.4k vertices, it is evident, 
-  that $\mathcal{C}_2$ is generally less smooth. Taking a look at figure \ref{}, not only is the body of the airplane relatively rough,
+  that $\mathcal{C}_2$ is generally less smooth. Taking a look at figure \ref{fig:1c}, not only is the body of the airplane relatively rough,
   though details are much better visible. In contrast to the other three configurations, $\mathcal{C}_2$ seems to be less subjectively 
-  visual pleasing, while still representing the reconstructed object accurately.  Configurations $\mathcal{C}_1$, $\mathcal{C}_3$ and 
-  $\mathcal{C}_4$ are generally smoother than $\mathcal{C}_4$ as seen in figures \ref{} and \ref{}, also holding true for either $\mathcal{N}_{recon}$ 
+  visual pleasing, while still representing the reconstructed object accurately. Configurations $\mathcal{C}_1$, $\mathcal{C}_3$ and 
+  $\mathcal{C}_4$ are generally smoother than $\mathcal{C}_4$ as seen in figures \ref{fig:1b} and \ref{fig:1e}, also holding true for either $\mathcal{N}_{recon}$ 
   and $\mathcal{N}_{opt}$.
-  Evidently, this is due to changes in $\mathcal{N}_{gcn}$ of the neural network (~See figure \ref{}~). The smoothness may be recovered 
+  Evidently, this is due to changes in $\mathcal{N}_{gcn}$ of the neural network (~See figure \ref{fig:c2}~). The smoothness may be recovered 
   with more extended training or with more \emph{hyper parameter tuning} for the normal cosine loss $l_{cos}$. Applications like accurate 
   collision detection, or preparing 3D printable objects, greatly benefit from smoother predictions as seen with configuration $\mathcal{C}_1$.
   However, improving it further for configuration $\mathcal{C}_2$ has not been examined notably in the context of this work.
 
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Reconstruction with $\mathcal{C}_1$, 1024 samples. Winglets visible at the end of the wings.\label{fig:winglet1}]{\includegraphics[width=0.5\textwidth]{wingletsc1.png}}
+    \subfloat[Reconstruction with $\mathcal{C}_3$, 1024 samples. Windlets not as visible at the end of the wings.\label{fig:winglet2}]{\includegraphics[width=0.5\textwidth]{wingletsc3.png}}
+    \caption{Reconstruction from of airplane. Winglets are visible with $\mathcal{C}_1$ but not as prominent with $\mathcal{C}_3$.} \label{fig:airplanec2}
+  \end{figure}
 
   Furthermore, configuration $\mathcal{C}_1$ and $\mathcal{C}_3$ are pretty similar in itself. Their main difference beinfg $\mathcal{C}_1$ does not 
   incur the nearest neighbor coordinates during the \emph{feature projection} layer, thus not utilizing it as a feature in $\mathcal{N}_{gcn}$.
-  Nonetheless, figures \ref{winglets} and \ref{other} show that they still learn about the same deformations for the same given input. However,
-  $\mathcal{C}_1$ can represent some features of objects better than $\mathcal{C}_3$, like the winglets of the airplane in figure \ref{winglets}
-  or empty space between the legs of the chair in figure \ref{chair}, while also maintaining lower values of $d_m$. $\mathcal{C}_1$ reconstructing
+  Nonetheless, figures \ref{fig:winglet1} and \ref{fig:winglet2} show that they still learn about the same deformations for the same given input. However,
+  $\mathcal{C}_1$ can represent some features of objects better than $\mathcal{C}_3$, like the winglets of the airplane in figure \ref{fig:winglet1}
+  or empty space between the legs of the chair in figure \ref{fig:chairs}, while also maintaining lower values of $d_m$. $\mathcal{C}_1$ reconstructing
   objects better than $\mathcal{C}_3$, not only shows that the former learns a variation of nearest neighbor coordinates during the
   \emph{flex conv feature extraction} but extends these features further to achieve better predictions. For that reason, $\mathcal{C}_1$ seems to be the 
   superior choice of configuration in comparison to $\mathcal{C}_3$.
 
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Reconstruction with $\mathcal{C}_1$, 1024 samples. Empty space is present between chair legs.\label{fig:chairc1}]{\includegraphics[width=0.5\textwidth]{chairc1.png}}
+    \subfloat[Reconstruction with $\mathcal{C}_3$, 1024 samples. Dangling edges between legs of chair present.\label{fig:chairc3}]{\includegraphics[width=0.5\textwidth]{chairc3.png}}
+    \caption{Reconstruction from of chair. Almost no empty space between legs with $\mathcal{C}_1$ but not more prominent with $\mathcal{C}_3$.} \label{fig:chairs}
+  \end{figure}
 
   Configuration $\mathcal{C}_4$ describes a more simple configuration for $\mathcal{N}_{recon}$ and $\mathcal{N}_{opt}$. While still maintaining rather
   low values for $d_m$, in addition to rather pleasing visual results, its predictions do not reach the same level as $\mathcal{C}_1$ visually, or numerically
-  as $\mathcal{C}_2$ (~See tables \ref{}~). 
-  Considering figure \ref{simple}, $\mathcal{C}_4$ seems to produce a little smoother results than $\mathcal{C}_1$, though not as big of a gap as $\mathcal{C}_1$ 
-  to $\mathcal{C}_2$. However, similarly to configuration $\mathcal{C}_3$, suffering from forfeiting various details of the ground truth mesh, as seen in figure
-  \ref{}. $\mathcal{C}_4$ is less complex, faster to train (~Around $10\%$~) and provides the fastest inference times (~See table \ref{}~). However, 
+  as $\mathcal{C}_2$ (~See tables \ref{tab:distance256}, \ref{tab:distance1024} and \ref{tab:distance7500}~). 
+  Considering figure \ref{fig:simpleairplanes}, $\mathcal{C}_4$ seems to produce a little smoother results than $\mathcal{C}_1$, though not as big of a gap as $\mathcal{C}_1$ 
+  to $\mathcal{C}_2$. However, similarly to configuration $\mathcal{C}_3$, suffering from forfeiting various details of the ground truth mesh, as seen earlier in figure
+  \ref{fig:winglet1}. $\mathcal{C}_4$ is less complex, faster to train (~Around $10\%$~) and provides the fastest inference times (~See table \ref{tab:time}~). However, 
   these advantages do not compensate for losing out on some features, which $\mathcal{C}_1$ and $\mathcal{C}_2$ are able to reconstruct.
 
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Reconstruction with $\mathcal{C}_1$, 256 samples.\label{fig:airplanec1simpel}]{\includegraphics[width=0.5\textwidth]{airplanec1simple.png}}
+    \subfloat[Reconstruction with $\mathcal{C}_4$, 256 samples.\label{fig:airplanec4simpel}]{\includegraphics[width=0.5\textwidth]{airplanec4simple.png}}
+    \caption{Reconstruction from of airplane. $\mathcal{C}_1$ has a higher detailed reconstruction than $\mathcal{C}_4$, though with the same amount of vertices.} \label{fig:simpleairplanes}
+  \end{figure}
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Reconstruction with $\mathcal{C}_1$, 256 samples.\label{fig:chairclad1}]{\includegraphics[width=0.5\textwidth]{chaircladded.png}}
+    \subfloat[Ground truth mesh.\label{fig:chairclad2}]{\includegraphics[width=0.5\textwidth]{chairgt.png}}
+    \caption{Comparison of reconstructed chair and ground truth on the right. The prediction on the left cannot recreate the hole between the seating area and the back.} \label{fig:chairsclad}
+  \end{figure}
   By nature of the composition of the neural network, the \emph{genus} of the prediction is bound to be of the same \emph{genus} as the input mesh 
   $\mathcal{M}_i$. Thus, if the input mesh is of a spheroidal shape (~\emph{genus} 0~), the prediction always is of \emph{genus} 0 as well.
   Albeit considering an input point cloud with an underlying ground truth mesh of \emph{genus} $\geq 1$, the prediction does not change its \emph{genus}.
-  Disparities in the \emph{genus} lead to the cladding of holes in the mesh, as seen in figure \ref{chair with hole}. The ground truth chair has a hole
+  Disparities in the \emph{genus} lead to the cladding of holes in the mesh, as seen in figure \ref{fig:chairsclad}. The ground truth chair has a hole
   below its backrest just above the chair seat. During the deformation in $\mathcal{N}_{gcn}$, the sphere contracts tighter around the shape of the point
   cloud. Even if the loss function incentives the network not to put vertices in the empty space, their connecting edges still remain stretched over it.
   No matter how the initial sphere is deformed, the holes cannot be adequately represented. 
-  Thus, as described in \ref{torus}, the initial shape was changed to a toroidal model of \emph{genus} 0. The metric evaluation of $d_m$ did not increase 
-  a lot as seen in \ref{table:torus}. However, $\mathcal{N}_{gcn}$ does not distinguish between different input meshes $\mathcal{M}_i$. Hence no incentive
+  Thus, as described in \ref{varybase}, the initial shape was changed to a toroidal model of \emph{genus} 0. The metric evaluation of $d_m$ did not increase 
+  a lot as seen in \ref{tab:basemesh}. However, $\mathcal{N}_{gcn}$ does not distinguish between different input meshes $\mathcal{M}_i$. Hence no incentive
   exists to either keep the hole or even move the hole towards a point in the point cloud where one could exist in the ground truth model. After only a few 
   deformation steps, the hole collapses in on itself, consequently the difference between deforming a sphere or a torus (~Or any other object of a higher
   \emph{genus} for that fact~) is negligible. 
   Reconstructing objects in that way requires a better way to keep the hole in the mesh, as well as find a way to place it at the right spot~(~s~) overlayed 
   on the point cloud. Let alone learning if the underlying mesh even has a hole, or not.
 
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.33\textwidth]{badchair_back.png}
+    \caption{Reconstruction of chair with $\mathcal{C}_1$ at 7500 samples. A lot of edges spanned acroos the legs.} \label{fig:badchar}
+  \end{figure}
+
   Generally, the biggest hurdle is the problem of stretching the deforming sphere over empty space in the ground truth mesh. Most prominently, 
-  it is visible in reconstructions from point cloud depicting chairs. As seen in figure \ref{bad chair}, in between the legs of the chair, many 
+  it is visible in reconstructions from point cloud depicting chairs. As seen in figure \ref{fig:badchar}, in between the legs of the chair, many 
   edges are stretched between vertices placed directly on the leg of the chair.
-  Contrary to that reconstruction, figure \ref{good chair} depicts a better reconstruction of a chair, without stretched edges over empty space.
+
+  \begin{figure}[htbp]
+    \centering
+    \subfloat[Two dimensional projection of initial mesh, in green, before convolutional layers, showing where each vertex may move to.\label{fig:stretch1}]{\includegraphics[width=0.5\textwidth]{tighting.png}}
+    \subfloat[Two dimensional projection of initial mesh, in green, after convolutional layer, moving towards point in point cloud(~in black~).\label{fig:stretch2}]{\includegraphics[width=0.5\textwidth]{tight2.png}}
+    \caption{Illustration of initial mesh deforming to approximate the underlying mesh of the point cloud $\mathcal{PC}$ of the legs of a chair. The edge of the two vertices in the middle is stretching
+    over the two legs of the chair.}\label{fig:stretching}
+  \end{figure}
+  Contrary to that reconstruction, figure \ref{fig:airplanec1simpel} depicts a better reconstruction of a chair, without stretched edges over empty space.
   During deformation, the initial mesh contracts inwards, fitting its surface against the input point cloud data. During this process, two neighboring 
-  vertices may be moved towards two distinct semantic parts of the point cloud (~Illustrated in figure \ref{}~), which leads to the stretching problem. 
+  vertices may be moved towards two distinct semantic parts of the point cloud (~Illustrated in figure \ref{fig:stretch1}~), which leads to the stretching problem. 
   Successfully solving this problem leads to a significant improvement visually as well as numerically in the prediction.
   Two ways of tackling this problem are practiced in \emph{points2mesh}.
   The first one is implicit. Since $\mathcal{N}_{gcn}$ split into a three-step deformation process, dangling edges gain an additional vertex during
   the \emph{unpooling} layer. The newly added vertex then may move towards the connecting surface between the appendages, where the previous dangling
-  edge existed (~Illustrated in figure \ref{}~). This has to be supported by proper feature vectors learned by $\mathcal{N}_{flex}$.
+  edge existed (~Illustrated in figure \ref{fig:stretch2}~). This has to be supported by proper feature vectors learned by $\mathcal{N}_{flex}$.
   Alternatively, if the vertices are already placed, neighboring vertices with long edges have to be moved in such way, that they get closer again, 
   potentially leading to minimize that problem, which is facilitated by the edge length loss $l_{edge}$.
   Configurations $\mathcal{C}_1$ and $\mathcal{C}_2$ generally are able to   solve this more consistently than $\mathcal{C}_3$ and $\mathcal{C}_4$. 
@@ -92,77 +140,125 @@
   Similarly, the generalization capabilities of $\mathcal{N}_{recon}$ have been assessed in figures \ref{fig:8} and \ref{fig:9}. Despite never seeing
   data of the category bathtub or person, the reconstruction does not stick out from the trained categories. Thus, somewhat robust training and inference have been achieved. 
 
-Finally, real point cloud and short time argument
+  Finally, real point cloud and short time argument
   \todo{reale point cloud}
 
+
   \subsection*{Comparing alternatives}
+
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.33\textwidth]{airplane2_bpa_256.png}
+    \includegraphics[width=0.33\textwidth]{airplane2_ifm_256.png}
+    \includegraphics[width=0.33\textwidth]{c1_256_airplane_2.png}
+    \caption{Reconstructions of airplane with 256 samples, with \emph{BPA}(~left~), \emph{IFM}(~righ~) and \emph{points2mesh}(~bottom~)} \label{fig:bpaifm}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.33\textwidth]{airplane2_bpa_7500.png}
+    \includegraphics[width=0.33\textwidth]{airplane2_ifm_7500.png}
+    \includegraphics[width=0.33\textwidth]{c1_7500_airplane_2.png}
+    \caption{Reconstructions of airplane with 7500 samples, with \emph{BPA}(~left~), \emph{IFM}(~right~) and \emph{points2mesh}(~bottom~)} \label{fig:bpaifmhigh}
+  \end{figure}
+
   Reconstructing meshes from point cloud data has been researched for many years. Thus, many techniques have been developed over the years.
-  In the context of this work, assuming traditional, non-machine learning approaches, \emph{BPA} and \cite{IFM} are chosen as a comparison.
+  In the context of this work, assuming traditional, non-machine learning approaches, \emph{BPA} and \emph{IFM} are chosen as a comparison.
   First, \emph{BPA} generally yields lower values than configuration $\mathcal{C}_1$ for $\mathcal{N}_{recon}$ . In contrast, \emph{IFM} has 
-  way higher numerical values for $d_m$ in contrast to $\mathcal{N}_{recon}$ as well as \emph{BPA} (~As seen in tables \ref{} through \ref{}~).
+  way higher numerical values for $d_m$ in contrast to $\mathcal{N}_{recon}$ as well as \emph{BPA} (~As seen in tables \ref{tab:distance256} through \ref{tab:distance7500}~).
   However, considering the visual evidence, the supposed better values for \emph{BPA} cannot be confirmed to be generally better.
-  Regarding the \emph{BPA} reconstruction in figure \ref{bpa object}, the \emph{IFM} reconstruction in figure \ref{ifm object}, a clear difference
-  can be seen in contrast to the reconstruction by \emph{points2mesh} in figure \ref{points2mesh}. At a low amount of samples (~256 samples~), 
+  Regarding the \emph{BPA} reconstruction and the \emph{IFM} reconstruction in figure \ref{fig:bpaifm}, a clear difference
+  can be seen in contrast to the reconstruction by \emph{points2mesh}. At a low amount of samples (~256 samples~), 
   neither \emph{BPA} nor \emph{IFM} produces watertight meshes. Even worse, \emph{IFM} struggles to reconstruct the general frame of the object. 
   Increasing the number of samples supports both \emph{BPA} as well as \emph{IFM}, yet is not enough for these approaches to provide watertight meshes.
-  Even considering a reconstruction based on 7500 samples, the reconstructions of either approach is still not manifold as seen in figure \ref{high detail}.
+  Even considering a reconstruction based on 7500 samples, the reconstructions of either approach is still not manifold as seen in figure \ref{fig:bpaifmhigh}.
   Filling these holes would be a completely new, non-trivial problem in itself. Though, visually, these reconstructions approximate the ground truth better 
   than any configuration of \emph{points2mesh}. However, only by the innate capability of humans to fill out the holes and thus, inferring how the mesh would
   look, \emph{if} it did not have them.
 
-
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.33\textwidth]{dmc_airplane2.png}
+    \includegraphics[width=0.33\textwidth]{dmc_airplane1.png}
+    \includegraphics[width=0.33\textwidth]{dmc_airplane3.png}
+    \caption{Reconstruction from point clouds of airplanes with \emph{DMC}. Sample size 1024} \label{fig:dmcplanes}
+  \end{figure}
   A crucial part of this work is the attempt to design a neural network for learning surface reconstruction from point cloud data. Thus,
   comparisons to deep learning based approaches, though not plenty, are even more critical than traditional ones. 
   Since other deep learning based approaches transforming point cloud data directly to meshes have yet to be published,  another close technique
   is chosen as a comparison, \emph{deep marching cubes}.
   \emph{DMC} however, operates on voxelized data as its input, but also produces meshes watertight meshes. These deep learning approaches for mesh 
   reconstructions are still new and therefore are not as technically mature as current non-deep learning based methods.
-  Considering the reconstructions in figures \ref{}, \ref{} and \ref{}, expected features from the traditional \emph{marching cubes} algorithm can
+  Considering the reconstructions in figure \ref{fig:dmcplanes}, expected features from the traditional \emph{marching cubes} algorithm can
   also be seen here. Blocky reconstructions, accompanied by predetermined slopes at corners, lend a distinct look to reconstructions by either 
   technique. In contrast, reconstructions from \emph{points2mesh} resemble a more organic look and have to possibility of representing more details.
   The nature of its voxelized data restricts the visual quality of predictions by \emph{DMC}. Though, the number of vertices is not bound to a set
   amount for each object, but rather the resolution of the voxel grid. While both methods produce watertight meshes, \emph{DMC} sometimes produces
-  holes in the mesh where a solid surface is present in the ground truth mesh, as seen in figure \ref{} or \ref{}. Additionally, \emph{DMC} at 
+  holes in the mesh where a solid surface is present in the ground truth mesh, as seen in figure \ref{fig:dmcobjects}. Additionally, \emph{DMC} at 
   times adds unexplained \emph{blobs} of geometry in the prediction. A post-processing step could easily remove them. However, they are detrimental
   for applications which rely on the best possible representation for a given point cloud.
-  Still, \emph{DMC} has some clear advantages over \emph{points2mesh}, as seen in figure \ref{sofa}. \emph{DMC} reconstructs objects with edges only 
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.33\textwidth]{dmc_chair.png}
+    \includegraphics[width=0.33\textwidth]{dmc_car2.png}\\
+    \includegraphics[width=0.33\textwidth]{dmc_chair2.png}
+    \includegraphics[width=0.33\textwidth]{dmc_sofa.png}
+    \caption{Reconstruction from point clouds with \emph{DMC}. Sample size 1024. Predictions in the top row have holes due to low sample size.
+    Predictions in bottom row look sound due to no almost no curves in ground truth, and only edges along the cardinal axes.} \label{fig:dmcobjects}
+  \end{figure}
+  Still, \emph{DMC} has some clear advantages over \emph{points2mesh}, as seen in figure \ref{fig:dmcobjects}. \emph{DMC} reconstructs objects with edges only 
   parallel to the cardinal axes better than any configuration of \emph{points2mesh}. However, introducing edges, distributed in any way through space,
-  its limitation are evident as seen in figures \ref{plane1} and \ref{plane2}. For example, the wings of the plane are neither x-parallel nor y-parallel.
+  its limitation are evident as seen in figures \ref{fig:dmcplanes}. For example, the wings of the plane on the right and on the bottom are neither x-parallel nor y-parallel.
   Thus, \emph{DMC} introduces \emph{stair}-like representation of slopes in the mesh. emph{DMC} does not have any way to represent curves. \emph{points2mesh}
   works despite these preconditions, yet giving it an organic look.
-  On top of that, \emph{DMC} does not work correctly if the samples are sparse. Both planes in figures \ref{} and \ref{} were inferred based on 1024 samples.
+  On top of that, \emph{DMC} does not work correctly if the samples are sparse. Both, the car and chair in the top row of figure \ref{fig:dmcobjects} were inferred based on 1024 samples.
   When the number of samples is too low, \emph{DMC} fails to produce any geometry for parts of the mesh.
   In contrast, \emph{points2mesh} only needs very few samples to produce geometry at a given part of the point cloud.
 
 \section{Conclusion}
+\label{conclusion}
+  \emph{points2mesh} describes the first\footnote{No other network was found which directly transforms points cloud data if singular objects to meshes as of \today} deep
+  learning based neural network, transforming point cloud data to tri-meshes. Excelling in reconstructing with low-resolution data,
+  even generating watertight meshes with only 256 data points while also being capable of generalizing over objects it has never seen 
+  during training. Configuration $\mathcal{C}_1$ of the supervised network $\mathcal{N}_{recon}$ is the best choice for the best reconstructions
+  in various situations.
 
+  However, its inherent structure is restrictive. By virtue of how $\mathcal{N}_{gcn}$ works with \emph{graph convolution}, the amount
+  of vertices used for the reconstruction is predetermined before the training has even started. Furthermore, only objects with \emph{genus} 0 
+  can theoretically be reconsturcted. Additionally, there are no symmetrical restricions, and thus most predictions seem rather organic than anorganic.
 
-\emph{points2mesh} describes the first\footnote{No other network was found which directly transforms points cloud data if singular objects to meshes as of \today} deep
-learning based neural network, transforming point cloud data to tri-meshes. Excelling in reconstructing with low-resolution data,
- even generating watertight meshes with only 256 data points while also being capable of generalizing over objects it has never seen 
- during training.
+  Nevertheless, the inference time is quite fast, being able to keep up with its competitors while also capable of reconstructing
+  the characteristics of organic as well as anorganic objects. On low resolution,\emph{points2mesh} is even able to outperform current
+  simple traditional techniques as well as deep learning based ones. Most importantly, as the first venture of deep learning based mesh reconstruction 
+  from point cloud data, it holds up rather good in comparison to its direct competitor \emph{DMC} or even the traditional approaches \emph{BPA} and \emph{IFM}.
 
-However, its inherent structure is restrictive. By virtue of how $\mathcal{N}_{gcn}$ works with \emph{graph convolution}, the amount
- of vertices used for the reconstruction is predetermined before the training has even started. 
-
-fuer erstes netzwerk dieser art trotzdem super
-
- is fast
-
- generelle figur von objekten bekommt es sehr gut holding
-
-
- kann mit aktuellen methoden bei low resolution super mit halten
 
 
 \section{Outlook}
+\label{outlook}
+  For singular object reconstruction with low-resolution input, \emph{points2mesh} is a solid choice to produce watertight meshes. However, 
+  due to its restrictions, there are several ways to improve the network structure to augment its results even further.
 
-\begin{enumerate}
-  \item first venture for pc to mesh
-  \item loecher einfuegen durch neue layer
-  \item on the fly mehr detail wo notwendig
-  \item nur flexconv
-  \item mehr data augmentation
-  \item loss function
-  \item neue tensorflow graphics library eroeffnet neue moeglichkeiten bestimmt
-\end{enumerate}
+  First, for better generalizations, the data augmentation step could be enhanced by random rotations of the training data. Currently, 
+  most objects are aligned by looking in a specific direction with some exceptions of unaligned objects in the dataset. By applying a
+  random rotation to the training data, a lot more training samples could be generated, which also trains \emph{points2mesh} to be rotation
+  invariant. The Training time would increase, though it seems a promising attempt to improve the network.
+
+  One of the most critical aspects to improve on is the problem of stretching geometry over empty space. A possible solution could be a smarter
+  \emph{unpooling} step in $\mathcal{N}_{gcn}$. A variable insertion of new vertices at edges where a local loss function is much higher than 
+  at its neighbors. This could lend the network the needed vertices to properly represent the part of some complicated part of geometry. However,
+  this poses a problem for \emph{graph convolutional layers} as they need to know the number of vertices and edges before the training even starts.
+  Nonetheless, a possible approach is to set an upper limit of vertices for any reconstruction and keep them in reserve, where they can not be trained.
+  When needed during an \emph{unpooling} step, they would be added to the mesh. In that way, training time could increase immensely, though more detailed 
+  reconstructions are possible, and problems with stretching geometry over empty space would disappear. Similarly, introducing holes into the mesh with a 
+  specialized layer could open up many new ways for the network to reconstruct better meshes, and meshes with a \emph{genus} higher than 0. 
+
+  \emph{Graph convolution} is sinherently restrictive for operations on graphs representing meshes, which grow in size. Changing it on the fly poses an
+  intricate problem to the neural network. In contrast, \emph{flex convolution} seem a lot more flexible, as the name suggests with ever changing configurations 
+  of three dimensional coordinates. A possible attempt to simplify the problem could be to replace $\mathcal{N}_{gcn}$ with another \emph{flex convolutional} 
+  based network. 
+
+  Finally, a new tensorflow graphics library recently was released\footnote{\emph{https://github.com/tensorflow/graphics} Last visited \today}. Offering specialized layers for non-rigid surface deformation,
+   object rotations and general learning on graph structures enable new possibilities in implementing a similar idea as in this work,
+    however with potentially fewer restrictions.

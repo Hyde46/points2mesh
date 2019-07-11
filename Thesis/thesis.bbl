@@ -142,6 +142,11 @@ Angjoo Kanazawa, Shubham Tulsiani, Alexei~A. Efros, and Jitendra Malik.
   collections.
 \newblock In {\em ECCV}, 2018.
 
+\bibitem[KW16]{DBLP:journals/corr/KipfW16}
+Thomas~N. Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock {\em CoRR}, abs/1609.02907, 2016.
+
 \bibitem[LBSC18]{DBLP:journals/corr/abs-1801-07791}
 Yangyan Li, Rui Bu, Mingchao Sun, and Baoquan Chen.
 \newblock Pointcnn.
@@ -263,6 +268,10 @@ Shubham Tulsiani, Alexei~A. Efros, and Jitendra Malik.
 \newblock Multi-view consistency as supervisory signal for learning shape and
   pose prediction.
 \newblock In {\em Computer Vision and Pattern Regognition (CVPR)}, 2018.
+
+\bibitem[Vie14]{vieira2014gumbel}
+Tim Vieira.
+\newblock Gumbel-max trick and weighted reservoir sampling, 2014.
 
 \bibitem[WSK{\etalchar{+}}15]{inproceedings}
 Zhirong Wu, Shuran Song, Aditya Khosla, Fisher Yu, Linguang Zhang, Xiaoou Tang,

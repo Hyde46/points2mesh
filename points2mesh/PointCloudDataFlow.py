@@ -93,30 +93,14 @@ def prepare_df(df, parallel, prefetch_data, batch_size):
     return df
 
 
-def wrs_sample(positions, factor, sess):
-    return positions[:,0:factor]
-    pos_tf = tf.convert_to_tensor(positions[np.newaxis, :, :], dtype=tf.float32)
-    # dist.shape = (1, 10000, 8 )
-    #_, dist, _ = knn_bf_sym(pos_tf,pos_tf, K=8)\
-    pos = np.array(positions, )
-    pos = np.transpose(pos)
-    nbrs = NearestNeighbors(n_neighbors=8, algorithm='kd_tree').fit(pos)
-    distances, _ = nbrs.kneighbors(pos)
-    dist = tf.convert_to_tensor(distances[np.newaxis, :, :], dtype=tf.float32)
-    # feed relative density to wrs subsampling
-    density = tf.reduce_sum(dist, axis=2)
-    density = tf.divide(density, tf.reduce_sum(density, 1))
-    wrs_idxs = wrs_downsample_ids(
-        density, factor)
-    # density, positions.shape.as_list()[2]//factor)
-    # choose positions and features based on indices
-    coarse_positions = downsample_by_id(pos_tf, wrs_idxs)
-    #coarse_features = downsample_by_id(features, wrs_idxs)
-    # return sampled positions and features=
-    pos_sampled = tf.transpose(coarse_positions[0], perm=[1, 0])
-    pos_sampled_np = sess.run(coarse_positions[0])
-    return pos_sampled_np
+def random_downsample(positions, factor):
+    rnd_idx = np.random.randint(positions.shape[1], size=factor)
+    return positions[:, rnd_idx]
 
+
+def wrs_sample(positions, factor, sess):
+    return positions[:, 0:factor]
+    
 
 def get_modelnet_dataflow(
     name, batch_size=6,
@@ -220,6 +204,28 @@ def get_modelnet_dataflow(
 
 
 if __name__ == '__main__':
+
+    #sess = tf.Session()
+    #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/bunny.xyz", delimiter=' ')
+    #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/car7500.xyz", delimiter=' ')
+    points = np.loadtxt("/graphics/scratch/students/heid/evaluation_set/custom/propellor.xyz", delimiter=' ')
+    #points = np.loadtxt("/home/heid/tmp/bunny1.xyz", delimiter=' ')
+    #max_val = np.max(points)
+    #min_val = np.min(points)
+    #points = (points - min_val) / (max_val - min_val)
+    #points = (points * 2 )- 1
+    #print np.max(points)
+    #print np.min(points)
+    points = np.transpose(points)
+    p7500 = random_downsample(points, 7500)
+    p256 = random_downsample(points, 256)
+    p1024 = random_downsample(points, 1024)
+
+    np.savetxt('/home/heid/tmp/pr7500.txt', np.transpose(p7500), delimiter=',', fmt='%1.5f')
+    np.savetxt('/home/heid/tmp/pr1024.txt', np.transpose(p1024), delimiter=',',fmt='%1.5f')
+    np.savetxt('/home/heid/tmp/pr256.txt', np.transpose(p256), delimiter=',', fmt='%1.5f')
+    
+
     #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
     #df = LMDBSerializer.load("/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
     # for d in df:
@@ -229,14 +235,14 @@ if __name__ == '__main__':
     #   np.savetxt('/home/heid/tmp/test.asc',
     #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
     #   break
-    df = get_modelnet_dataflow('train', batch_size=1, num_points=6500,
-                               model_ver="40", normals=True, prefetch_data=False)
+    #df = get_modelnet_dataflow('train', batch_size=1, num_points=6500,
+     #                          model_ver="40", normals=True, prefetch_data=False)
     #for d in df:
     #    print np.array(d[0]).shape
     #    print " "
     #   break
     # Test speed!
-    TestDataSpeed(df, 2000).start()
+    #TestDataSpeed(df, 2000).start()
 
     """
     df = get_modelnet_dataflow(

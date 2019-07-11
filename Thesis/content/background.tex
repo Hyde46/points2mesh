@@ -1,26 +1,35 @@
 \chapter{Background}
 \label{sec:background}
+Understanding the fundamental technical background is essential to follow this work at every step.
+Thus, each primary component is described and set in context with the \emph{points2mesh} network. 
 
-\begin{enumerate}
-    \item Convolutional neural network
-    \item Semi-Supervised Classification with Graph Convolutional networks
-\end{enumerate}
--nearest neighbor search
+\subsection*{Unstructured three-dimensional data}
+    Digitized objects can be represented by a collection of three-dimensional vector samples, positioned on their surface.
+    These unstructured data points are disjoint from each other, coexisting without a direct semantic link,
+     defined as $\mathcal{PC}_x: \textbf{x}_i \in \mathbb{R}^3$
+    Every point $\textbf{x}_i$ in $\mathcal{PC}$ may have a related \emph{normal} vector, describing its normal
+    orientation on the sampled surface, defined as $\mathcal{PC}_n: \textbf{n}_i \in \mathbb{R}^3$
 
--whats a graph
+    A novel deep learning technique allows to learn features based on such data, similar to how classical two
+    dimension convolutional networks learn on two dimensional data like images. 
+    Groh et al. \cite{Groh2017} describe a convolutional layer (~flex convolution~) which  allows to convolve on
+    unstructured point cloud data. By determining $k$ nearest neighors for each point $x_i$ in $\mathcal{PC}$
+    a scaled convolution on that neighborhood can be computed and feature vectors $v_i$ calculated.
 
--whats a mesh
-\section{Machine Learning review}
-\todo{different name for section}
-- Convolutional neural networks
-- graph Convolution
-- 
+    \emph{points2mesh} requires $\mathcal{PC}$ in multiple resolutions, thus has to be subsampled to several sizes. However,
+    point clouds have parts which have a low density even before removing any samples. Thus, a sampling technique has to be chosen,
+    which samples based on that density. Parts with higher density should be sampled less often while parts with lower density should 
+    be sampled more often. \emph{Weighted reservoir sampling} solves this problem. Vieira \cite{vieira2014gumbel} described a simple way
+    of implementing that sampling technique employing the \emph{gumbel-max trick}, which also found use in \emph{points2mesh}.
 
-\label{back:ptt}
-\label{ml_review}
 
-\section{stuff}
-\subsection{Weighted reservoir sampling}
-\label{subsec:wrs}
-
+\subsection*{Learning on graphs}
+    Digitized objects often are represented as a collection of vertices connected by edges. Each vertex has a threee dimensional
+    coordinate and knowledge about connections to specific neighbors. Though, a mesh can also directly represented as in a graph 
+    structure $\mathcal{G}=(V,E)$, where each vertex corresponds to a node in the graph, and each edge, also as an edge in the graph.
+    Additionally the nodes in the graph hold the positional information of the vertices in each node.
+    Kipf et al. \cite{DBLP:journals/corr/KipfW16} describe a graph convolutional neural network (~\emph{gcn}~) operating on such graph
+    structures. A \emph{gcn} learns a function of features on $\mathcal{G}$, producing an output for each node. In the context of
+    \emph{points2mesh}, the features are described by three dimensional coordinates of their position in space. The output corresponds
+    to the 'deformed' positions of the graph.
 

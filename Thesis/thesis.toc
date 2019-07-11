@@ -1,8 +1,5 @@
 \contentsline {chapter}{\numberline {1}Introduction}{13}
 \contentsline {chapter}{\numberline {2}Background}{15}
-\contentsline {section}{\numberline {2.1}Machine Learning review}{15}
-\contentsline {section}{\numberline {2.2}stuff}{15}
-\contentsline {subsection}{\numberline {2.2.1}Weighted reservoir sampling}{15}
 \contentsline {chapter}{\numberline {3}Related Work}{17}
 \contentsline {section}{\numberline {3.1}Traditional approaches}{17}
 \contentsline {subsection}{\numberline {3.1.1}Reconstruction methods}{18}
@@ -18,24 +15,22 @@
 \contentsline {subsection}{\numberline {4.1.4}GCN mesh deformation}{25}
 \contentsline {subsection}{\numberline {4.1.5}Loss functions}{28}
 \contentsline {subsection}{\numberline {4.1.6}Network configurations $\mathcal {C}$}{29}
-\contentsline {section}{\numberline {4.2}Dataset}{31}
-\contentsline {subsection}{\numberline {4.2.1}Dataset generation}{32}
-\contentsline {subsection}{\numberline {4.2.2}Utilized object categories}{32}
+\contentsline {subsection}{\numberline {4.1.7}Dataset}{31}
 \contentsline {chapter}{\numberline {5}Results}{33}
 \contentsline {section}{\numberline {5.1}Compared methods}{33}
 \contentsline {section}{\numberline {5.2}Result visualization}{33}
-\contentsline {chapter}{\numberline {6}Evaluation}{37}
-\contentsline {section}{\numberline {6.1}Experimental setup}{37}
-\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{38}
-\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{39}
-\contentsline {section}{\numberline {6.2}Experiment results}{39}
-\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{40}
-\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{43}
-\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{44}
-\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{44}
-\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{45}
-\contentsline {chapter}{\numberline {7}Discussion}{47}
-\contentsline {section}{\numberline {7.1}Pioneer network \emph {points2mesh}}{47}
-\contentsline {section}{\numberline {7.2}Conclusion}{51}
-\contentsline {section}{\numberline {7.3}Outlook}{51}
-\contentsline {chapter}{\numberline {A}Appendix}{53}
+\contentsline {chapter}{\numberline {6}Evaluation}{39}
+\contentsline {section}{\numberline {6.1}Experimental setup}{39}
+\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{40}
+\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{41}
+\contentsline {section}{\numberline {6.2}Experiment results}{41}
+\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{42}
+\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{45}
+\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{46}
+\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{46}
+\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{47}
+\contentsline {chapter}{\numberline {7}Discussion}{49}
+\contentsline {section}{\numberline {7.1}Variety of \emph {points2mesh}}{49}
+\contentsline {section}{\numberline {7.2}Conclusion}{56}
+\contentsline {section}{\numberline {7.3}Outlook}{57}
+\contentsline {chapter}{\numberline {A}Appendix}{59}

@@ -267,17 +267,17 @@ class GraphProjection(Layer):
         #stage_3 = self.mean_neighborhood(inputs, 3)
 
         # outputs = tf.concat([inputs, stage_0, stage_1[0], stage_2[0], stage_3[0]], 1)
-        # outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
-        #outputs = tf.concat([inputs,
-        #                     stage_1[1],
-        #                     stage_2[1],
-        #                     stage_3[1]], 1)
+        #outputs = tf.concat([inputs, stage_0, stage_1, stage_2, stage_3], 1)
         outputs = tf.concat([inputs,
-                            stage_0[0],
-                            stage_1[0], stage_1[1],
-                            stage_2[0], stage_2[1],
-                            stage_3[0], stage_3[1]
-                            ], 1)
+                             stage_1[1],
+                             stage_2[1],
+                             stage_3[1]], 1)
+        #outputs = tf.concat([inputs,
+        #                    stage_0[0],
+        #                    stage_1[0], stage_1[1],
+        #                    stage_2[0], stage_2[1],
+        #                    stage_3[0], stage_3[1]
+        #                    ], 1)
 
         return outputs
 

@@ -14,8 +14,8 @@ Section \ref{networkconfig} specifies the network's structure as well as
  proper objective functions in detail which operate the two-part
   convolutional network.
 
-Subsequentially, section \ref{dataset} specifies the dataset used to
- train the networks, as well as how it was designed and constructed.
+Subsequentially, subsection \ref{dataset} specifies the dataset used to
+ train the networks.
 
 \section{Neural network structure}
 \label{networkconfig}
@@ -358,39 +358,32 @@ Finally, based on configuration $\mathcal{C}_1$, configuration $\mathcal{C}_4$ r
 Furthermore, the distance based falloff $\frac{1}{1+d}$ in the \emph{projection layer} is excluded, 
 while also computing only one nearest neighbor, $k=1$ in that particular layer. 
 
-\section{Dataset}
+\subsection{Dataset}
 \label{dataset}
    Finding and designing a suitable dataset $\mathcal{D}$
    to train the network on is just as crucial as designing its structure. 
    Such a suitable dataset is \emph{ModelNet}, offering 40 different object 
    categories and thousands of fully meshed objects. By default, it does not offer a
    point cloud representation, as required by $\mathcal{N}_{recon}$. Qi et al.
-   \cite{qi2017pointnetplusplus} propose a transformation of the classical \emph{ModelNet40}
-   dataset to a point cloud based one which can be utilized by $\mathcal{N}_{recon}$.
+   \cite{qi2017pointnetplusplus} propose a resampled version of the classical \emph{ModelNet40}
+   dataset which can be utilized by $\mathcal{N}_{recon}$.
+   The official split of 9843 shapes for training and 2468 for testing is used as well. 
 
-   This section describes their way of transforming the dataset, on which categories
-   $\mathcal{N}_{recon}$ is trained on, and an additional data augmentation step to
-   enhance the dataset.
+   Even though \emph{ModelNet40}, and therefore the transformed point cloud dataset by Qi et al. offers, as the name suggests,
+   40 different object categories, only a subset of them is chosen for training purposes of $\mathcal{N}_{recon}$. 
+   The subset of $\mathcal{D}_{m40}$ is defined as $\mathcal{D}_{big}=[airplane,bed,bottle,bowl,chair,guitar,toilet]$
+   It is chosen based on the goal of learning a generalized deformation operation by showing preferably vastly different object categories
+   to the network, all with interesting object features, which $\mathcal{N}_{recon}$ should learn. Though, all categories are of anorganic matter.
 
-\subsection{Dataset generation}
-\todo{hier?}
-\subsection{Utilized object categories}
-\label{sec:categ}
-Even though \emph{ModelNet40}, and therefore the transformed point cloud dataset by Qi et al. offers, as the name suggests,
-40 different object categories, only a subset of them is chosen for training purposes of $\mathcal{N}_{recon}$. 
-The subset of $\mathcal{D}_{m40}$ is defined as $\mathcal{D}_{big}=[airplane,bed,bottle,bowl,chair,guitar,toilet]$
-It is chosen based on the goal of learning a generalized deformation operation by showing preferably vastly different object categories
-to the network, all with interesting object features, which $\mathcal{N}_{recon}$ should learn.
+   Point cloud data used for inference is not always sampled perfectly on the surface of an object. Random noise on these coordinates is common occurance.
+   For that reason, to aid $\mathcal{N}_{recon}$ learning a more generalized reconstruction, each of the dataset categories are
+   augmented with random noise added to each vertex in the point cloud by a factor $q_{noise}$.
 
-Point cloud data used for inference is not always sampled perfectly on the surface of an object. Random noise on these coordinates is common occurance.
-For that reason, to aid $\mathcal{N}_{recon}$ learning a more generalized reconstruction, each of the dataset categories are
- augmented with random noise added to each vertex in the point cloud by a factor $q_{noise}$.
-
- Interesting features for reconstruction include:
- \begin{itemize}
-   \item long appendages (~leg of a chair, airplane propellor~)
-   \item thin appendages (~airplane wings~)
-   \item hard edges (~toilet flushing cistern~)
-   \item uniform curvatures (~bowl~)
-   \item objects of \emph{genus} $>0$ (~some chairs/airplanes,guitars~)
- \end{itemize}
+   Interesting features for reconstruction include:
+   \begin{itemize}
+      \item long appendages (~leg of a chair~)
+      \item thin appendages (~airplane wings~)
+      \item hard edges (~toilet flushing cistern~)
+      \item uniform curvatures (~bowl~)
+      \item objects of \emph{genus} $>0$ (~some chairs/airplanes,guitars~)
+   \end{itemize}

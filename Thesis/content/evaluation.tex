@@ -300,6 +300,7 @@
     $\mathcal{C}_4$ produce rather similar results, while $\mathcal{C}_3$ seems to struggle the most to construct a proper mesh.
 
 \subsection{Varying basemesh $\mathcal{M}_i$}
+\label{varybase}
     The previously described configurations all are trained on a spheroid as initial mesh $\mathcal{M}_i$. 
     By nature of the neural network and the sphere, objects with \emph{genus} higher than zero cannot be
     reconstructed such that the predicted mesh has the same \emph{genus}. Since it stays constant, 
@@ -354,7 +355,6 @@
     \end{center}
 \end{center}
 \subsection{Evaluation time}
-\todo{hypericum stats and graphics card used}
 For real-time applications like guiding autonomous cars through traffic without collision,
  reconstruction should happen virtually instantaneously for it to be advantageous. 
  The computation time may be critical, and thus has been evaluated, as seen in table
@@ -364,7 +364,7 @@ and produces a mesh with 500 vertices (~which is approximately the most vertices
  result at 256 samples~). Similar, $\emph{IFM}^{2400}$ and $\emph{IFM}^{10100}$ are defined 
  for 1024 and 7500 samples.
 $\hat{t}$ is a mean value of the measurement for 100 reconstructed objects. 
-Generally, \emph{IFM} has the fastest computation times at the same amount of samples when compared to $\mathcal{C}_i$ and \emph{BPA}.
+Generally, \emph{IFM} has the fastest computation times\footnote{Computed with GeForce GTX 1080 Ti graphicscard and Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz} at the same amount of samples when compared to $\mathcal{C}_i$ and \emph{BPA}.
 \begin{center}
     \captionof{table}{Inference time for configurations $\mathcal{C}$ and computation time for other techniques} \label{tab:time} 
         \begin{tabular}{| c | c |}

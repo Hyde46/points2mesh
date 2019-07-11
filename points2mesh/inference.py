@@ -25,7 +25,7 @@ flags.DEFINE_string(
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_integer(
-    'feat_dim', 239, 'Number of units in FlexConv Feature layer')
+    'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
@@ -100,7 +100,7 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c3_7500_big2_/checkpoint"),
+        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c1_7500_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
@@ -143,18 +143,21 @@ predictor = loadModel()
 #predictor = 0
 
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-for c in categories:
+#for c in categories:
 
-    path = "/graphics/scratch/students/heid/evaluation_set/"+c
-    pcs = loadTxtFiles(path)
-    #path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
-    path_output = "/graphics/scratch/students/heid/inference/c3_n_7500_" + c #sphere"+c
-    counter = 0
-    for pc in pcs:
+#path = "/graphics/scratch/students/heid/evaluation_set/"+c
+#pcs = loadTxtFiles(path)
+#path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
+#path_output = "/graphics/scratch/students/heid/inference/c3_n_7500_" + c #sphere"+c
+path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
+counter = 0
+#for pc in pcs:
 
-        path_pc = os.path.join(path, pc)
-        pc_inp = load_pc(path_pc, num_points=PC['num'])
-        vertices = predict(predictor, pc_inp, path_pc)
-        create_inference_mesh(vertices[2], 3, pc,
-                            path_pc, path_output, display_mesh=False, num_obj=counter)
-        counter = counter + 1
+pc = '/graphics/scratch/students/heid/evaluation_set/custom/pr7500.txt'
+#path_pc = os.path.join(path, pc)
+path_pc = pc
+pc_inp = load_pc(path_pc, num_points=PC['num'])
+vertices = predict(predictor, pc_inp, path_pc)
+create_inference_mesh(vertices[2], 3, pc,
+                    path_pc, path_output, display_mesh=False, num_obj=counter)
+counter = counter + 1

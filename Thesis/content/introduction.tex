@@ -1,5 +1,3 @@
-
-% write content here or...
 \chapter{Introduction}
   For humans to interact with the world depends on many variables. 
   An important aspect is to recognize, analyze, and estimate the position,
@@ -13,7 +11,6 @@
   through traffic. 
   Typically, objects are recorded in a way, which results in unstructured, three-dimensional point
   cloud data, for example, with the help of range scanners or structured light.
-
 
   Though obtaining information about samples of an object already provides a way to process a three-dimensional object;
   still, the preferred way to operate is in the form of surface information like tri-or quad-meshes.
@@ -34,18 +31,23 @@
   Since this network is the first of its kind, it is essential to assess its capabilities in comparison to the traditional methods. 
   Therefore, part of this work is to identify its strengths and weaknesses and determine where it may find use and how to build upon it.
 
+  The main contributions of this work consist of the following:
+  \begin{itemize}
+    \item First neural network learning from point cloud data and transforming it directly to a mesh.
+    \item Competitive results with multi category learning.
+    \item On par or close to computation time of traditional reconstruction methods.
+  \end{itemize}
+
   \subsubsection*{Chapter revision}
-  \todo{ueberarbeiten. ist schon wieder nicht aktuell}
-  First, a revision of techniques and methods are described in chapter \ref{sec:background} to lay the groundwork for this thesis. In chapter \ref{sec:relatedwork}, 
+  First, a short revision of the basic components, techniques and methods are described in chapter \ref{sec:background} to lay the groundwork for this thesis. In chapter \ref{sec:relatedwork}, 
   numerous traditional, as well as machine learning based methods, are reviewed, which work on the transformation of three-dimensional data to polygonal
   meshes.
   After that, the graph based neural network \emph{points2mesh} is explained in detail, how it handles and learns from point cloud data but also how
-   it deforms a base-mesh to approximate the underlying object represented by the data.
-  Then, in chapter \ref{chap:results} based on different configurations for the neural network, an assortment of resulting meshes are presented and
-   contrasted to each other.
-  Followed by section \ref{chap:evaluation}, a numerical evaluation, and discussion are conducted to assess the capabilities of the network and its 
+  it deforms a base-mesh to approximate the underlying object represented by the data.
+  Then, in chapter \ref{chap:results} based on different configurations for the neural network, a \emph{supervised} as well as \emph{unsupervised} version,
+  an assortment of resulting meshes are presented and scontrasted against each other.
+  Followed by section \ref{chap:evaluation}. a numerical evaluation, and discussion are conducted to assess the capabilities of the network and its 
   varied proposed configurations. By defining a comparable metric for evaluation, related methods achieving similar results can be analyzed and thus 
-  measured against each other.
-  To conclude, in chapter \ref{sec:outlook}, the thesis is resolved by taking a look at possible ways of expanding on the network and outlining what
-   has been achieved.
-  
+  measured against each other. To conclude, in chapter \ref{chap:discussion}, some results, advantages and disadvantages of \emph{points2mesh} 
+  are weighted up, and finally compared to traditional methods as well as a direct competitor which is utilizing deep learning techniques too.
+  The thesis is resolved by taking a look at what has been achieved and possible ways of expanding on the network.

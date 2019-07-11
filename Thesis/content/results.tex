@@ -22,77 +22,77 @@ an intermediate step of voxelization of $\mathcal{PC}$, this work also can be co
 marching cubes algorithm.
 
 \section{Result visualization}
-%% 1024Figure
-%  \ref{fig:1} shows the reconstruction from a point cloud sample size of 1024 from the \emph{category}
-%  \emph{airplane}. \ref{fig:1a} shows the ground truth mesh, and \ref{fig:1d} its sampled point cloud. Figures
-%  \ref{fig:1b}, \ref{fig:1c}, \ref{fig:1e}, \ref{fig:1f} show the reconstruction from $\mathcal{N}_{recon}$ with 
-%  configurations $\mathcal{C}_1$ through $\mathcal{C}_4$.
-%
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[Ground truth mesh.\label{fig:1a}]{\includegraphics[width=0.32\textwidth]{gt_airplane_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:1b}]{\includegraphics[width=0.32\textwidth]{c1_1024_airplane_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:1c}]{\includegraphics[width=0.32\textwidth]{c2_1024_airplane_1.png}}\\
-%  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:1d}]{\includegraphics[width=0.32\textwidth]{airplane_1_pc.png}}
-%  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:1e}]{\includegraphics[width=0.32\textwidth]{c3_1024_airplane_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:1f}]{\includegraphics[width=0.32\textwidth]{c4_1024_airplane_1.png}}\\
-%  \subfloat[Reconstrucion with \emph{BPA}.\label{fig:1g}]{\includegraphics[width=0.32\textwidth]{airplane_bpa_1024.png}}
-%  \subfloat[Reconstruction with \emph{IFM}.\label{fig:1h}]{\includegraphics[width=0.32\textwidth]{ifm_1024_airplane_1.png}}
-%  \subfloat[Reconstruction with \emph{DMC}.\label{fig:1i}]{\includegraphics[width=0.32\textwidth]{dmc_airplane.png}}
-%  \caption{Reconstruction of an airplane from point cloud with 1024 samples.} \label{fig:1}
-%\end{figure}
-%
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[Ground truth mesh.\label{fig:2a}]{\includegraphics[width=0.32\textwidth]{gt_chair_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:2b}]{\includegraphics[width=0.32\textwidth]{c1_1024_chair_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:2c}]{\includegraphics[width=0.32\textwidth]{c2_1024_chair_1.png}}\\
-%  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:2d}]{\includegraphics[width=0.32\textwidth]{c3_1024_chair_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:2epro}]{\includegraphics[width=0.32\textwidth]{c4_1024_chair_1.png}}
-%  \caption{Reconstruction of a chair from point cloud with 1024 samples.} \label{fig:2}
-%\end{figure}
-%
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[Ground truth mesh.\label{fig:3a}]{\includegraphics[width=0.32\textwidth]{gt_guitar_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:3b}]{\includegraphics[width=0.32\textwidth]{c1_1024_guitar_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:3c}]{\includegraphics[width=0.32\textwidth]{c2_1024_guitar_1.png}}\\
-%  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:3d}]{\includegraphics[width=0.32\textwidth]{guitar_pc00.png}}
-%  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:3e}]{\includegraphics[width=0.32\textwidth]{c3_1024_guitar_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:3f}]{\includegraphics[width=0.32\textwidth]{c4_1024_guitar_1.png}}\\
-%  \subfloat[\emph{IFM} guitar reconstruction.\label{fig:3g}]{\includegraphics[width=0.32\textwidth]{ifm_1024_guitar_1.png}}
-%  \subfloat[\emph{DMC} guitar reconstruction.\label{fig:3h}]{\includegraphics[width=0.32\textwidth]{dmc_guitar.png}}
-%  \caption{Reconstruction of a guitar from point cloud with 1024 samples.} \label{fig:3}
-%\end{figure}
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[Ground truth mesh.\label{fig:4a}]{\includegraphics[width=0.32\textwidth]{gt_bowl_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:4b}]{\includegraphics[width=0.32\textwidth]{c1_1024_bowl_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:4c}]{\includegraphics[width=0.32\textwidth]{c2_1024_bowl_1.png}}\\
-%  \subfloat[Reconstruction with \emph{DMC}\label{fig:4d}]{\includegraphics[width=0.32\textwidth]{dmc_bowl.png}}
-%  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:4e}]{\includegraphics[width=0.32\textwidth]{c3_1024_bowl_1.png}}
-%  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:4f}]{\includegraphics[width=0.32\textwidth]{c4_1024_bowl_1.png}}
-%  \caption{Reconstruction of a bowl from point cloud with 1024 samples.} \label{fig:4}
-%\end{figure}
-%
-%  The last row depicts reconstructions with \emph{BPA}, \emph{IFM}, and \emph{DMC}. While the reconstruction with configuration 
-%  $\mathcal{C}_1$ represents the most interesting features of the airplane, especially the small winglets, it still has some errors. 
-%  One of the errors is at the rear of the plane with an edge dangling in the air, spanning over it. The same error happens with configuration
-%  $\mathcal{C}_3$ and $\mathcal{C}_4$ too. Configuration $\mathcal{C}_2$ seems to represent the airplane's features the best, though the least
-%  smooth of all reconstructions. As seen in figures \ref{fig:1f} and \ref{fig:2c}, configuration $\mathcal{C}_2$ is generally depicting the ground
-%    truth mesh in a good way, though not smooth.
-%  Considering other reconstruction methods, different problems, but also positives can be seen. \emph{BPA} reproduces smooth results as seen 
-%  in figure \ref{fig:1g}, while \emph{IFM} does not perform as well on low samples (~256 and 1024~) as seen in figure \ref{fig:1h}. Generally 
-%  \emph{DMC} does not perform good either as seen in figures \ref{fig:1i} and \ref{fig:3h}.
-%
-%  Similarly, figure \ref{fig:2} through \ref{fig:5} show reconstructions with the same configurations $\mathcal{C}_i$ from $\mathcal{N}_{recon}$,
-%  but with an object from the \emph{categories} \emph{chair}, \emph{guitar}, \emph{bowl}. These \emph{categories} were included
-%  in the training set of $\mathcal{N}_{recon}$, though every reconstructed object sample originate from a test set, and thus have not be seen
-%  during the training stage.
-%  Similar behavior of the four network configurations, as described above, can be seen again, including the spanning of edges over empty space,
-%  like in figure \ref{fig:2d}, between the legs of the chair.
-%
-%
+% 1024Figure
+  \ref{fig:1} shows the reconstruction from a point cloud sample size of 1024 from the \emph{category}
+  \emph{airplane}. \ref{fig:1a} shows the ground truth mesh, and \ref{fig:1d} its sampled point cloud. Figures
+  \ref{fig:1b}, \ref{fig:1c}, \ref{fig:1e}, \ref{fig:1f} show the reconstruction from $\mathcal{N}_{recon}$ with 
+  configurations $\mathcal{C}_1$ through $\mathcal{C}_4$.
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:1a}]{\includegraphics[width=0.32\textwidth]{gt_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:1b}]{\includegraphics[width=0.32\textwidth]{c1_1024_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:1c}]{\includegraphics[width=0.32\textwidth]{c2_1024_airplane_1.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:1d}]{\includegraphics[width=0.32\textwidth]{airplane_1_pc.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:1e}]{\includegraphics[width=0.32\textwidth]{c3_1024_airplane_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:1f}]{\includegraphics[width=0.32\textwidth]{c4_1024_airplane_1.png}}\\
+  \subfloat[Reconstrucion with \emph{BPA}.\label{fig:1g}]{\includegraphics[width=0.32\textwidth]{airplane_bpa_1024.png}}
+  \subfloat[Reconstruction with \emph{IFM}.\label{fig:1h}]{\includegraphics[width=0.32\textwidth]{ifm_1024_airplane_1.png}}
+  \subfloat[Reconstruction with \emph{DMC}.\label{fig:1i}]{\includegraphics[width=0.32\textwidth]{dmc_airplane.png}}
+  \caption{Reconstruction of an airplane from point cloud with 1024 samples.} \label{fig:1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:2a}]{\includegraphics[width=0.32\textwidth]{gt_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:2b}]{\includegraphics[width=0.32\textwidth]{c1_1024_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:2c}]{\includegraphics[width=0.32\textwidth]{c2_1024_chair_1.png}}\\
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:2d}]{\includegraphics[width=0.32\textwidth]{c3_1024_chair_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:2epro}]{\includegraphics[width=0.32\textwidth]{c4_1024_chair_1.png}}
+  \caption{Reconstruction of a chair from point cloud with 1024 samples.} \label{fig:2}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:3a}]{\includegraphics[width=0.32\textwidth]{gt_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:3b}]{\includegraphics[width=0.32\textwidth]{c1_1024_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:3c}]{\includegraphics[width=0.32\textwidth]{c2_1024_guitar_1.png}}\\
+  \subfloat[Sampled point cloud from ground truth mesh.\label{fig:3d}]{\includegraphics[width=0.32\textwidth]{guitar_pc00.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:3e}]{\includegraphics[width=0.32\textwidth]{c3_1024_guitar_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:3f}]{\includegraphics[width=0.32\textwidth]{c4_1024_guitar_1.png}}\\
+  \subfloat[\emph{IFM} guitar reconstruction.\label{fig:3g}]{\includegraphics[width=0.32\textwidth]{ifm_1024_guitar_1.png}}
+  \subfloat[\emph{DMC} guitar reconstruction.\label{fig:3h}]{\includegraphics[width=0.32\textwidth]{dmc_guitar.png}}
+  \caption{Reconstruction of a guitar from point cloud with 1024 samples.} \label{fig:3}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Ground truth mesh.\label{fig:4a}]{\includegraphics[width=0.32\textwidth]{gt_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_1$.\label{fig:4b}]{\includegraphics[width=0.32\textwidth]{c1_1024_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_2$.\label{fig:4c}]{\includegraphics[width=0.32\textwidth]{c2_1024_bowl_1.png}}\\
+  \subfloat[Reconstruction with \emph{DMC}\label{fig:4d}]{\includegraphics[width=0.32\textwidth]{dmc_bowl.png}}
+  \subfloat[Configuration $\mathcal{C}_3$.\label{fig:4e}]{\includegraphics[width=0.32\textwidth]{c3_1024_bowl_1.png}}
+  \subfloat[Configuration $\mathcal{C}_4$.\label{fig:4f}]{\includegraphics[width=0.32\textwidth]{c4_1024_bowl_1.png}}
+  \caption{Reconstruction of a bowl from point cloud with 1024 samples.} \label{fig:4}
+\end{figure}
+
+  The last row depicts reconstructions with \emph{BPA}, \emph{IFM}, and \emph{DMC}. While the reconstruction with configuration 
+  $\mathcal{C}_1$ represents the most interesting features of the airplane, especially the small winglets, it still has some errors. 
+  One of the errors is at the rear of the plane with an edge dangling in the air, spanning over it. The same error happens with configuration
+  $\mathcal{C}_3$ and $\mathcal{C}_4$ too. Configuration $\mathcal{C}_2$ seems to represent the airplane's features the best, though the least
+  smooth of all reconstructions. As seen in figures \ref{fig:1f} and \ref{fig:2c}, configuration $\mathcal{C}_2$ is generally depicting the ground
+    truth mesh in a good way, though not smooth.
+  Considering other reconstruction methods, different problems, but also positives can be seen. \emph{BPA} reproduces smooth results as seen 
+  in figure \ref{fig:1g}, while \emph{IFM} does not perform as well on low samples (~256 and 1024~) as seen in figure \ref{fig:1h}. Generally 
+  \emph{DMC} does not perform good either as seen in figures \ref{fig:1i} and \ref{fig:3h}.
+
+  Similarly, figure \ref{fig:2} through \ref{fig:5} show reconstructions with the same configurations $\mathcal{C}_i$ from $\mathcal{N}_{recon}$,
+  but with an object from the categories \emph{chair}, \emph{guitar}, \emph{bowl}. These categories were included
+  in the training set of $\mathcal{N}_{recon}$, though every reconstructed object sample originate from a test set, and thus have not be seen
+  during the training stage.
+  Similar behavior of the four network configurations, as described above, can be seen again, including the spanning of edges over empty space,
+  like in figure \ref{fig:2d}, between the legs of the chair.
+
+
 %% 256
 %\begin{figure}[htbp]
 %  \centering
@@ -202,26 +202,26 @@ marching cubes algorithm.
 %\end{figure}
 %  Additionally, figure \ref{fig:8} and figure \ref{fig:9} show the reconstruction of a person and a bathtub, based on point cloud samples 
 %  which $\mathcal{N}_{recon}$ has not been trained with.
-\begin{figure}[htbp]
-  \centering
-  \subfloat[Reconstruction with 256 samples\label{fig:12a}]{\includegraphics[width=0.33\textwidth]{c1_opt_256_airplane2.png}}
-  \subfloat[Reconstruction with 1024 samples\label{fig:12b}]{\includegraphics[width=0.33\textwidth]{c1_opt_1024_airplane2.png}}
-  \subfloat[Reconstruction with 7500 samples\label{fig:12c}]{\includegraphics[width=0.33\textwidth]{c1_opt_7500_airplane2.png}}
-  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:10}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \subfloat[\label{fig:11a}]{\includegraphics[width=0.5\textwidth]{c1_opt_1024_guitar.png}}
-  \caption{Reconstruction from point clouds of guitar of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:11}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \subfloat[\label{fig:10a}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair1.png}}
-  \subfloat[\label{fig:10b}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair2.png}}
-  \subfloat[\label{fig:10c}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair3.png}}
-  \caption{Reconstruction from point clouds of chairs of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:10}
-\end{figure}
-
+%\begin{figure}[htbp]
+% \centering
+% \subfloat[Reconstruction with 256 samples\label{fig:12a}]{\includegraphics[width=0.33\textwidth]{c1_opt_256_airplane2.png}}
+%  \subfloat[Reconstruction with 1024 samples\label{fig:12b}]{\includegraphics[width=0.33\textwidth]{c1_opt_1024_airplane2.png}}
+%  \subfloat[Reconstruction with 7500 samples\label{fig:12c}]{\includegraphics[width=0.33\textwidth]{c1_opt_7500_airplane2.png}}
+%  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:10}
+%\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \subfloat[\label{fig:11a}]{\includegraphics[width=0.5\textwidth]{c1_opt_1024_guitar.png}}
+%  \caption{Reconstruction from point clouds of guitar of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:11}
+%\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \subfloat[\label{fig:10a}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair1.png}}
+%  \subfloat[\label{fig:10b}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair2.png}}
+%  \subfloat[\label{fig:10c}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair3.png}}
+%  \caption{Reconstruction from point clouds of chairs of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:10}
+%\end{figure}
+%
   Finally, figure \ref{fig:10} shows the reconstruction of chairs, based on $\mathcal{N}_{opt}$. Only the reconstruction with the configuration $\mathcal{C}_1$ is shown
   since it produces the most interesting results\footnote{See Appendix \ref{optrecon} for some reconstruction with other configurations}. Configurations $\mathcal{C}_2$ through $\mathcal{C}_4$ produce similar results. Though no ground truth data was available during training time, reconstruction
   of the airplane is still possible. It is visible, that only 256 samples are not enough to create a good reconstruction. Starting with 1024 samples, the airplane reconstruction
