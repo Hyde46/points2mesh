@@ -137,16 +137,14 @@ future work.
   quite capable, though not as good as $\mathcal{N}_{recon}$. 
   Additionally, in such conditions, noise is inevitable. Nonetheless, $\mathcal{N}_{recon}$ shows that for a noise level of $0.01$ (~Based on ground 
   truth data in $[-1,1]$~) reconstructions are still visually pleasing, though the metric results of $d_m$ suffer a little. 
-  Similarly, the generalization capabilities of $\mathcal{N}_{recon}$ have been assessed in figures \ref{fig:8} and \ref{fig:9}. Despite never seeing
+  Similarly, the generalization capabilities of $\mathcal{N}_{recon}$ have been assessed in figures \ref{fig:8}, \ref{fig:9}. Despite never seeing
   data of the category bathtub or person, the reconstruction does not stick out from the trained categories. Thus, somewhat robust training and inference have been achieved. 
-
-  Finally, real point cloud and short time argument
-  \todo{reale point cloud}
+  Additionally figures \ref{fig:bunny}, \ref{fig:generalgeneral} show reconstructions from point cloud totally unrelated to the used Dataset. Though, \emph{points2mesh}
+  with configuration $\mathcal{C}_1$ and $\mathcal{C}_2$ never has seen anything like the stanford bunny, it still was able to reconstruct it quite nicely. However, the problem of stretching edges over empty space, especially in
+  between the neck and its ears, as well as between the ears is prominent.
 
 
   \subsection*{Comparing alternatives}
-
-
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.33\textwidth]{airplane2_bpa_256.png}
@@ -220,7 +218,7 @@ future work.
 \label{conclusion}
   \emph{points2mesh} describes the first\footnote{No other network was found which directly transforms points cloud data if singular objects to meshes as of \today} deep
   learning based neural network, transforming point cloud data to tri-meshes. Excelling in reconstructing with low-resolution data,
-  even generating watertight meshes with only 256 data points while also being capable of generalizing over objects it has never seen 
+  even consitently generating watertight meshes with only 256 data points while also being capable of generalizing over objects it has never seen 
   during training. Configuration $\mathcal{C}_1$ of the supervised network $\mathcal{N}_{recon}$ is the best choice for the best reconstructions
   in various situations.
 

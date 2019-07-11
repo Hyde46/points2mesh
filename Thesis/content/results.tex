@@ -200,28 +200,49 @@ marching cubes algorithm.
 %  \subfloat[$\mathcal{C}_4$.\label{fig:9d}]{\includegraphics[width=0.5\textwidth]{c4_1024_bathtub_1.png}}
 %  \caption{Reconstruction from point clouds of untrained category \emph{bathutb}.} \label{fig:9}
 %\end{figure}
-%  Additionally, figure \ref{fig:8} and figure \ref{fig:9} show the reconstruction of a person and a bathtub, based on point cloud samples 
-%  which $\mathcal{N}_{recon}$ has not been trained with.
-%\begin{figure}[htbp]
-% \centering
-% \subfloat[Reconstruction with 256 samples\label{fig:12a}]{\includegraphics[width=0.33\textwidth]{c1_opt_256_airplane2.png}}
-%  \subfloat[Reconstruction with 1024 samples\label{fig:12b}]{\includegraphics[width=0.33\textwidth]{c1_opt_1024_airplane2.png}}
-%  \subfloat[Reconstruction with 7500 samples\label{fig:12c}]{\includegraphics[width=0.33\textwidth]{c1_opt_7500_airplane2.png}}
-%  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:10}
-%\end{figure}
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[\label{fig:11a}]{\includegraphics[width=0.5\textwidth]{c1_opt_1024_guitar.png}}
-%  \caption{Reconstruction from point clouds of guitar of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:11}
-%\end{figure}
-%\begin{figure}[htbp]
-%  \centering
-%  \subfloat[\label{fig:10a}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair1.png}}
-%  \subfloat[\label{fig:10b}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair2.png}}
-%  \subfloat[\label{fig:10c}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair3.png}}
-%  \caption{Reconstruction from point clouds of chairs of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:10}
-%\end{figure}
-%
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Input point cloud of stone goblet.\label{fig:ca}]{\includegraphics[width=0.32\textwidth]{bappc.png}}
+  \subfloat[Texturized reconstruction with photogammetry.\label{fig:cb}]{\includegraphics[width=0.32\textwidth]{bapgt.png}}
+  \subfloat[Reconstruction with $\mathcal{C}_2$ with 1024 samples.\label{fig:cc}]{\includegraphics[width=0.32\textwidth]{bap.png}}\\
+  \subfloat[Input point cloud toy propellor plane.\label{fig:da}]{\includegraphics[width=0.32\textwidth]{prpc.png}}
+  \subfloat[Texturized reconstruction with photogammetry.\label{fig:db}]{\includegraphics[width=0.32\textwidth]{prgt.png}}
+  \subfloat[Reconstruction with $\mathcal{C}_2$ with 1024 samples.\label{fig:dc}]{\includegraphics[width=0.32\textwidth]{prhigh.png}}
+  \caption{Reconstruction from point cloud of objects unrelated to ModelNet40. Top row depicts a 3D scanned goblet. Bottom row depicts a 3D scanned toyairplane.
+  Both objects offered scanned point cloud which has been downsampled to fit for \emph{points2mesh}} \label{fig:generalgeneral}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Point cloud of stanford bunny before downsampling.\label{fig:ba}]{\includegraphics[width=0.32\textwidth]{bunny_pc.png}}
+  \subfloat[Reconstruction with $\mathcal{C}_1$ with 1024 samples.\label{fig:bb}]{\includegraphics[width=0.32\textwidth]{bunny.png}}
+  \subfloat[Reconstruction with $\mathcal{C}_2$ with 1024 samples.\label{fig:bc}]{\includegraphics[width=0.32\textwidth]{bunnyhigh.png}}
+  \caption{Reconstruction from point cloud of an object unrelated to ModelNet40.} \label{fig:bunny}
+\end{figure}
+  Figure \ref{fig:8} and figure \ref{fig:9} show the reconstruction of a person and a bathtub, based on point cloud samples 
+  which $\mathcal{N}_{recon}$ has not been trained with. Additionally, figures \ref{fig:generalgeneral} and \ref{fig:bunny} show
+  reconstruction from point clouds unrelated to the dataset ModelNet40. Figure \ref{fig:cb} depicts a 3D scanned goblet, figure \ref{fig:db} a scanned
+  toy plane and figure \ref{fig:ba} a point cloud of the stanford bunny. Nevertheless, \emph{points2mesh} is able to reconstruct these objects. Though, the bunny much
+  better than either the toy plane or the goblet.
+\begin{figure}[htbp]
+ \centering
+ \subfloat[Reconstruction with 256 samples\label{fig:12a}]{\includegraphics[width=0.33\textwidth]{c1_opt_256_airplane2.png}}
+  \subfloat[Reconstruction with 1024 samples\label{fig:12b}]{\includegraphics[width=0.33\textwidth]{c1_opt_1024_airplane2.png}}
+  \subfloat[Reconstruction with 7500 samples\label{fig:12c}]{\includegraphics[width=0.33\textwidth]{c1_opt_7500_airplane2.png}}
+  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:10}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[\label{fig:11a}]{\includegraphics[width=0.5\textwidth]{c1_opt_1024_guitar.png}}
+  \caption{Reconstruction from point clouds of guitar of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:11}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \subfloat[\label{fig:10a}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair1.png}}
+  \subfloat[\label{fig:10b}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair2.png}}
+  \subfloat[\label{fig:10c}]{\includegraphics[width=0.3\textwidth]{c1_opt_1024_chair3.png}}
+  \caption{Reconstruction from point clouds of chairs of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples} \label{fig:10}
+\end{figure}
+
   Finally, figure \ref{fig:10} shows the reconstruction of chairs, based on $\mathcal{N}_{opt}$. Only the reconstruction with the configuration $\mathcal{C}_1$ is shown
   since it produces the most interesting results\footnote{See Appendix \ref{optrecon} for some reconstruction with other configurations}. Configurations $\mathcal{C}_2$ through $\mathcal{C}_4$ produce similar results. Though no ground truth data was available during training time, reconstruction
   of the airplane is still possible. It is visible, that only 256 samples are not enough to create a good reconstruction. Starting with 1024 samples, the airplane reconstruction

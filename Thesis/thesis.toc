@@ -19,18 +19,18 @@
 \contentsline {chapter}{\numberline {5}Results}{33}
 \contentsline {section}{\numberline {5.1}Compared methods}{33}
 \contentsline {section}{\numberline {5.2}Result visualization}{33}
-\contentsline {chapter}{\numberline {6}Evaluation}{39}
-\contentsline {section}{\numberline {6.1}Experimental setup}{39}
-\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{40}
-\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{41}
-\contentsline {section}{\numberline {6.2}Experiment results}{41}
-\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{42}
-\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{45}
-\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{46}
-\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{46}
-\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{47}
-\contentsline {chapter}{\numberline {7}Discussion}{49}
-\contentsline {section}{\numberline {7.1}Variety of \emph {points2mesh}}{49}
-\contentsline {section}{\numberline {7.2}Conclusion}{56}
-\contentsline {section}{\numberline {7.3}Outlook}{57}
-\contentsline {chapter}{\numberline {A}Appendix}{59}
+\contentsline {chapter}{\numberline {6}Evaluation}{41}
+\contentsline {section}{\numberline {6.1}Experimental setup}{41}
+\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{42}
+\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{43}
+\contentsline {section}{\numberline {6.2}Experiment results}{43}
+\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{44}
+\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{47}
+\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal {M}_i$}{48}
+\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{48}
+\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{49}
+\contentsline {chapter}{\numberline {7}Discussion}{51}
+\contentsline {section}{\numberline {7.1}Variety of \emph {points2mesh}}{51}
+\contentsline {section}{\numberline {7.2}Conclusion}{59}
+\contentsline {section}{\numberline {7.3}Outlook}{59}
+\contentsline {chapter}{\numberline {A}Appendix}{61}
