@@ -159,7 +159,7 @@ predictor = loadModel()
 
 path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
 counter = 0
-pc = '/graphics/scratch/students/heid/evaluation_set/custom/b7500.txt'
+pc = '/graphics/scratch/students/heid/evaluation_set/custom/bap7500.txt'
 path_pc = pc
 pc_inp = load_pc(path_pc, num_points=PC['num'])
 vertices = predict(predictor, pc_inp, path_pc)
