@@ -208,7 +208,7 @@ if __name__ == '__main__':
     #sess = tf.Session()
     #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/bunny.xyz", delimiter=' ')
     #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/car7500.xyz", delimiter=' ')
-    points = np.loadtxt("/graphics/scratch/students/heid/evaluation_set/custom/propellor.xyz", delimiter=' ')
+    points = np.loadtxt("/graphics/scratch/students/heid/evaluation_set/custom/baptism.xyz", delimiter=' ')
     #points = np.loadtxt("/home/heid/tmp/bunny1.xyz", delimiter=' ')
     #max_val = np.max(points)
     #min_val = np.min(points)
@@ -221,9 +221,9 @@ if __name__ == '__main__':
     p256 = random_downsample(points, 256)
     p1024 = random_downsample(points, 1024)
 
-    np.savetxt('/home/heid/tmp/pr7500.txt', np.transpose(p7500), delimiter=',', fmt='%1.5f')
-    np.savetxt('/home/heid/tmp/pr1024.txt', np.transpose(p1024), delimiter=',',fmt='%1.5f')
-    np.savetxt('/home/heid/tmp/pr256.txt', np.transpose(p256), delimiter=',', fmt='%1.5f')
+    np.savetxt('/home/heid/tmp/bap7500.txt', np.transpose(p7500), delimiter=',', fmt='%1.5f')
+    np.savetxt('/home/heid/tmp/bap1024.txt', np.transpose(p1024), delimiter=',',fmt='%1.5f')
+    np.savetxt('/home/heid/tmp/bap256.txt', np.transpose(p256), delimiter=',', fmt='%1.5f')
     
 
     #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
