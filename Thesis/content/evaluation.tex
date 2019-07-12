@@ -76,8 +76,8 @@
     predicted mesh in comparison to the ground truth mesh. Based on uniformly sampled points on both meshes, completeness describes the distance of points of
     ground truth to the predicted mesh. 
     Stutz et al. \cite{Stutz2017, Stutz2018CVPR} introduce a parallel $C++$ implementation of \emph{meshdistance} which
-    calculates completeness, given a ground truth mesh and a prediction. Distances are calculated by a
-    point-to-triangle method by Christopher Batty\footnote{https://github.com/christopherbatty/SDFGen last visited: \today} (~See chapter \ref{back:ptt})
+    calculates completeness, given a ground truth mesh and a prediction by Christopher Batty\footnote{https://github.com/christopherbatty/SDFGen last visited: \today}. Distances are calculated by
+    the average distance of points from the ground truth to the prediction.
     %\subsubsection*{Chamfer distance $d_C$}
     %Similarly to the \emph{meshdistance} method, to calculate the \emph{chamfer distance}, both meshes have to be uniformly sampled. 
     %In contrast, only the distance to each nearest neighbor from ground truth to reconstruction, as well as from reconstruction 
@@ -167,8 +167,8 @@
     feature (~fron wheel~) at the last step and thus could explain for higher or equal mean values 
     of $d_m$.
 
-    Tables \ref{distance256opt}, \ref{distance1024opt} and \ref{distance7500opt} show the same evaluation of $d_m$ for $\mathcal{N}_{opt}$, though only the mean value
-    is indicated for each configuration. As seen in the reconstructions in figures \ref{10}, \ref{11} and \ref{12}, the results are generally worse. The reconstructions
+    Tables \ref{tab:distance256opt}, \ref{tab:distance1024opt} and \ref{tab:distance7500opt} show the same evaluation of $d_m$ for $\mathcal{N}_{opt}$, though only the mean value
+    is indicated for each configuration. As seen in the reconstructions in figures \ref{fig:12}, \ref{fig:11} and \ref{fig:10}, the results are generally worse. The reconstructions
     have less smooth surfaces, less distinct features shown, and higher values for $d_m$. A complete evaluation for $d_m$ can be found in the appendix \ref{completeopt}
 
 \begin{center}
@@ -242,7 +242,7 @@
     \end{tabular}
 \end{center}
 \begin{center}
-    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500} 
+    \captionof{table}{Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph{meshdistance} metric.Only considering configurations $\mathcal{C}_1$ and $\mathcal{C}_2$. Lower values are better.} \label{tab:distance7500opt} 
     \begin{tabular}{| l  | c | c | c | c  | c | c |}
         \hline
         Object& $\mathcal{C}_1$ & $\mathcal{C}_2$ & $\mathcal{C}_3$ &  $\mathcal{C}_4$ & BPA & $IFM$  \\ \hline
@@ -275,10 +275,8 @@
     which the network has not yet seen. With the same idea of feeding unknown data to the network,
     the next table of evaluated metrics was created. By extending the generalization concept, 
     point cloud samples of objects outside of the trained object categories are fed into the network.
-    For that reason, assuming to work on configuration $\mathcal{C}_1$, it has been trained on four different
-    object category collections (~See section \ref{sec:categ}~).
-    Every trained instance of $\mathcal{C}_1$, now is fed one hundred point cloud samples 
-    of \emph{bathtub} and \emph{person}, evaluating every distance metric. Even though, $\mathcal{C}_1$ has never seen any samples of these object categories.
+    Configurations $\mathcal{C}_{1,2,3,4}$, now are fed one hundred point cloud samples 
+    of \emph{bathtub} and \emph{person}, evaluating the distance metric. Even though, none of these configurations have seen any samples of these object categories.
 
 
 \begin{center}

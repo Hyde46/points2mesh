@@ -12,7 +12,7 @@
   Typically, objects are recorded in a way, which results in unstructured, three-dimensional point
   cloud data, for example, with the help of range scanners or structured light.
 
-  Though obtaining information about samples of an object already provides a way to process a three-dimensional object;
+  Though, obtaining information about samples of an object already provides a way to process a three-dimensional object;
   still, the preferred way to operate is in the form of surface information like tri-or quad-meshes.
   Transforming such point cloud data into meshes is a prevalent problem in the context of computer vision. Thus, numerous
   methods have been developed, aiming to solve that problem\cite{817351,Jakob2015Instant}.
@@ -26,11 +26,11 @@
 
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{intro_img.png}
+    \includegraphics[width=0.7\textwidth]{intro_img.png}
     \caption{High-level depiction of \emph{points2mesh} neural network, transforming scanned point cloud data to watertight meshes.} \label{fig:intro}
   \end{figure}
 
-  In this work, a novel convolutional neural network configuration is proposed which computes watertight tri-meshes from unstructured point cloud data.
+  In this work, a novel convolutional neural network configuration is proposed which computes watertight tri-meshes from unstructured point cloud data (~See figure \ref{fig:intro}~).
   By deforming an initial base-mesh based on learned tension feature vectors from the data, the network can reliably generate approximations
   even with low-resolution or noisy data. Additionally, a supervised and an unsupervised version of the training process is proposed and evaluated. 
   By providing multi-class training, both versions of the network learn the general reconstruction of objects, even allowing for out of class reconstruction.

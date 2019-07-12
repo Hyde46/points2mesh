@@ -3,6 +3,8 @@
 \AC@reset@newl@bel
 \bibstyle{alpha}
 \providecommand \oddpage@label [2]{}
+\citation{wang2018pixel2mesh}
+\citation{wang2018pixel2mesh}
 \citation{1087032}
 \citation{10.1007978-981-13-0224-4_40}
 \citation{817351}
@@ -18,20 +20,20 @@
 \citation{Groh2017}
 \citation{vieira2014gumbel}
 \citation{DBLP:journals/corr/KipfW16}
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}Background}{17}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Background}{15}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{sec:background}{{2}{17}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Related Work}{19}}
+\newlabel{sec:background}{{2}{15}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Related Work}{17}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{sec:relatedwork}{{3}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Traditional approaches}{19}}
-\newlabel{classic_approaches}{{3.1}{19}}
+\newlabel{sec:relatedwork}{{3}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Traditional approaches}{17}}
+\newlabel{classic_approaches}{{3.1}{17}}
 \citation{Lorensen:1987:MCH:37402.37422}
 \citation{817351}
 \citation{Amenta:2001:PC:376957.376986}
@@ -50,19 +52,19 @@
 \citation{sunrgb}
 \citation{objectnn-shrec17}
 \citation{dai2017scannet}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Reconstruction methods}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Machine Learning based approaches}{20}}
-\newlabel{ml_approaches}{{3.2}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Reconstruction methods}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Machine Learning based approaches}{18}}
+\newlabel{ml_approaches}{{3.2}{18}}
 \citation{Maturana2015VoxNet}
 \citation{inproceedings}
 \citation{SZB17a}
 \citation{articlefusionnet}
 \citation{DBLP:journals/corr/QiSNDYG16}
 \citation{DBLP:journals/corr/BrockLRW16}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}3D datasets}{21}}
-\newlabel{3ddatasets}{{3.2.1}{21}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Learning in 3D}{21}}
-\newlabel{learn3d}{{3.2.2}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}3D datasets}{19}}
+\newlabel{3ddatasets}{{3.2.1}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Learning in 3D}{19}}
+\newlabel{learn3d}{{3.2.2}{19}}
 \citation{DBLP:journals/corr/QiSMG16}
 \citation{qi2017pointnetplusplus}
 \citation{DBLP:journals/corr/KlokovL17}
@@ -85,353 +87,494 @@
 \citation{wang2018pixel2mesh}
 \citation{mvcTulsiani18}
 \citation{DBLP:journals/corr/abs-1804-06032}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Learning 3D reconstruction}{22}}
-\newlabel{transform}{{3.2.3}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Learning 3D reconstruction}{20}}
+\newlabel{transform}{{3.2.3}{20}}
 \citation{wang2018pixel2mesh}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Graph-based surface reconstruction network}{23}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Graph-based surface reconstruction network}{21}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{sec:methods}{{4}{23}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Neural network structure}{23}}
-\newlabel{networkconfig}{{4.1}{23}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}General system overview}{23}}
-\newlabel{generalsystem}{{4.1.1}{23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces General workflow of \emph  {points2mesh} network. $\mathcal  {N}_{recon}$ takes a pointcloud $\mathcal  {PC}$ and an initial mesh $\mathcal  {M}_i$ as input, deforms $\mathcal  {M}_i$ based on important features $v_i$ in $\mathcal  {PC}$ to compute an approximate mesh $\mathaccentV {hat}05E{\mathcal  {M}}$\relax }}{24}}
-\newlabel{fig:generalconfig}{{4.1}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Traditional way to train neural network. Ground truth data and input are separated. Input may be infered from ground truth data.\relax }}{25}}
-\newlabel{fig:training1}{{4.2}{25}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Network training process}{25}}
-\newlabel{trainings}{{4.1.2}{25}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Flexconv feature extraction}{25}}
-\newlabel{fconv}{{4.1.3}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Alternative approach to train $\mathcal  {N}_{opt}$. Input and ground truth data are the same in this example.\relax }}{26}}
-\newlabel{fig:training2}{{4.3}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces $\mathcal  {N}_{flex}$ with point cloud $\mathcal  {PC}$ as input, computing features $v^j$ in three blocks of flexconv layers and a trailing flexpool layer After each convolutional block, weighted random sampling reduces the number of samples of $\mathcal  {PC}$ by a factor of four. Feature vectors $v^j$ are concatenated with their respective positions $x^j$ in a vector $\textbf  {v}$.\relax }}{26}}
-\newlabel{fig:flexconv}{{4.4}{26}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces $\mathcal  {N}_{gcn}$ with initial mesh $\mathcal  {M}_i$ as input. Feature vector $\textbf  {v}$ is projected onto the mesh $\mathcal  {M}_i$ and deformed according to it. Then an unpooling layer increases the number of vertices in $\mathcal  {M}_i$. Projecting $\textbf  {v}$ onto the graph and deforming it afterward is repeated two more times.\relax }}{27}}
-\newlabel{fig:gcn}{{4.5}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}GCN mesh deformation}{27}}
-\newlabel{gcnconv}{{4.1.4}{27}}
+\newlabel{sec:methods}{{4}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Neural network structure}{21}}
+\newlabel{networkconfig}{{4.1}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}General system overview}{21}}
+\newlabel{generalsystem}{{4.1.1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces General workflow of \emph  {points2mesh} network. $\mathcal  {N}_{recon}$ takes a pointcloud $\mathcal  {PC}$ and an initial mesh $\mathcal  {M}_i$ as input, deforms $\mathcal  {M}_i$ based on important features $v_i$ in $\mathcal  {PC}$ to compute an approximate mesh $\mathaccentV {hat}05E{\mathcal  {M}}$\relax }}{22}}
+\newlabel{fig:generalconfig}{{4.1}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Traditional way to train neural network. Ground truth data and input are separated. Input may be infered from ground truth data.\relax }}{23}}
+\newlabel{fig:training1}{{4.2}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Network training process}{23}}
+\newlabel{trainings}{{4.1.2}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Flexconv feature extraction}{23}}
+\newlabel{fconv}{{4.1.3}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Alternative approach to train $\mathcal  {N}_{opt}$. Input and ground truth data are the same in this example.\relax }}{24}}
+\newlabel{fig:training2}{{4.3}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces $\mathcal  {N}_{flex}$ with point cloud $\mathcal  {PC}$ as input, computing features $v^j$ in three blocks of flexconv layers and a trailing flexpool layer After each convolutional block, weighted random sampling reduces the number of samples of $\mathcal  {PC}$ by a factor of four. Feature vectors $v^j$ are concatenated with their respective positions $x^j$ in a vector $\textbf  {v}$.\relax }}{24}}
+\newlabel{fig:flexconv}{{4.4}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces $\mathcal  {N}_{gcn}$ with initial mesh $\mathcal  {M}_i$ as input. Feature vector $\textbf  {v}$ is projected onto the mesh $\mathcal  {M}_i$ and deformed according to it. Then an unpooling layer increases the number of vertices in $\mathcal  {M}_i$. Projecting $\textbf  {v}$ onto the graph and deforming it afterward is repeated two more times.\relax }}{25}}
+\newlabel{fig:gcn}{{4.5}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}GCN mesh deformation}{25}}
+\newlabel{gcnconv}{{4.1.4}{25}}
 \citation{wang2018pixel2mesh}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces The \emph  {unpooling} layer of $\mathcal  {N}_{gcn}$ increases the number of vertices by introducing a new node between each neighboring node (\nobreakspace  {}white\nobreakspace  {}) in $\mathcal  {M}_i$. A new node (\nobreakspace  {}green\nobreakspace  {}) is added precisely in the middle of each old edge. Finally, the new nodes are connected, while also updating the neighborhood of the old nodes.\relax }}{28}}
-\newlabel{fig:unpool}{{4.6}{28}}
-\newlabel{gcnconv}{{4.1.4}{28}}
-\newlabel{form:align}{{4.2}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces The \emph  {unpooling} layer of $\mathcal  {N}_{gcn}$ increases the number of vertices by introducing a new node between each neighboring node (\nobreakspace  {}white\nobreakspace  {}) in $\mathcal  {M}_i$. A new node (\nobreakspace  {}green\nobreakspace  {}) is added precisely in the middle of each old edge. Finally, the new nodes are connected, while also updating the neighborhood of the old nodes.\relax }}{26}}
+\newlabel{fig:unpool}{{4.6}{26}}
+\newlabel{gcnconv}{{4.1.4}{26}}
+\newlabel{form:align}{{4.2}{26}}
 \citation{wang2018pixel2mesh}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Initial ellipsoid in relation to input pointcloud $\mathcal  {PC}$ before aligning on the left. After \emph  {align graph} layer on the right. Thus, eliminating positional bias and letting the mesh shrink during deformation, rather than letting it grow.\relax }}{29}}
-\newlabel{fig:align}{{4.7}{29}}
-\newlabel{featureproj}{{4.1.4}{29}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces \emph  {graph projection} layer, assigning feature vectors $\textbf  {v}^j$ to nodes in $\mathcal  {M}_i$ based on the distance to their nearest neighbor in $\mathcal  {PC}$.\relax }}{30}}
-\newlabel{fig:proj}{{4.8}{30}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.5}Loss functions}{30}}
-\newlabel{lossfuncs}{{4.1.5}{30}}
-\newlabel{form:edge}{{4.4}{31}}
-\newlabel{form:cos}{{4.5}{31}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.6}Network configurations $\mathcal  {C}$}{31}}
-\newlabel{configurations}{{4.1.6}{31}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces Baseconfiguration $\mathcal  {C}_1$ of $\mathcal  {N}_{recon}$ showing flex conv feature extraction $\mathcal  {N}_{flex}$ in the upper half, and graph deformation network $\mathcal  {N}_{gcn}$ in the lower part. The complete network $\mathcal  {N}_{recon}$ takes a point cloud and an initial mesh as input, approximating the underlying surface information of the point cloud with $\mathaccentV {hat}05E{\mathcal  {M}_i}$ after deforming the mesh, based on features learned in the point cloud\relax }}{32}}
-\newlabel{fig:c1}{{4.9}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces Configuration $\mathcal  {C}_2$ of $\mathcal  {N}_{recon}$, showing its difference in $\mathcal  {N}_{gcn}$ to configuration $\mathcal  {C}_1$. $\mathcal  {C}_2$ introduces an extra \emph  {projection}, \emph  {unpooling} layer and a \emph  {graph convolution} block. Thus, allowing for a higher detailed approximate mesh $\mathaccentV {hat}05E{\mathcal  {M}}$ \relax }}{32}}
-\newlabel{fig:c2}{{4.10}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Initial ellipsoid in relation to input pointcloud $\mathcal  {PC}$ before aligning on the left. After \emph  {align graph} layer on the right. Thus, eliminating positional bias and letting the mesh shrink during deformation, rather than letting it grow.\relax }}{27}}
+\newlabel{fig:align}{{4.7}{27}}
+\newlabel{featureproj}{{4.1.4}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces \emph  {graph projection} layer, assigning feature vectors $\textbf  {v}^j$ to nodes in $\mathcal  {M}_i$ based on the distance to their nearest neighbor in $\mathcal  {PC}$.\relax }}{28}}
+\newlabel{fig:proj}{{4.8}{28}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.5}Loss functions}{28}}
+\newlabel{lossfuncs}{{4.1.5}{28}}
+\newlabel{form:edge}{{4.4}{29}}
+\newlabel{form:cos}{{4.5}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.6}Network configurations $\mathcal  {C}$}{29}}
+\newlabel{configurations}{{4.1.6}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces Baseconfiguration $\mathcal  {C}_1$ of $\mathcal  {N}_{recon}$ showing flex conv feature extraction $\mathcal  {N}_{flex}$ in the upper half, and graph deformation network $\mathcal  {N}_{gcn}$ in the lower part. The complete network $\mathcal  {N}_{recon}$ takes a point cloud and an initial mesh as input, approximating the underlying surface information of the point cloud with $\mathaccentV {hat}05E{\mathcal  {M}_i}$ after deforming the mesh, based on features learned in the point cloud\relax }}{30}}
+\newlabel{fig:c1}{{4.9}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces Configuration $\mathcal  {C}_2$ of $\mathcal  {N}_{recon}$, showing its difference in $\mathcal  {N}_{gcn}$ to configuration $\mathcal  {C}_1$. $\mathcal  {C}_2$ introduces an extra \emph  {projection}, \emph  {unpooling} layer and a \emph  {graph convolution} block. Thus, allowing for a higher detailed approximate mesh $\mathaccentV {hat}05E{\mathcal  {M}}$ \relax }}{30}}
+\newlabel{fig:c2}{{4.10}{30}}
 \citation{qi2017pointnetplusplus}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.11}{\ignorespaces Showing only $\mathcal  {N}_{gcn}$ of $\mathcal  {N}_{recon}$ with $\mathcal  {N}_{flex}$ being the same as in configuration $\mathcal  {C}_{1-3}$. In contrast to $\mathcal  {C}_1$, Configuration $\mathcal  {C}_4$ reduces the number of used layers for deforming the mesh in $\mathcal  {N}_{gcn}$.\relax }}{33}}
-\newlabel{fig:c4}{{4.11}{33}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.7}Dataset}{33}}
-\newlabel{dataset}{{4.1.7}{33}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.11}{\ignorespaces Showing only $\mathcal  {N}_{gcn}$ of $\mathcal  {N}_{recon}$ with $\mathcal  {N}_{flex}$ being the same as in configuration $\mathcal  {C}_{1-3}$. In contrast to $\mathcal  {C}_1$, Configuration $\mathcal  {C}_4$ reduces the number of used layers for deforming the mesh in $\mathcal  {N}_{gcn}$.\relax }}{31}}
+\newlabel{fig:c4}{{4.11}{31}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.7}Dataset}{31}}
+\newlabel{dataset}{{4.1.7}{31}}
 \citation{817351}
 \citation{Jakob2015Instant}
 \citation{Liao2018CVPR}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Results}{35}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Results}{33}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:results}{{5}{35}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Compared methods}{35}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Result visualization}{35}}
-\newlabel{fig:1a}{{5.1a}{36}}
+\newlabel{chap:results}{{5}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Compared methods}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Result visualization}{33}}
+\newlabel{fig:1a}{{5.1a}{34}}
 \newlabel{sub@fig:1a}{{(a)}{a}}
-\newlabel{fig:1b}{{5.1b}{36}}
+\newlabel{fig:1b}{{5.1b}{34}}
 \newlabel{sub@fig:1b}{{(b)}{b}}
-\newlabel{fig:1c}{{5.1c}{36}}
+\newlabel{fig:1c}{{5.1c}{34}}
 \newlabel{sub@fig:1c}{{(c)}{c}}
-\newlabel{fig:1d}{{5.1d}{36}}
+\newlabel{fig:1d}{{5.1d}{34}}
 \newlabel{sub@fig:1d}{{(d)}{d}}
-\newlabel{fig:1e}{{5.1e}{36}}
+\newlabel{fig:1e}{{5.1e}{34}}
 \newlabel{sub@fig:1e}{{(e)}{e}}
-\newlabel{fig:1f}{{5.1f}{36}}
+\newlabel{fig:1f}{{5.1f}{34}}
 \newlabel{sub@fig:1f}{{(f)}{f}}
-\newlabel{fig:1g}{{5.1g}{36}}
+\newlabel{fig:1g}{{5.1g}{34}}
 \newlabel{sub@fig:1g}{{(g)}{g}}
-\newlabel{fig:1h}{{5.1h}{36}}
+\newlabel{fig:1h}{{5.1h}{34}}
 \newlabel{sub@fig:1h}{{(h)}{h}}
-\newlabel{fig:1i}{{5.1i}{36}}
+\newlabel{fig:1i}{{5.1i}{34}}
 \newlabel{sub@fig:1i}{{(i)}{i}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Reconstruction of an airplane from point cloud with 1024 samples.\relax }}{36}}
-\newlabel{fig:1}{{5.1}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {Reconstrucion with \emph {BPA}.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {Reconstruction with \emph {IFM}.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(i)}{\ignorespaces {Reconstruction with \emph {DMC}.}}}{36}}
-\newlabel{fig:2a}{{5.2a}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Reconstruction of an airplane from point cloud with 1024 samples.\relax }}{34}}
+\newlabel{fig:1}{{5.1}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {Reconstrucion with \emph {BPA}.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {Reconstruction with \emph {IFM}.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(i)}{\ignorespaces {Reconstruction with \emph {DMC}.}}}{34}}
+\newlabel{fig:2a}{{5.2a}{34}}
 \newlabel{sub@fig:2a}{{(a)}{a}}
-\newlabel{fig:2b}{{5.2b}{36}}
+\newlabel{fig:2b}{{5.2b}{34}}
 \newlabel{sub@fig:2b}{{(b)}{b}}
-\newlabel{fig:2c}{{5.2c}{36}}
+\newlabel{fig:2c}{{5.2c}{34}}
 \newlabel{sub@fig:2c}{{(c)}{c}}
-\newlabel{fig:2d}{{5.2d}{36}}
+\newlabel{fig:2d}{{5.2d}{34}}
 \newlabel{sub@fig:2d}{{(d)}{d}}
-\newlabel{fig:2epro}{{5.2e}{36}}
+\newlabel{fig:2epro}{{5.2e}{34}}
 \newlabel{sub@fig:2epro}{{(e)}{e}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Reconstruction of a chair from point cloud with 1024 samples.\relax }}{36}}
-\newlabel{fig:2}{{5.2}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{36}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{36}}
-\newlabel{fig:3a}{{5.3a}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Reconstruction of a chair from point cloud with 1024 samples.\relax }}{34}}
+\newlabel{fig:2}{{5.2}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{34}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{34}}
+\newlabel{fig:3a}{{5.3a}{35}}
 \newlabel{sub@fig:3a}{{(a)}{a}}
-\newlabel{fig:3b}{{5.3b}{37}}
+\newlabel{fig:3b}{{5.3b}{35}}
 \newlabel{sub@fig:3b}{{(b)}{b}}
-\newlabel{fig:3c}{{5.3c}{37}}
+\newlabel{fig:3c}{{5.3c}{35}}
 \newlabel{sub@fig:3c}{{(c)}{c}}
-\newlabel{fig:3d}{{5.3d}{37}}
+\newlabel{fig:3d}{{5.3d}{35}}
 \newlabel{sub@fig:3d}{{(d)}{d}}
-\newlabel{fig:3e}{{5.3e}{37}}
+\newlabel{fig:3e}{{5.3e}{35}}
 \newlabel{sub@fig:3e}{{(e)}{e}}
-\newlabel{fig:3f}{{5.3f}{37}}
+\newlabel{fig:3f}{{5.3f}{35}}
 \newlabel{sub@fig:3f}{{(f)}{f}}
-\newlabel{fig:3g}{{5.3g}{37}}
+\newlabel{fig:3g}{{5.3g}{35}}
 \newlabel{sub@fig:3g}{{(g)}{g}}
-\newlabel{fig:3h}{{5.3h}{37}}
+\newlabel{fig:3h}{{5.3h}{35}}
 \newlabel{sub@fig:3h}{{(h)}{h}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Reconstruction of a guitar from point cloud with 1024 samples.\relax }}{37}}
-\newlabel{fig:3}{{5.3}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {\emph {IFM} guitar reconstruction.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {\emph {DMC} guitar reconstruction.}}}{37}}
-\newlabel{fig:4a}{{5.4a}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Reconstruction of a guitar from point cloud with 1024 samples.\relax }}{35}}
+\newlabel{fig:3}{{5.3}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {\emph {IFM} guitar reconstruction.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(h)}{\ignorespaces {\emph {DMC} guitar reconstruction.}}}{35}}
+\newlabel{fig:4a}{{5.4a}{35}}
 \newlabel{sub@fig:4a}{{(a)}{a}}
-\newlabel{fig:4b}{{5.4b}{37}}
+\newlabel{fig:4b}{{5.4b}{35}}
 \newlabel{sub@fig:4b}{{(b)}{b}}
-\newlabel{fig:4c}{{5.4c}{37}}
+\newlabel{fig:4c}{{5.4c}{35}}
 \newlabel{sub@fig:4c}{{(c)}{c}}
-\newlabel{fig:4d}{{5.4d}{37}}
+\newlabel{fig:4d}{{5.4d}{35}}
 \newlabel{sub@fig:4d}{{(d)}{d}}
-\newlabel{fig:4e}{{5.4e}{37}}
+\newlabel{fig:4e}{{5.4e}{35}}
 \newlabel{sub@fig:4e}{{(e)}{e}}
-\newlabel{fig:4f}{{5.4f}{37}}
+\newlabel{fig:4f}{{5.4f}{35}}
 \newlabel{sub@fig:4f}{{(f)}{f}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Reconstruction of a bowl from point cloud with 1024 samples.\relax }}{37}}
-\newlabel{fig:4}{{5.4}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Reconstruction of a bowl from point cloud with 1024 samples.\relax }}{35}}
+\newlabel{fig:4}{{5.4}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Reconstruction with \emph {DMC}}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{35}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{35}}
+\newlabel{fig:5a}{{5.5a}{37}}
+\newlabel{sub@fig:5a}{{(a)}{a}}
+\newlabel{fig:5b}{{5.5b}{37}}
+\newlabel{sub@fig:5b}{{(b)}{b}}
+\newlabel{fig:5b}{{5.5c}{37}}
+\newlabel{sub@fig:5b}{{(c)}{c}}
+\newlabel{fig:5c}{{5.5d}{37}}
+\newlabel{sub@fig:5c}{{(d)}{d}}
+\newlabel{fig:5d}{{5.5e}{37}}
+\newlabel{sub@fig:5d}{{(e)}{e}}
+\newlabel{fig:5e}{{5.5f}{37}}
+\newlabel{sub@fig:5e}{{(f)}{f}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Reconstruction of chairs from point cloud with 256 samples.\relax }}{37}}
+\newlabel{fig:5}{{5.5}{37}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Reconstruction with \emph {DMC}}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_3$.}}}{37}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{37}}
-\newlabel{fig:ca}{{5.5a}{38}}
-\newlabel{sub@fig:ca}{{(a)}{a}}
-\newlabel{fig:cb}{{5.5b}{38}}
-\newlabel{sub@fig:cb}{{(b)}{b}}
-\newlabel{fig:cc}{{5.5c}{38}}
-\newlabel{sub@fig:cc}{{(c)}{c}}
-\newlabel{fig:da}{{5.5d}{38}}
-\newlabel{sub@fig:da}{{(d)}{d}}
-\newlabel{fig:db}{{5.5e}{38}}
-\newlabel{sub@fig:db}{{(e)}{e}}
-\newlabel{fig:dc}{{5.5f}{38}}
-\newlabel{sub@fig:dc}{{(f)}{f}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Reconstruction from point cloud of objects unrelated to ModelNet40. Top row depicts a 3D scanned goblet. Bottom row depicts a 3D scanned toyairplane. Both objects offered scanned point cloud which has been downsampled to fit for \emph  {points2mesh}\relax }}{38}}
-\newlabel{fig:generalgeneral}{{5.5}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Input point cloud of stone goblet.}}}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Texturized reconstruction with photogammetry.}}}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Input point cloud toy propellor plane.}}}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Texturized reconstruction with photogammetry.}}}{38}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Ground truth mesh.}}}{37}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{37}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{37}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{37}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Configuration $\mathcal {C}_2$.}}}{37}}
+\newlabel{fig:51a}{{5.6a}{38}}
+\newlabel{sub@fig:51a}{{(a)}{a}}
+\newlabel{fig:51b}{{5.6b}{38}}
+\newlabel{sub@fig:51b}{{(b)}{b}}
+\newlabel{fig:51c}{{5.6c}{38}}
+\newlabel{sub@fig:51c}{{(c)}{c}}
+\newlabel{fig:51d}{{5.6d}{38}}
+\newlabel{sub@fig:51d}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Reconstruction of a car from point cloud with 256 samples.\relax }}{38}}
+\newlabel{fig:51}{{5.6}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Reconstruction of car with \emph {DMC},.}}}{38}}
+\newlabel{fig:52a}{{5.7a}{38}}
+\newlabel{sub@fig:52a}{{(a)}{a}}
+\newlabel{fig:52b}{{5.7b}{38}}
+\newlabel{sub@fig:52b}{{(b)}{b}}
+\newlabel{fig:52c}{{5.7c}{38}}
+\newlabel{sub@fig:52c}{{(c)}{c}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Reconstruction of a toilet from point cloud with 256 samples.\relax }}{38}}
+\newlabel{fig:52}{{5.7}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{38}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with \emph {BPA}}}}{38}}
+\newlabel{fig:6a}{{5.8a}{39}}
+\newlabel{sub@fig:6a}{{(a)}{a}}
+\newlabel{fig:6b}{{5.8b}{39}}
+\newlabel{sub@fig:6b}{{(b)}{b}}
+\newlabel{fig:6c}{{5.8c}{39}}
+\newlabel{sub@fig:6c}{{(c)}{c}}
+\newlabel{fig:6d}{{5.8d}{39}}
+\newlabel{sub@fig:6d}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Reconstruction of a chair from point cloud with 7500 samples.\relax }}{39}}
+\newlabel{fig:6}{{5.8}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{39}}
+\newlabel{fig:61a}{{5.9a}{39}}
+\newlabel{sub@fig:61a}{{(a)}{a}}
+\newlabel{fig:6d}{{5.9b}{39}}
+\newlabel{sub@fig:6d}{{(b)}{b}}
+\newlabel{fig:6e}{{5.9c}{39}}
+\newlabel{sub@fig:6e}{{(c)}{c}}
+\newlabel{fig:6f}{{5.9d}{39}}
+\newlabel{sub@fig:6f}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Reconstruction of an airplane from point cloud with 7500 samples.\relax }}{39}}
+\newlabel{fig:61}{{5.9}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Samples pointc loud from ground truth mesh.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Configuration $\mathcal {C}_1$.}}}{39}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Configuration $\mathcal {C}_4$.}}}{39}}
+\newlabel{fig:7a}{{5.10a}{40}}
+\newlabel{sub@fig:7a}{{(a)}{a}}
+\newlabel{fig:7b}{{5.10b}{40}}
+\newlabel{sub@fig:7b}{{(b)}{b}}
+\newlabel{fig:7c}{{5.10c}{40}}
+\newlabel{sub@fig:7c}{{(c)}{c}}
+\newlabel{fig:7d}{{5.10d}{40}}
+\newlabel{sub@fig:7d}{{(d)}{d}}
+\newlabel{fig:7e}{{5.10e}{40}}
+\newlabel{sub@fig:7e}{{(e)}{e}}
+\newlabel{fig:7f}{{5.10f}{40}}
+\newlabel{sub@fig:7f}{{(f)}{f}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Reconstruction of an airplane with different sample sizes, but the same configuration $\mathcal  {C}_1$.\relax }}{40}}
+\newlabel{fig:7}{{5.10}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {$\mathcal {C}_1$ with sample size 256.}}}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {$\mathcal {C}_1$ with sample size 1024.}}}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {$\mathcal {C}_1$ with sample size 7500.}}}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {\emph {BPA} with sample size 7500.}}}{40}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {\emph {IFM} with sample size 7500.}}}{40}}
+\newlabel{fig:81a}{{5.11a}{41}}
+\newlabel{sub@fig:81a}{{(a)}{a}}
+\newlabel{fig:81b}{{5.11b}{41}}
+\newlabel{sub@fig:81b}{{(b)}{b}}
+\newlabel{fig:81c}{{5.11c}{41}}
+\newlabel{sub@fig:81c}{{(c)}{c}}
+\newlabel{fig:81d}{{5.11d}{41}}
+\newlabel{sub@fig:81d}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Reconstruction of airplanes with $\mathcal  {C}_1$ from noisy point cloud with noise factor of $0.01$. \relax }}{41}}
+\newlabel{fig:81}{{5.11}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Noisy airplane 1.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Noisy airplane 2.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Noisy airplane 3.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Noisy airplane 4.}}}{41}}
+\newlabel{fig:8a}{{5.12a}{41}}
+\newlabel{sub@fig:8a}{{(a)}{a}}
+\newlabel{fig:8b}{{5.12b}{41}}
+\newlabel{sub@fig:8b}{{(b)}{b}}
+\newlabel{fig:8c}{{5.12c}{41}}
+\newlabel{sub@fig:8c}{{(c)}{c}}
+\newlabel{fig:8d}{{5.12d}{41}}
+\newlabel{sub@fig:8d}{{(d)}{d}}
+\newlabel{fig:8e}{{5.12e}{41}}
+\newlabel{sub@fig:8e}{{(e)}{e}}
+\newlabel{fig:8f}{{5.12f}{41}}
+\newlabel{sub@fig:8f}{{(f)}{f}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.12}{\ignorespaces Reconstruction from point clouds of untrained category \emph  {person}.\relax }}{41}}
+\newlabel{fig:8}{{5.12}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ground truth mesh.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {$\mathcal {C}_1$.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {$\mathcal {C}_2$.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Sampled point cloud from ground truth mesh.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {$\mathcal {C}_3$.}}}{41}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {$\mathcal {C}_4$.}}}{41}}
 \citation{Ranellucci2011}
-\newlabel{fig:ba}{{5.6a}{39}}
+\newlabel{fig:9a}{{5.13a}{42}}
+\newlabel{sub@fig:9a}{{(a)}{a}}
+\newlabel{fig:9b}{{5.13b}{42}}
+\newlabel{sub@fig:9b}{{(b)}{b}}
+\newlabel{fig:9c}{{5.13c}{42}}
+\newlabel{sub@fig:9c}{{(c)}{c}}
+\newlabel{fig:9d}{{5.13d}{42}}
+\newlabel{sub@fig:9d}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.13}{\ignorespaces Reconstruction from point clouds of untrained category \emph  {bathutb}.\relax }}{42}}
+\newlabel{fig:9}{{5.13}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {$\mathcal {C}_1$.}}}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {$\mathcal {C}_2$.}}}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {$\mathcal {C}_3$.}}}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {$\mathcal {C}_4$.}}}{42}}
+\newlabel{fig:ca}{{5.14a}{43}}
+\newlabel{sub@fig:ca}{{(a)}{a}}
+\newlabel{fig:cb}{{5.14b}{43}}
+\newlabel{sub@fig:cb}{{(b)}{b}}
+\newlabel{fig:cc}{{5.14c}{43}}
+\newlabel{sub@fig:cc}{{(c)}{c}}
+\newlabel{fig:da}{{5.14d}{43}}
+\newlabel{sub@fig:da}{{(d)}{d}}
+\newlabel{fig:db}{{5.14e}{43}}
+\newlabel{sub@fig:db}{{(e)}{e}}
+\newlabel{fig:dc}{{5.14f}{43}}
+\newlabel{sub@fig:dc}{{(f)}{f}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.14}{\ignorespaces Reconstruction from point cloud of objects unrelated to ModelNet40. Top row depicts a 3D scanned goblet. Bottom row depicts a 3D scanned toyairplane. Both objects offered scanned point cloud which has been downsampled to fit for \emph  {points2mesh}\relax }}{43}}
+\newlabel{fig:generalgeneral}{{5.14}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Input point cloud of stone goblet.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Texturized reconstruction with photogammetry.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Input point cloud toy propellor plane.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Texturized reconstruction with photogammetry.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{43}}
+\newlabel{fig:ba}{{5.15a}{43}}
 \newlabel{sub@fig:ba}{{(a)}{a}}
-\newlabel{fig:bb}{{5.6b}{39}}
+\newlabel{fig:bb}{{5.15b}{43}}
 \newlabel{sub@fig:bb}{{(b)}{b}}
-\newlabel{fig:bc}{{5.6c}{39}}
+\newlabel{fig:bc}{{5.15c}{43}}
 \newlabel{sub@fig:bc}{{(c)}{c}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Reconstruction from point cloud of an object unrelated to ModelNet40.\relax }}{39}}
-\newlabel{fig:bunny}{{5.6}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Point cloud of stanford bunny before downsampling.}}}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$ with 1024 samples.}}}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{39}}
-\newlabel{fig:12a}{{5.7a}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.15}{\ignorespaces Reconstruction from point cloud of an object unrelated to ModelNet40.\relax }}{43}}
+\newlabel{fig:bunny}{{5.15}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Point cloud of stanford bunny before downsampling.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$ with 1024 samples.}}}{43}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with $\mathcal {C}_2$ with 1024 samples.}}}{43}}
+\newlabel{fig:12a}{{5.16a}{44}}
 \newlabel{sub@fig:12a}{{(a)}{a}}
-\newlabel{fig:12b}{{5.7b}{39}}
+\newlabel{fig:12b}{{5.16b}{44}}
 \newlabel{sub@fig:12b}{{(b)}{b}}
-\newlabel{fig:12c}{{5.7c}{39}}
+\newlabel{fig:12c}{{5.16c}{44}}
 \newlabel{sub@fig:12c}{{(c)}{c}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Reconstruction from point clouds of airplanes of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud\relax }}{39}}
-\newlabel{fig:10}{{5.7}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with 256 samples}}}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with 1024 samples}}}{39}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with 7500 samples}}}{39}}
-\newlabel{fig:11a}{{5.8a}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.16}{\ignorespaces Reconstruction from point clouds of airplanes of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud\relax }}{44}}
+\newlabel{fig:10}{{5.16}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with 256 samples}}}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with 1024 samples}}}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Reconstruction with 7500 samples}}}{44}}
+\newlabel{fig:11a}{{5.17a}{44}}
 \newlabel{sub@fig:11a}{{(a)}{a}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Reconstruction from point clouds of guitar of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples\relax }}{40}}
-\newlabel{fig:11}{{5.8}{40}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{40}}
-\newlabel{fig:10a}{{5.9a}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.17}{\ignorespaces Reconstruction from point clouds of guitar of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples\relax }}{44}}
+\newlabel{fig:11}{{5.17}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{44}}
+\newlabel{fig:10a}{{5.18a}{44}}
 \newlabel{sub@fig:10a}{{(a)}{a}}
-\newlabel{fig:10b}{{5.9b}{40}}
+\newlabel{fig:10b}{{5.18b}{44}}
 \newlabel{sub@fig:10b}{{(b)}{b}}
-\newlabel{fig:10c}{{5.9c}{40}}
+\newlabel{fig:10c}{{5.18c}{44}}
 \newlabel{sub@fig:10c}{{(c)}{c}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Reconstruction from point clouds of chairs of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples\relax }}{40}}
-\newlabel{fig:10}{{5.9}{40}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{40}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {}}}{40}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {}}}{40}}
-\newlabel{fig:13a}{{5.10a}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.18}{\ignorespaces Reconstruction from point clouds of chairs of $\mathcal  {N}_{opt}$. Input point cloud is equal to ground truth point cloud with 1024 samples\relax }}{44}}
+\newlabel{fig:10}{{5.18}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {}}}{44}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {}}}{44}}
+\newlabel{fig:13a}{{5.19a}{45}}
 \newlabel{sub@fig:13a}{{(a)}{a}}
-\newlabel{fig:13b}{{5.10b}{41}}
+\newlabel{fig:13b}{{5.19b}{45}}
 \newlabel{sub@fig:13b}{{(b)}{b}}
-\newlabel{fig:13c}{{5.10c}{41}}
+\newlabel{fig:13c}{{5.19c}{45}}
 \newlabel{sub@fig:13c}{{(c)}{c}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces 3D printed reconstruction of guitar, car and toilet of $\mathcal  {N}_{recon}$ and $\mathcal  {C}_1$ with 1024 samples.\relax }}{41}}
-\newlabel{fig:13}{{5.10}{41}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {3D printed guitar reconstructed with $\mathcal {N}_{recon}$}}}{41}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {3D printed car reconstructed with $\mathcal {N}_{recon}$}}}{41}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {3D printed toilet reconstructed with $\mathcal {N}_{recon}$}}}{41}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.19}{\ignorespaces 3D printed reconstruction of guitar, car and toilet of $\mathcal  {N}_{recon}$ and $\mathcal  {C}_1$ with 1024 samples.\relax }}{45}}
+\newlabel{fig:13}{{5.19}{45}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {3D printed guitar reconstructed with $\mathcal {N}_{recon}$}}}{45}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {3D printed car reconstructed with $\mathcal {N}_{recon}$}}}{45}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {3D printed toilet reconstructed with $\mathcal {N}_{recon}$}}}{45}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation}{47}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{6}{43}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Experimental setup}{43}}
-\newlabel{subsec:exp}{{6.1}{43}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{44}}
+\newlabel{chap:evaluation}{{6}{47}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Experimental setup}{47}}
+\newlabel{subsec:exp}{{6.1}{47}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.1}Evaluation aspects}{48}}
 \citation{Stutz2017}
 \citation{Stutz2018CVPR}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{45}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Experiment results}{45}}
-\newlabel{subsec:results}{{6.2}{45}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{46}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{recon}$. Calculated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{47}}
-\newlabel{tab:distance256}{{6.1}{47}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{recon}$. Calculated with \emph  {meshdistance} metric. Lower values are better.\relax }}{48}}
-\newlabel{tab:distance1024}{{6.2}{48}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{48}}
-\newlabel{tab:distance7500}{{6.3}{48}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{opt}$. Calculated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{48}}
-\newlabel{tab:distance256opt}{{6.4}{48}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{opt}$. Calculated with \emph  {meshdistance} metric. Lower values are better.\relax }}{48}}
-\newlabel{tab:distance1024opt}{{6.5}{48}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{48}}
-\newlabel{tab:distance7500}{{6.6}{48}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{49}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud. Testing with point clouds from outside of trained object categories\relax }}{49}}
-\newlabel{tab:generalize}{{6.7}{49}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal  {M}_i$}{50}}
-\newlabel{varybase}{{6.2.3}{50}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.8}{\ignorespaces Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Initial mesh (\nobreakspace  {}torus mesh\nobreakspace  {}) with a \emph  {genus} of one.\relax }}{50}}
-\newlabel{tab:basemesh}{{6.8}{50}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{50}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.9}{\ignorespaces Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Comparison of configuration $\mathcal  {C}_1$ trained with and without noise (\emph  {noise level} of 0.01). Inference with noisy data of the same \emph  {noise level}.\relax }}{50}}
-\newlabel{tab:noise}{{6.9}{50}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{51}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.10}{\ignorespaces Inference time for configurations $\mathcal  {C}$ and computation time for other techniques\relax }}{51}}
-\newlabel{tab:time}{{6.10}{51}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Discussion}{53}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}Evaluation metrics}{49}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Experiment results}{49}}
+\newlabel{subsec:results}{{6.2}{49}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}Distance metric results}{50}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{recon}$. Calculated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{51}}
+\newlabel{tab:distance256}{{6.1}{51}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{recon}$. Calculated with \emph  {meshdistance} metric. Lower values are better.\relax }}{52}}
+\newlabel{tab:distance1024}{{6.2}{52}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{52}}
+\newlabel{tab:distance7500}{{6.3}{52}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{opt}$. Calculated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{52}}
+\newlabel{tab:distance256opt}{{6.4}{52}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{opt}$. Calculated with \emph  {meshdistance} metric. Lower values are better.\relax }}{52}}
+\newlabel{tab:distance1024opt}{{6.5}{52}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Calculated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{52}}
+\newlabel{tab:distance7500opt}{{6.6}{52}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Generalization capabilities}{53}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud. Testing with point clouds from outside of trained object categories\relax }}{53}}
+\newlabel{tab:generalize}{{6.7}{53}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}Varying basemesh $\mathcal  {M}_i$}{54}}
+\newlabel{varybase}{{6.2.3}{54}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.8}{\ignorespaces Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Initial mesh (\nobreakspace  {}torus mesh\nobreakspace  {}) with a \emph  {genus} of one.\relax }}{54}}
+\newlabel{tab:basemesh}{{6.8}{54}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.4}Noise robustness}{54}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.9}{\ignorespaces Excerpt of evaluation table. Distance metric evaluations with 1024 samples per point cloud. Comparison of configuration $\mathcal  {C}_1$ trained with and without noise (\emph  {noise level} of 0.01). Inference with noisy data of the same \emph  {noise level}.\relax }}{54}}
+\newlabel{tab:noise}{{6.9}{54}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.5}Evaluation time}{55}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.10}{\ignorespaces Inference time for configurations $\mathcal  {C}$ and computation time for other techniques\relax }}{55}}
+\newlabel{tab:time}{{6.10}{55}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Discussion}{57}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:discussion}{{7}{53}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Variety of \emph  {points2mesh}}{53}}
-\newlabel{pioneer}{{7.1}{53}}
-\newlabel{fig:winglet1}{{7.1a}{54}}
+\newlabel{chap:discussion}{{7}{57}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Variety of \emph  {points2mesh}}{57}}
+\newlabel{pioneer}{{7.1}{57}}
+\newlabel{fig:winglet1}{{7.1a}{58}}
 \newlabel{sub@fig:winglet1}{{(a)}{a}}
-\newlabel{fig:winglet2}{{7.1b}{54}}
+\newlabel{fig:winglet2}{{7.1b}{58}}
 \newlabel{sub@fig:winglet2}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Reconstruction from of airplane. Winglets are visible with $\mathcal  {C}_1$ but not as prominent with $\mathcal  {C}_3$.\relax }}{54}}
-\newlabel{fig:airplanec2}{{7.1}{54}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 1024 samples. Winglets visible at the end of the wings.}}}{54}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_3$, 1024 samples. Windlets not as visible at the end of the wings.}}}{54}}
-\newlabel{fig:chairc1}{{7.2a}{55}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Reconstruction from of airplane. Winglets are visible with $\mathcal  {C}_1$ but not as prominent with $\mathcal  {C}_3$.\relax }}{58}}
+\newlabel{fig:airplanec2}{{7.1}{58}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 1024 samples. Winglets visible at the end of the wings.}}}{58}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_3$, 1024 samples. Windlets not as visible at the end of the wings.}}}{58}}
+\newlabel{fig:chairc1}{{7.2a}{59}}
 \newlabel{sub@fig:chairc1}{{(a)}{a}}
-\newlabel{fig:chairc3}{{7.2b}{55}}
+\newlabel{fig:chairc3}{{7.2b}{59}}
 \newlabel{sub@fig:chairc3}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Reconstruction from of chair. Almost no empty space between legs with $\mathcal  {C}_1$ but not more prominent with $\mathcal  {C}_3$.\relax }}{55}}
-\newlabel{fig:chairs}{{7.2}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 1024 samples. Empty space is present between chair legs.}}}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_3$, 1024 samples. Dangling edges between legs of chair present.}}}{55}}
-\newlabel{fig:airplanec1simpel}{{7.3a}{55}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Reconstruction from of chair. Almost no empty space between legs with $\mathcal  {C}_1$ but not more prominent with $\mathcal  {C}_3$.\relax }}{59}}
+\newlabel{fig:chairs}{{7.2}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 1024 samples. Empty space is present between chair legs.}}}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_3$, 1024 samples. Dangling edges between legs of chair present.}}}{59}}
+\newlabel{fig:airplanec1simpel}{{7.3a}{59}}
 \newlabel{sub@fig:airplanec1simpel}{{(a)}{a}}
-\newlabel{fig:airplanec4simpel}{{7.3b}{55}}
+\newlabel{fig:airplanec4simpel}{{7.3b}{59}}
 \newlabel{sub@fig:airplanec4simpel}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces Reconstruction from of airplane. $\mathcal  {C}_1$ has a higher detailed reconstruction than $\mathcal  {C}_4$, though with the same amount of vertices.\relax }}{55}}
-\newlabel{fig:simpleairplanes}{{7.3}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 256 samples.}}}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_4$, 256 samples.}}}{55}}
-\newlabel{fig:chairclad1}{{7.4a}{55}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces Reconstruction from of airplane. $\mathcal  {C}_1$ has a higher detailed reconstruction than $\mathcal  {C}_4$, though with the same amount of vertices.\relax }}{59}}
+\newlabel{fig:simpleairplanes}{{7.3}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 256 samples.}}}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reconstruction with $\mathcal {C}_4$, 256 samples.}}}{59}}
+\newlabel{fig:chairclad1}{{7.4a}{59}}
 \newlabel{sub@fig:chairclad1}{{(a)}{a}}
-\newlabel{fig:chairclad2}{{7.4b}{55}}
+\newlabel{fig:chairclad2}{{7.4b}{59}}
 \newlabel{sub@fig:chairclad2}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.4}{\ignorespaces Comparison of reconstructed chair and ground truth on the right. The prediction on the left cannot recreate the hole between the seating area and the back.\relax }}{55}}
-\newlabel{fig:chairsclad}{{7.4}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 256 samples.}}}{55}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Ground truth mesh.}}}{55}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.5}{\ignorespaces Reconstruction of chair with $\mathcal  {C}_1$ at 7500 samples. A lot of edges spanned acroos the legs.\relax }}{56}}
-\newlabel{fig:badchar}{{7.5}{56}}
-\newlabel{fig:stretch1}{{7.6a}{57}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.4}{\ignorespaces Comparison of reconstructed chair and ground truth on the right. The prediction on the left cannot recreate the hole between the seating area and the back.\relax }}{59}}
+\newlabel{fig:chairsclad}{{7.4}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reconstruction with $\mathcal {C}_1$, 256 samples.}}}{59}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Ground truth mesh.}}}{59}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.5}{\ignorespaces Reconstruction of chair with $\mathcal  {C}_1$ at 7500 samples. A lot of edges spanned acroos the legs.\relax }}{60}}
+\newlabel{fig:badchar}{{7.5}{60}}
+\newlabel{fig:stretch1}{{7.6a}{61}}
 \newlabel{sub@fig:stretch1}{{(a)}{a}}
-\newlabel{fig:stretch2}{{7.6b}{57}}
+\newlabel{fig:stretch2}{{7.6b}{61}}
 \newlabel{sub@fig:stretch2}{{(b)}{b}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Illustration of initial mesh deforming to approximate the underlying mesh of the point cloud $\mathcal  {PC}$ of the legs of a chair. The edge of the two vertices in the middle is stretching over the two legs of the chair.\relax }}{57}}
-\newlabel{fig:stretching}{{7.6}{57}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Two dimensional projection of initial mesh, in green, before convolutional layers, showing where each vertex may move to.}}}{57}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Two dimensional projection of initial mesh, in green, after convolutional layer, moving towards point in point cloud(\nobreakspace {}in black\nobreakspace {}).}}}{57}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.7}{\ignorespaces Reconstructions of airplane with 256 samples, with \emph  {BPA}(\nobreakspace  {}left\nobreakspace  {}), \emph  {IFM}(\nobreakspace  {}righ\nobreakspace  {}) and \emph  {points2mesh}(\nobreakspace  {}bottom\nobreakspace  {})\relax }}{58}}
-\newlabel{fig:bpaifm}{{7.7}{58}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.8}{\ignorespaces Reconstructions of airplane with 7500 samples, with \emph  {BPA}(\nobreakspace  {}left\nobreakspace  {}), \emph  {IFM}(\nobreakspace  {}right\nobreakspace  {}) and \emph  {points2mesh}(\nobreakspace  {}bottom\nobreakspace  {})\relax }}{58}}
-\newlabel{fig:bpaifmhigh}{{7.8}{58}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.9}{\ignorespaces Reconstruction from point clouds of airplanes with \emph  {DMC}. Sample size 1024\relax }}{59}}
-\newlabel{fig:dmcplanes}{{7.9}{59}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.10}{\ignorespaces Reconstruction from point clouds with \emph  {DMC}. Sample size 1024. Predictions in the top row have holes due to low sample size. Predictions in bottom row look sound due to no almost no curves in ground truth, and only edges along the cardinal axes.\relax }}{60}}
-\newlabel{fig:dmcobjects}{{7.10}{60}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Conclusion}{61}}
-\newlabel{conclusion}{{7.2}{61}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Outlook}{61}}
-\newlabel{outlook}{{7.3}{61}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Appendix}{63}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Illustration of initial mesh deforming to approximate the underlying mesh of the point cloud $\mathcal  {PC}$ of the legs of a chair. The edge of the two vertices in the middle is stretching over the two legs of the chair.\relax }}{61}}
+\newlabel{fig:stretching}{{7.6}{61}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Two dimensional projection of initial mesh, in green, before convolutional layers, showing where each vertex may move to.}}}{61}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Two dimensional projection of initial mesh, in green, after convolutional layer, moving towards point in point cloud(\nobreakspace {}in black\nobreakspace {}).}}}{61}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.7}{\ignorespaces Reconstructions of airplane with 256 samples, with \emph  {BPA}(\nobreakspace  {}left\nobreakspace  {}), \emph  {IFM}(\nobreakspace  {}righ\nobreakspace  {}) and \emph  {points2mesh}(\nobreakspace  {}bottom\nobreakspace  {})\relax }}{62}}
+\newlabel{fig:bpaifm}{{7.7}{62}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.8}{\ignorespaces Reconstructions of airplane with 7500 samples, with \emph  {BPA}(\nobreakspace  {}left\nobreakspace  {}), \emph  {IFM}(\nobreakspace  {}right\nobreakspace  {}) and \emph  {points2mesh}(\nobreakspace  {}bottom\nobreakspace  {})\relax }}{62}}
+\newlabel{fig:bpaifmhigh}{{7.8}{62}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.9}{\ignorespaces Reconstruction from point clouds of airplanes with \emph  {DMC}. Sample size 1024\relax }}{63}}
+\newlabel{fig:dmcplanes}{{7.9}{63}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.10}{\ignorespaces Reconstruction from point clouds with \emph  {DMC}. Sample size 1024. Predictions in the top row have holes due to low sample size. Predictions in bottom row look sound due to no almost no curves in ground truth, and only edges along the cardinal axes.\relax }}{64}}
+\newlabel{fig:dmcobjects}{{7.10}{64}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Conclusion}{65}}
+\newlabel{conclusion}{{7.2}{65}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Outlook}{65}}
+\newlabel{outlook}{{7.3}{65}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Appendix}{67}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{sec:appendix}{{A}{63}}
-\newlabel{optrecon}{{A}{63}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Reconstruction of all trained categories from point cloud with 1024 samples and $\mathcal  {N}_{recon}$. From left to right: ground truth, $\mathcal  {C}_1$, $\mathcal  {C}_2$, $\mathcal  {C}_3$, $\mathcal  {C}_4$.\relax }}{63}}
-\newlabel{fig:last}{{A.1}{63}}
-\newlabel{completeopt}{{A}{63}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{opt}$. Caluclated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{63}}
+\newlabel{sec:appendix}{{A}{67}}
+\newlabel{optrecon}{{A}{67}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Reconstruction of all trained categories from point cloud with 1024 samples and $\mathcal  {N}_{recon}$. From left to right: ground truth, $\mathcal  {C}_1$, $\mathcal  {C}_2$, $\mathcal  {C}_3$, $\mathcal  {C}_4$.\relax }}{67}}
+\newlabel{fig:last}{{A.1}{67}}
+\newlabel{completeopt}{{A}{67}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces Distance metric evaluations with 256 samples per point cloud for $\mathcal  {N}_{opt}$. Caluclated with \emph  {meshdistance} metric. Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{67}}
 \bibdata{bibliography}
-\newlabel{tab:distance256opt}{{A.1}{64}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{opt}$. Caluclated with \emph  {meshdistance} metric. Lower values are better.\relax }}{64}}
-\newlabel{tab:distance1024opt}{{A.2}{64}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{64}}
-\newlabel{tab:distance7500}{{A.3}{64}}
+\newlabel{tab:distance256opt}{{A.1}{68}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces Distance metric evaluations with 1024 samples per point cloud for $\mathcal  {N}_{opt}$. Caluclated with \emph  {meshdistance} metric. Lower values are better.\relax }}{68}}
+\newlabel{tab:distance1024opt}{{A.2}{68}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces Distance metric evaluations with 7500 samples per point cloud. Caluclated with \emph  {meshdistance} metric.Only considering configurations $\mathcal  {C}_1$ and $\mathcal  {C}_2$. Lower values are better.\relax }}{68}}
+\newlabel{tab:distance7500}{{A.3}{68}}
 \bibcite{Amenta:2001:PC:376957.376986}{ACK01}
 \bibcite{Ranellucci2011}{Ar11}
 \bibcite{bukenberger2018hierarchical}{BL18}
