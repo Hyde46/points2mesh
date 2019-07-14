@@ -226,7 +226,7 @@ marching cubes algorithm.
  \subfloat[Reconstruction with 256 samples\label{fig:12a}]{\includegraphics[width=0.33\textwidth]{c1_opt_256_airplane2.png}}
   \subfloat[Reconstruction with 1024 samples\label{fig:12b}]{\includegraphics[width=0.33\textwidth]{c1_opt_1024_airplane2.png}}
   \subfloat[Reconstruction with 7500 samples\label{fig:12c}]{\includegraphics[width=0.33\textwidth]{c1_opt_7500_airplane2.png}}
-  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:10}
+  \caption{Reconstruction from point clouds of airplanes of $\mathcal{N}_{opt}$. Input point cloud is equal to ground truth point cloud} \label{fig:12}
 \end{figure}
 \begin{figure}[htbp]
   \centering
@@ -242,7 +242,7 @@ marching cubes algorithm.
 \end{figure}
 
   Finally, figure \ref{fig:10} shows the reconstruction of chairs, based on $\mathcal{N}_{opt}$. Only the reconstruction with the configuration $\mathcal{C}_1$ is shown
-  since it produces the most interesting results\footnote{See Appendix \ref{optrecon} for some reconstruction with other configurations}. Configurations $\mathcal{C}_2$ through $\mathcal{C}_4$ produce similar results. Though no ground truth data was available during training time, reconstruction
+  since it produces the most interesting results. Configurations $\mathcal{C}_2$ through $\mathcal{C}_4$ produce similar results. Though no ground truth data was available during training time, reconstruction
   of the airplane is still possible. It is visible, that only 256 samples are not enough to create a good reconstruction. Starting with 1024 samples, the airplane reconstruction
   is closer to the same reconstruction as with $\mathcal{N}_{recon}$ as seen in \ref{fig:81}. Similarly, as seen in figure \ref{fig:11}, the reconstructed guitar can be 
   seen, though not as clean as the guitar from \ref{fig:3}. Reconstrucions of different chairs as seen in figure \ref{fig:10} with $\mathcal{N}_{opt}$ also show the problem with dangling edges in empty space

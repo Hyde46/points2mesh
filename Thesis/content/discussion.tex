@@ -79,7 +79,7 @@ future work.
     \caption{Comparison of reconstructed chair and ground truth on the right. The prediction on the left cannot recreate the hole between the seating area and the back.} \label{fig:chairsclad}
   \end{figure}
   By nature of the composition of the neural network, the \emph{genus} of the prediction is bound to be of the same \emph{genus} as the input mesh 
-  $\mathcal{M}_i$. Thus, if the input mesh is of a spheroidal shape (~\emph{genus} 0~), the prediction always is of \emph{genus} 0 as well.
+  $\mathcal{M}_i$. Thus, if the input mesh is of a spheroidal shape (~\emph{genus} 0~), the prediction always is of \emph{genus} zero as well.
   Albeit considering an input point cloud with an underlying ground truth mesh of \emph{genus} $\geq 1$, the prediction does not change its \emph{genus}.
   Disparities in the \emph{genus} lead to the cladding of holes in the mesh, as seen in figure \ref{fig:chairsclad}. The ground truth chair has a hole
   below its backrest just above the chair seat. During the deformation in $\mathcal{N}_{gcn}$, the sphere contracts tighter around the shape of the point
@@ -150,7 +150,7 @@ future work.
     \includegraphics[width=0.33\textwidth]{airplane2_bpa_256.png}
     \includegraphics[width=0.33\textwidth]{airplane2_ifm_256.png}
     \includegraphics[width=0.33\textwidth]{c1_256_airplane_2.png}
-    \caption{Reconstructions of airplane with 256 samples, with \emph{BPA}(~left~), \emph{IFM}(~righ~) and \emph{points2mesh}(~bottom~)} \label{fig:bpaifm}
+    \caption{Reconstructions of airplane with 256 samples, with \emph{BPA}(~left~), \emph{IFM}(~right~) and \emph{points2mesh}(~bottom~)} \label{fig:bpaifm}
   \end{figure}
 
   \begin{figure}[htbp]
@@ -220,10 +220,11 @@ future work.
   learning based neural network, transforming point cloud data to tri-meshes. Excelling in reconstructing with low-resolution data,
   even consitently generating watertight meshes with only 256 data points while also being capable of generalizing over objects it has never seen 
   during training. Configuration $\mathcal{C}_1$ of the supervised network $\mathcal{N}_{recon}$ is the best choice for the best reconstructions
-  in various situations.
+  in various situations. Similarly, for the \emph{unsupervised} network, the same configuration $\mathcal{C}_1$ is generally the best choice for reconstruction.
+  If higher detail is needed $\mathcal{C}_2$ is still a viable choice, though it does not produce as smooth surfaces as $\mathcal{C}_1$.
 
   However, its inherent structure is restrictive. By virtue of how $\mathcal{N}_{gcn}$ works with \emph{graph convolution}, the amount
-  of vertices used for the reconstruction is predetermined before the training has even started. Furthermore, only objects with \emph{genus} 0 
+  of vertices used for the reconstruction is predetermined before the training has even started. Furthermore, only objects with \emph{genus} zero 
   can theoretically be reconsturcted. Additionally, there are no symmetrical restricions, and thus most predictions seem rather organic than anorganic.
 
   Nevertheless, the inference time is quite fast, being able to keep up with its competitors while also capable of reconstructing
@@ -250,7 +251,7 @@ future work.
   Nonetheless, a possible approach is to set an upper limit of vertices for any reconstruction and keep them in reserve, where they can not be trained.
   When needed during an \emph{unpooling} step, they would be added to the mesh. In that way, training time could increase immensely, though more detailed 
   reconstructions are possible, and problems with stretching geometry over empty space would disappear. Similarly, introducing holes into the mesh with a 
-  specialized layer could open up many new ways for the network to reconstruct better meshes, and meshes with a \emph{genus} higher than 0. 
+  specialized layer could open up many new ways for the network to reconstruct better meshes, and meshes with a \emph{genus} higher than zero. 
 
   \emph{Graph convolution} is sinherently restrictive for operations on graphs representing meshes, which grow in size. Changing it on the fly poses an
   intricate problem to the neural network. In contrast, \emph{flex convolution} seem a lot more flexible, as the name suggests with ever changing configurations 

@@ -247,7 +247,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    $\mathcal{N}_{flex}$ where a feature vector is propagated out of the subnetwork ~(~ See figure \ref{fig:flexconv}~).
 
 \subsection{Loss functions}
-\label{lossfuncs}s
+\label{lossfuncs}
    The losses are defined based on the network of Wang et al. \cite{wang2018pixel2mesh}, 
    and adapted accordingly to work with point cloud based input data. Given $\textbf{x}_i$ 
    and normal orientation $\textbf{n}_i$, an objective function $\mathcal{F}$ is defined as 
@@ -258,7 +258,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    up for each vertex $p_j\in \mathcal{M}_i$ the distance to its nearest neighbor in $\mathcal{PC}$
    and for each point $\textbf{x}_i\in \mathcal{PC}$ the distance to its nearest neighbor in
    $\mathcal{M}_i$. Though, it is scaled by sizes of $|\textbf{x}_i|$ relative to $|p_j|$, depending on how often 
-   $\mathcal{M}_i$ already has been unpooled (~See Appendix \ref{sec:appendix} for their formula~).
+   $\mathcal{M}_i$ already has been unpooled.
 
    Furthermore, Wang et al. propose an edge length loss $l_{edge}$ in $\mathcal{F}$ , reducing the overall mean of lengths of the edges.
    And scaling it up by a predetermined constant value of $300$, as seen in formula \ref{form:edge}. 
@@ -267,7 +267,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
    same direction since most real meshes have smooth surfaces. This approximating term is illustrated in formula \ref{form:cos}.
    Additionally, since $l_{ch},l_{edge},l_{cos}$ may still lead to optimizations which gravitate towards local minima, they introduce 
    a laplacian regularizer $l_{lap}$ which avoids self intersecting meshes and moving single vertices too freely during
-    the deformation process (~See Appendix \ref{sec:appendix} for their formula~).
+    the deformation process.
    \begin{align}
       \label{form:edge}
       l_{edge} &= \frac{300}{|E|}\sum_{e\in E}||e||^2\\
@@ -277,7 +277,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
 
 
    In most extreme cases, it is possible for different, not neighboring vertices to land on top on each other, or close to each other 
-   with distances $< \epsilon$. Since this case is not covered by avoiding selfintersections with the laplacian regularizer, a 
+   with distances $< \epsilon$. Since this case is not covered by avoiding self intersections with the laplacian regularizer, a 
    \emph{collapse loss} $l_{col}$ is included in $\mathcal{F}$, defined as:
    \begin{align}
       l_{col} &= \frac{1}{|\mathcal{M}_{i}|}\sum_{ nn(p_j)-p_j > \epsilon,\forall p_j \in \mathcal{M}_{i}} 1
@@ -290,7 +290,7 @@ This compiles the multiscale feature vector $v_i^s$, which consits of key points
 \label{configurations}
 Finding suitable hyperparameters and an appropriate network structure 
 is no easy task. Tuning hyperparameters in small increments, removing or including 
-more layers in either $\mathcal{N}_{recon}$ or $\mathcal{N}_{flex}$ may change results drastically.
+more layers in either $\mathcal{N}_{gcn}$ or $\mathcal{N}_{flex}$ may change results drastically.
  Therefore, some configurations have advantages over other 
 configuration, while still having disadvantages in other aspects.
 Thus, several configurations have been carved out and are specified 
