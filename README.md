@@ -1,2 +1,3 @@
 # pc2mesh
-Neural network to transform point clouds to a mesh
+
+Deep convolutional neural network transforming 3D point cloud data to a mesh.
