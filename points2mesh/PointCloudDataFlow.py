@@ -16,7 +16,7 @@ from sampler import *
 
 ############################################
 # Important! Set path to .lmdb data:
-MODEL40PATH = '/graphics/scratch/students/heid/pointcloud_data/ModelNet40'
+MODEL40PATH = '/path/to/modelnet40/data.lmdb'
 ############################################
 
 
