@@ -29,7 +29,7 @@ tf.set_random_seed(seed)
 # Settings
 # basic Ellipsoid 156 - 618 - 2466
 # basic torus     160 - 640 - 2560
-# new ellipsoid   168 - 666 - 2658
+# new ellipsoid   168 - 666 - 2658 - 10k
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
@@ -51,8 +51,6 @@ flags.DEFINE_integer(
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
                     'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
-#                    'Path to base model for mesh deformation')
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
  #                   'Path to base model for mesh deformation')
 
@@ -68,7 +66,7 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "3"
 
-    logger.set_logger_dir('/graphics/scratch/students/heid/train_log/true_c1_1024_small_%s' % (args.fusion))
+    logger.set_logger_dir('/path/to/train_log/true_c1_1024_small_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
@@ -82,12 +80,9 @@ if __name__ == '__main__':
     config = TrainConfig(
         model=FlexmeshModel(PC, name="Flexmesh"),
         data=QueueInput(df_train),
-        # data = FeedInput(df_train),
         callbacks=[
             ModelSaver(),
             MinSaver('total_loss'),
-            # InferenceRunner(
-            #    df_test,[])
         ],
         extra_callbacks=[
             MovingAverageSummary(),
