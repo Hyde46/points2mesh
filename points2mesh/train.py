@@ -51,6 +51,8 @@ flags.DEFINE_integer(
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
                     'Path to base model for mesh deformation')
+#
+# Ellipsoid allowing 4 unpooling steps
 #flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
  #                   'Path to base model for mesh deformation')
 
