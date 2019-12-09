@@ -1,6 +1,6 @@
 # points2mesh
-Deep convolutional neural network transforming 3D point cloud data to a mesh.
-Based on [pixel2mesh](https://github.com/nywang16/Pixel2Mesh), which learns the deformation of a mesh represented as a graph, and [flexconvolution](https://github.com/cgtuebingen/Flex-Convolution) to learn features of points in three dimensional space. __points2mesh__ is able to reconstruct from super low resolution of only 256 samples per point cloud, up to 8000 samples.
+__points2mesh__ is a novel approach to transform point cloud data into fully-fledged, watertight meshes. Adapted from pixel2mesh [pixel2mesh](https://github.com/nywang16/Pixel2Mesh), transforming images to meshes, this deep neural network learns features from unstructured points in three-dimensional space and deforms a basic 3D ellipsoidal shape into the final watertight mesh based on the learned features.
+As the first deep learning-based method to transform point cloud data to watertight meshes while producing competitive results with low inference time, it is a pioneer in its subject-matter. Additionally, a supervised as well as an unsupervised variant is present, even working with super low resoultion of only 256 samples per point cloud, up to 8000 samples.
 
 ![General Structure](resources/general_structure.png)
 
