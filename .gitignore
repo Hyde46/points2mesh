@@ -4,21 +4,11 @@ __pycache__/
 *$py.class
 
 # Own directory stuff
-flex_auto_encoder/
-flex_conv_tests/
-flexmesh/
-flexmesh_feature/
-pc2mesh_simple/
-point_cloud_data/
 utils/examples/
-train_log/
-user_ops/
-pointnet2/
 points2mesh/manual_loss/
 *.txt
 *.obj
 *.swp
-*.png
 *.avi
 
 # C extensions
