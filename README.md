@@ -19,5 +19,5 @@ The structure of the deep neural network is defined as follows:
 
 Three more examples of reconstruction with only 256 samples of the point cloud.
 ![256 sample reconstruction](resources/recons.jpg)
-A collection of reconstructed airplanes with 1024 samples of the point cloud, without cherrypicking the best results ;)
+A collection of reconstructed airplanes with 1024 samples of the point cloud, without cherrypicking the best results ;) (Displayed with Show_objects.blend in blender )
 ![More airplanes](resources/examples.png)
