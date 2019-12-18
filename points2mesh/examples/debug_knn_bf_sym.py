@@ -27,17 +27,16 @@ with tf.device('/device:GPU:0'):
 
     np.random.seed(0)
     # position = np.random.randint(0,9,[B,DP,N]).astype(np.float32)
-    position_x = np.random.randn(B,DP,N).astype(np.float32) * 100
+    position_x = np.random.randn(B, DP, N).astype(np.float32) * 100
     print position_x
-    position_y = np.random.randn(B,DP,M).astype(np.float32) * 100
+    position_y = np.random.randn(B, DP, M).astype(np.float32) * 100
     print position_y
 
-    pos_x = tf.convert_to_tensor(position_x,tf.float32)
-    pos_y = tf.convert_to_tensor(position_y,tf.float32)
-
+    pos_x = tf.convert_to_tensor(position_x, tf.float32)
+    pos_y = tf.convert_to_tensor(position_y, tf.float32)
 
     print "HERE#$$$$$$$$$$$$$$$$$$$$$$"
-    actual_op = knn_bf_sym(pos_x,pos_y,K)
+    actual_op = knn_bf_sym(pos_x, pos_y, K)
     print actual_op.shape.as_list()
 
     # Creates a session with log_device_placement set to True.
@@ -54,7 +53,6 @@ with tf.device('/device:GPU:0'):
     for i in ret:
         print i
 
-
     # ## timings
     # start = time.time()
     # for bi in range(B):
@@ -67,13 +65,13 @@ with tf.device('/device:GPU:0'):
     #
 
     for bi in range(B):
-        posX = np.transpose(position_x[bi],[1,0])
-        posY = np.transpose(position_y[bi],[1,0])
+        posX = np.transpose(position_x[bi], [1, 0])
+        posY = np.transpose(position_y[bi], [1, 0])
         print posX.shape
         # print pos
         #
         tree = KDTree(posY)
-        dist,ind = tree.query(posX,k=2)
+        dist, ind = tree.query(posX, k=2)
 
-        print 'K@1 accuracy: ', np.sum(ind[:,1]
-                == ret[bi][:,1])/float(N)
+        print 'K@1 accuracy: ', np.sum(ind[:, 1]
+                                       == ret[bi][:, 1])/float(N)

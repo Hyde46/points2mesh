@@ -16,7 +16,7 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt':10000}
+PC = {'num': 7500, 'dp': 3, 'ver': "40", 'gt': 10000}
 # setting
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -31,16 +31,17 @@ flags.DEFINE_integer('feature_depth', 32,
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-flags.DEFINE_integer('pc_num', PC['num'], 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', PC['num'],
+                     'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer(
     'num_neighbors', 6, 'Number of neighbors considered during Graph projection layer')
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
-                   'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
+                    'Path to base model for mesh deformation')
+# flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
 #                    'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
+# flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
 #                    'Path to base model for mesh deformation')
 
 num_blocks = 3
@@ -51,8 +52,9 @@ def noise_augment(data, noise_level=0.01):
     rnd = np.random.rand(3, PC['num'])*2*noise_level - noise_level
     return data + rnd
 
+
 def load_pc(pc_path, num_points):
-    #Load pointcloud from file
+    # Load pointcloud from file
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
@@ -62,7 +64,7 @@ def load_pc(pc_path, num_points):
     return data
 
 
-def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False,save_off=True,num_obj=0):
+def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mesh=False, save_off=True, num_obj=0):
 
     vert = np.hstack((np.full([vertices.shape[0], 1], 'v'), vertices))
     #face = np.loadtxt('utils/ellipsoid/face_torus_'+str(num)+'.obj', dtype='|S32')
@@ -78,7 +80,8 @@ def create_inference_mesh(vertices, num, pc,  path_to_input, output, display_mes
         obj_num = obj_num.split('.')[0]
         path_off = os.path.join(output, str(num_obj))
         #os.system('/home/heid/Documents/master/meshconv '+path_to_mesh+' -c off -o '+path_off)
-        os.system('/home/heid/Documents/master/meshconv '+path_to_mesh+' -c off -o '+path_off)
+        os.system('/home/heid/Documents/master/meshconv ' +
+                  path_to_mesh+' -c off -o '+path_off)
 
     if display_mesh:
         load_pc_meshlab(path_to_mesh)
@@ -100,14 +103,15 @@ def predict(predictor, data, path):
 
 def loadModel():
     prediction = PredictConfig(
-        session_init=get_model_loader("/graphics/scratch/students/heid/train_log/true_c1_7500_big2_/checkpoint"),
+        session_init=get_model_loader(
+            "/graphics/scratch/students/heid/train_log/true_c1_7500_big2_/checkpoint"),
         model=FlexmeshModel(PC, name="Flexmesh"),
         input_names=['positions'],
         output_names=['mesh_outputs/output1',
                       'mesh_outputs/output2',
                       'mesh_outputs/output3']
     )
-    #predict mesh
+    # predict mesh
     predictor = OfflinePredictor(prediction)
     return predictor
 
@@ -119,7 +123,8 @@ def loadTxtFiles(path):
     return files
 
 
-categories =["airplane","bed","bottle","bowl","car","chair","guitar","toilet","bathtub","person"]
+categories = ["airplane", "bed", "bottle", "bowl", "car",
+              "chair", "guitar", "toilet", "bathtub", "person"]
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/small/"
 #path = "/home/heid/Documents/master/pc2mesh/point_cloud_data/evaluation_set/single_class"
 #path = "/graphics/scratch/students/heid/pointcloud_data/ModelNet40/chair_test"
@@ -143,15 +148,15 @@ predictor = loadModel()
 #predictor = 0
 
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-#for c in categories:
+# for c in categories:
 
 #path = "/graphics/scratch/students/heid/evaluation_set/"+c
 #pcs = loadTxtFiles(path)
-#path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
-#path_output = "/graphics/scratch/students/heid/inference/c3_n_7500_" + c #sphere"+c
+# path_output = "/graphics/scratch/students/heid/evaluation_set/"#sphere"+c
+# path_output = "/graphics/scratch/students/heid/inference/c3_n_7500_" + c #sphere"+c
 path_output = "/graphics/scratch/students/heid/evaluation_set/custom/bunny/"
 counter = 0
-#for pc in pcs:
+# for pc in pcs:
 
 pc = '/graphics/scratch/students/heid/evaluation_set/custom/pr7500.txt'
 #path_pc = os.path.join(path, pc)
@@ -159,5 +164,5 @@ path_pc = pc
 pc_inp = load_pc(path_pc, num_points=PC['num'])
 vertices = predict(predictor, pc_inp, path_pc)
 create_inference_mesh(vertices[2], 3, pc,
-                    path_pc, path_output, display_mesh=False, num_obj=counter)
+                      path_pc, path_output, display_mesh=False, num_obj=counter)
 counter = counter + 1

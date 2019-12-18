@@ -146,7 +146,7 @@ class GraphConvolution(Layer):
         # bias
         if self.bias:
             output += self.vars['bias']
-        
+
         return self.act(output)
 
 
@@ -212,7 +212,7 @@ class GraphPooling(Layer):
         """
         Calculates local tension (gamma) for each vertex v in Graph G
         by adding up ||v - v_i|| where v_i is local neighborhood of v.
-        
+
         The vertex tension is plugged in as a feature for each vertex
         in addition to their coordinate.
         v_feature = [coord_xyz,tension] (3 + 1 dimensions)
@@ -272,7 +272,7 @@ class GraphProjection(Layer):
                              stage_1[1],
                              stage_2[1],
                              stage_3[1]], 1)
-        #outputs = tf.concat([inputs,
+        # outputs = tf.concat([inputs,
         #                    stage_0[0],
         #                    stage_1[0], stage_1[1],
         #                    stage_2[0], stage_2[1],
@@ -296,8 +296,6 @@ class GraphProjection(Layer):
 
         dist = tfd.Normal
 
-
-
     def projected_neighborhood(self, inputs, num_feature):
         knn_neighbors, knn_features = self.get_neighborhood(
             inputs, num_feature)
@@ -313,7 +311,7 @@ class GraphProjection(Layer):
         # Scale vectors towards neighbors depending on technique. Pick one\
 
         # 1 / 1 + d^2
-        # At some points more detail. Needs longer training 
+        # At some points more detail. Needs longer training
         # Litle better with negative spaces
         # Clearer when genus is a problem
         target_coord = self.inverse_square_dist(vec_to_neighbors, knn_dist)
@@ -339,7 +337,7 @@ class GraphProjection(Layer):
 
         coord_expanded = tf.expand_dims(coord, -1)
 
-        #transform PC feature to usable format
+        # transform PC feature to usable format
         if num_feature > 0:
             pc_coords = self.pc_feat[num_feature][0]
             pc_feature = self.pc_feat[num_feature][1]

@@ -54,7 +54,7 @@ def collapse_loss(pred):
 
 
 def point2triangle_loss(pred, placeholders, block_id):
-    #TODO
+    # TODO
     # Test point2triangle loss somewhere somehow
 
     pass
@@ -63,7 +63,8 @@ def point2triangle_loss(pred, placeholders, block_id):
 def laplace_coord(pred, placeholders, block_id):
     vertex = tf.concat([pred, tf.zeros([1, 3])], 0)
     indices = placeholders['lape_idx'][block_id - 1][:, :8]
-    weights = tf.cast(placeholders['lape_idx'][block_id - 1][:, -1], tf.float32)
+    weights = tf.cast(placeholders['lape_idx']
+                      [block_id - 1][:, -1], tf.float32)
 
     weights = tf.tile(tf.reshape(tf.reciprocal(weights), [-1, 1]), [1, 3])
     laplace = tf.reduce_sum(tf.gather(vertex, indices), 1)
@@ -85,7 +86,7 @@ def laplace_loss(pred1, pred2, placeholders, block_id):
 
 
 def unit(tensor):
-    #return tf.nn.l2_normalize(tensor, dim=1)
+    # return tf.nn.l2_normalize(tensor, dim=1)
     return tf.nn.l2_normalize(tensor, axis=1)
 
 

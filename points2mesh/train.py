@@ -42,7 +42,8 @@ flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
 # original 3e-5
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
-flags.DEFINE_integer('pc_num', PC['num'], 'Number of points per pointcloud object')
+flags.DEFINE_integer('pc_num', PC['num'],
+                     'Number of points per pointcloud object')
 flags.DEFINE_integer('dp', 3, 'Dimension of points in pointcloud')
 flags.DEFINE_integer('feature_depth', 32,
                      'Dimension of first flexconv feature layer')
@@ -53,8 +54,8 @@ flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
                     'Path to base model for mesh deformation')
 #
 # Ellipsoid allowing 4 unpooling steps
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
- #                   'Path to base model for mesh deformation')
+# flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
+#                   'Path to base model for mesh deformation')
 
 if __name__ == '__main__':
 
@@ -68,13 +69,14 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     os.environ['CUDA_VISIBLE_DEVICES'] = "3"
 
-    logger.set_logger_dir('/path/to/train_log/true_c1_1024_small_%s' % (args.fusion))
+    logger.set_logger_dir(
+        '/path/to/train_log/true_c1_1024_small_%s' % (args.fusion))
 
     # Loading Data
     df_train = get_modelnet_dataflow('train', batch_size=FLAGS.batch_size,
-                                     num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True,noise_level=0.0)
+                                     num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True, noise_level=0.0)
     df_test = get_modelnet_dataflow('test', batch_size=2 * FLAGS.batch_size,
-                                    num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True,noise_level=0.0)
+                                    num_points=PC["num"], model_ver=PC["ver"], shuffle=True, normals=True, prefetch_data=True, noise_level=0.0)
     steps_per_epoch = len(df_train)
 
     # Setup Model

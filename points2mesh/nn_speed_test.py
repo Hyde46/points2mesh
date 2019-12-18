@@ -6,18 +6,17 @@ import numpy as np
 from timeit import default_timer as timer
 
 
+a = np.random.rand(156, 3)
+b = np.random.rand(1024, 3)
 
-a = np.random.rand(156,3)
-b = np.random.rand(1024,3)
+a = tf.convert_to_tensor(a, dtype=tf.float32)
+b = tf.convert_to_tensor(b, dtype=tf.float32)
 
-a = tf.convert_to_tensor(a,dtype=tf.float32)
-b = tf.convert_to_tensor(b,dtype=tf.float32)
+ak = np.random.rand(1, 3, 156)
+bk = np.random.rand(1, 3, 1024)
 
-ak = np.random.rand(1,3,156)
-bk = np.random.rand(1,3,1024)
-
-ak = tf.convert_to_tensor(ak,dtype=tf.float32)
-bk = tf.convert_to_tensor(bk,dtype=tf.float32)
+ak = tf.convert_to_tensor(ak, dtype=tf.float32)
+bk = tf.convert_to_tensor(bk, dtype=tf.float32)
 
 dist1, idx1, dist2, idx2 = nn_distance(a, b)
 
@@ -35,4 +34,3 @@ end_knn = timer()
 
 print "nn_distance speed: {0:.5f} seconds".format(end_nn - start_nn)
 print "knn_bf_sym speed: {0:.5f} seconds".format(end_knn - start_knn)
-

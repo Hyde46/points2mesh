@@ -53,8 +53,10 @@ class FlexmeshModel(ModelDesc):
 
     def inputs(self):
         return [tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['num']), "positions"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "vertex_normals"),
-                tf.placeholder(tf.float32, (None, self.PC['dp'], self.PC['gt']), "gt_positions"),
+                tf.placeholder(
+                    tf.float32, (None, self.PC['dp'], self.PC['gt']), "vertex_normals"),
+                tf.placeholder(
+                    tf.float32, (None, self.PC['dp'], self.PC['gt']), "gt_positions"),
                 ]
 
     def build_graph(self, positions, vertex_normals, gt_positions):
@@ -67,12 +69,12 @@ class FlexmeshModel(ModelDesc):
 
         self.build_gcn_graph(positions)
 
-        #connect graph and get cost
+        # connect graph and get cost
         eltwise = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25,
-                    31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53,
-                    59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81]
+                   31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53,
+                   59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81]
         eltwise = [e + 1 for e in eltwise]
-        #shortcuts
+        # shortcuts
         #concat = [15, 31]
         #concat = [16, 32]
         concat = [28, 56]
@@ -103,7 +105,6 @@ class FlexmeshModel(ModelDesc):
             self.output_stage_2 = unpool_layer(self.output2)
 
             self.output3 = tf.identity(self.activations[-1], name="output3")
-            
 
         variables = tf.get_collection(
             tf.GraphKeys.GLOBAL_VARIABLES, scope=self.name)
@@ -293,7 +294,7 @@ class FlexmeshModel(ModelDesc):
 
         # loss += t_loss
 
-        #with tf.name_scope("tension_loss"):
+        # with tf.name_scope("tension_loss"):
         #    pass
         #loss += distance_loss0 + distance_loss1 + distance_loss2
         loss = tf.identity(loss, name="complete_loss")
@@ -326,7 +327,7 @@ class FlexmeshModel(ModelDesc):
         lape_idx = pkl[7]
         edges = []
         #coord = self.normalize_coord(coord)
-        #156 vertices
+        # 156 vertices
         for i in range(1, 4):
             adj = pkl[i][1]
             edges.append(adj[0])
@@ -343,8 +344,8 @@ class FlexmeshModel(ModelDesc):
             self.convert_support_to_tensor(s) for s in pkl[2]]
         self.placeholders["support3"] = [
             self.convert_support_to_tensor(s) for s in pkl[3]]
-        #Not used
-        #self.placeholders["faces"] = [
+        # Not used
+        # self.placeholders["faces"] = [
         #   tf.convert_to_tensor(f, dtype=tf.int32) for f in faces]
         self.placeholders["edges"] = [
             tf.convert_to_tensor(e, dtype=tf.int32) for e in edges]

@@ -1,4 +1,4 @@
-`import tensorflow as tf
+import tensorflow as tf
 import os
 from os import listdir
 from os.path import isfile, join
@@ -38,9 +38,9 @@ flags.DEFINE_integer(
 flags.DEFINE_integer('batch_size', 1, 'Batchsize')
 flags.DEFINE_string('base_model_path', 'utils/ellipsoid/info_ellipsoid.dat',
                     'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
+# flags.DEFINE_string('base_model_path', 'utils/ellipsoid/torus_small.dat',
 #                    'Path to base model for mesh deformation')
-#flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
+# flags.DEFINE_string('base_model_path', 'utils/ellipsoid/ellipsoid.dat',
 #                    'Path to base model for mesh deformation')
 
 num_blocks = 3
@@ -64,12 +64,12 @@ def f_score(label, predict, dist_label, dist_pred, threshold):
 
 def noise_augment(data, noise_level=0.00):
     #rnd = np.random.rand(3, 1024)*2*noise_level - noise_level
-    #return data + rnd
+    # return data + rnd
     return data
 
 
 def load_pc(pc_path, num_points):
-    #Load pointcloud from file
+    # Load pointcloud from file
     data = np.genfromtxt(pc_path, delimiter=',')
     # strip away labels ( vertex normal )
     data = data[:num_points, 0:3].T
@@ -84,7 +84,7 @@ def predict(predictor, data, path):
     #vertices_2 = predictor(data)[1]
     #vertices_3 = predictor(data)[2]
 
-    #return [vertices_1, vertices_2, vertices_3]
+    # return [vertices_1, vertices_2, vertices_3]
     return predictor(data)[2]
 
 
@@ -98,7 +98,7 @@ def loadModel():
                       'mesh_outputs/output2',
                       'mesh_outputs/output3']
     )
-    #predict mesh
+    # predict mesh
     predictor = OfflinePredictor(prediction)
     return predictor
 
@@ -153,7 +153,7 @@ for pc in pcs:
 
     model_count[obj_class] += 1.0
 
-    #Evaluate min dist from label to pred and pred to label
+    # Evaluate min dist from label to pred and pred to label
     _, op_dist_pred_label, _ = knn_bf_sym(pred_tensor, label_tensor, K=1)
     _, op_dist_label_pred, _ = knn_bf_sym(label_tensor, pred_tensor, K=1)
 
@@ -186,7 +186,8 @@ for i in classes:
     f = sum_f[i] / number
     cd = (sum_cd[i] / number) * 1000.0
     print i, int(number), f, cd
-    print >> log, i, int(number), f, cd, min_f[i], min_cd[i], min_f_id[i], min_cd_id[i]
+    print >> log, i, int(
+        number), f, cd, min_f[i], min_cd[i], min_f_id[i], min_cd_id[i]
 
 log.close()
 sess.close()

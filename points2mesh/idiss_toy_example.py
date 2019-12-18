@@ -64,7 +64,6 @@ class FakePointCloud(object):
         return [self.B, self.Dout, self.N]
 
 
-
 def fake_pc_loader():
     for k in range(1):
         pc = FakePointCloud(B=1, N=6, K=3, Din=3, Dout=3, Dp=3)

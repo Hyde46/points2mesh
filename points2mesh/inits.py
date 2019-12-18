@@ -1,18 +1,23 @@
 import tensorflow as tf
 import numpy as np
 
-def uniform(shape, scale = 0.05, name=None):
-    initial = tf.random_uniform(shape, minval = -scale, maxval=scale, dtype=tf.float32)
+
+def uniform(shape, scale=0.05, name=None):
+    initial = tf.random_uniform(
+        shape, minval=-scale, maxval=scale, dtype=tf.float32)
     return tf.Variable(initial, name=name)
+
 
 def glorot(shape, name=None):
     """Gloro & Bengio (AISTATS 2010) init."""
 #    initializer = tf.glorot_uniform_initializer()
     #variable = initializer(shape)
-    #return variable
+    # return variable
     init_range = np.sqrt(6.0/(shape[0]+shape[1]))
-    initial = tf.random_uniform(shape, minval=-init_range,maxval = init_range, dtype=tf.float32)
+    initial = tf.random_uniform(
+        shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
     return tf.Variable(initial, name=name)
+
 
 def zeros(shape, name=None):
     """All zeros. """
@@ -21,6 +26,7 @@ def zeros(shape, name=None):
    # variable = initializer(shape)
 #    return variable
     return tf.Variable(initial, name=name)
+
 
 def ones(shape, name=None):
     initial = tf.ones(shape, dtype=tf.float32)
