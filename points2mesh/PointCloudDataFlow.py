@@ -160,12 +160,7 @@ def get_modelnet_dataflow(
     # a subset of them with the disadvantage of slower loading and sampling time.
     #assert num_points in [256, 1024, 7500, 10000]
     assert num_points <= 10000
-    # if num_points > 1024:
-    #    file_num_points = 10000
-    # elif num_points < 1024:
-    #    file_num_points = 1024
-    # else:
-    #    file_num_points = num_points
+    
     # Construct correct filename
     normals_str = ""
     if not normals:
@@ -173,8 +168,6 @@ def get_modelnet_dataflow(
 
     file_name = "model" + model_ver + "-" + name + \
         normals_str + "-10000.lmdb"
-    #normals_str + "-" + str(file_num_points) + ".lmdb"
-    pass
     path = os.path.join(MODEL40PATH, file_name)
 
     # Try using multiple processing cores to load data
@@ -190,13 +183,8 @@ def get_modelnet_dataflow(
     df = LMDBSerializer.load(path, shuffle=shuffle)
 
     # seperate df from labels and seperate into positions and vertex normals
-    #df = MapData(df, lambda dp: dp[1][:, :, 0:8000].tolist())
     df = MapData(df, lambda dp: [[wrs_sample(dp[1][:3], num_points, wrs_session) + (np.random.rand(3, num_points)*2*noise_level - noise_level)], [dp[1][3:]], [dp[1][:3]]]  # , dp[1][:3] + (np.random.rand(3,1024)*0.002 - 0.001)]
                  if dp[0] in allowed_categories else None)
-    # if num_points > 1024 or num_points < 1023:
-    #    df = MapData(df, lambda dp: np.array(
-    #        dp)[:, :, :, 0:num_points].tolist())
-    # df_noisy = noise_data_augmentation(df)
     df = prepare_df(df, parallel, prefetch_data, batch_size)
     df.reset_state()
     return df
@@ -205,17 +193,9 @@ def get_modelnet_dataflow(
 if __name__ == '__main__':
 
     #sess = tf.Session()
-    #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/bunny.xyz", delimiter=' ')
-    #points = np.loadtxt("/home/heid/Documents/master/pc2mesh/point_cloud_data/car7500.xyz", delimiter=' ')
     points = np.loadtxt(
         "/graphics/scratch/students/heid/evaluation_set/custom/baptism.xyz", delimiter=' ')
-    #points = np.loadtxt("/home/heid/tmp/bunny1.xyz", delimiter=' ')
-    #max_val = np.max(points)
-    #min_val = np.min(points)
-    #points = (points - min_val) / (max_val - min_val)
-    #points = (points * 2 )- 1
-    # print np.max(points)
-    # print np.min(points)
+   
     points = np.transpose(points)
     p7500 = random_downsample(points, 7500)
     p256 = random_downsample(points, 256)
@@ -228,25 +208,7 @@ if __name__ == '__main__':
     np.savetxt('/home/heid/tmp/bap256.txt',
                np.transpose(p256), delimiter=',', fmt='%1.5f')
 
-    #get_advaced_mixed_modelnet_dataflow('train', '10k', batch_size=1)
-    #df = LMDBSerializer.load("/graphics/scratch/datasets/ShapeNetCorev2/data/10/train_airplane_N10_S200.lmdb", shuffle=False)
-    # for d in df:
-    #    #print d[0]
-    #    #print d[1]
-    #   print np.concatenate((d[0], d[1]), axis=1)
-    #   np.savetxt('/home/heid/tmp/test.asc',
-    #           np.concatenate((d[0], d[1]), axis=1), delimiter=',')
-    #   break
-    # df = get_modelnet_dataflow('train', batch_size=1, num_points=6500,
-    #                          model_ver="40", normals=True, prefetch_data=False)
-    # for d in df:
-    #    print np.array(d[0]).shape
-    #    print " "
-    #   break
-    # Test speed!
-    #TestDataSpeed(df, 2000).start()
-
-    """
+    
     df = get_modelnet_dataflow(
         'train', batch_size=8, num_points=10000, model_ver="10", normals=False)
     # Test speed!
@@ -281,4 +243,4 @@ if __name__ == '__main__':
         'train', batch_size=8, num_points=10000, model_ver="40", normals=True)
     # Test speed!
     TestDataSpeed(df, 2000).start()
-    """
+    
