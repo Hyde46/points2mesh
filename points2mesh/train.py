@@ -26,21 +26,18 @@ seed = 1024
 np.random.seed(seed)
 tf.set_random_seed(seed)
 
-# Settings
+# Settings for shapes with number of vertices per unpooling step
 # basic Ellipsoid 156 - 618 - 2466
 # basic torus     160 - 640 - 2560
-# new ellipsoid   168 - 666 - 2658 - 10k
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('coord_dim', 3, 'Number of units in output layer')
-# flags.DEFINE_integer('feat_dim', 963, 'Number of units in perceptual featuer layer.')
 flags.DEFINE_integer(
     'feat_dim', 227, 'Number of units in FlexConv Feature layer')
 
 flags.DEFINE_integer('hidden', 192, 'Number of units in hidden layer')
 flags.DEFINE_float('weight_decay', 5e-6, 'Weight decay for L2 loss.')
 flags.DEFINE_float('collapse_epsilon', 0.008, 'Collapse loss epsilon')
-# original 3e-5
 flags.DEFINE_float('learning_rate', 3e-5, 'Initial learning rage.')
 flags.DEFINE_integer('pc_num', PC['num'],
                      'Number of points per pointcloud object')
@@ -99,5 +96,3 @@ if __name__ == '__main__':
         max_epoch=NUM_EPOCH
     )
     launch_train_with_config(config, SimpleTrainer())
-    # TODO: Fix GPUTrainer
-    # launch_train_with_config(config, SyncMultiGPUTrainerParameterServer([0],ps_device='gpu'))
