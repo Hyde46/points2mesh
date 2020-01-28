@@ -13,6 +13,7 @@ This DNN was developed as part of my [master thesis](https://github.com/Hyde46/p
 __points2mesh__ is trained on a multi-category basis ( 8 categories at the same time ). 
 The following shows the input point cloud of 1024 samples of an airplane. Followed by its reconstruction by __points2mesh__ and the underlying ground truth mesh on the right. The resulting reconstruction has 2560 vertices, while the ground truth has more than 100 thousand vertices.
 ![airplane_reconstruction](resources/recon_airplane_1024.jpg)
+(Input point cloud data on the left from test set, prediction in the middle, ground truth mesh on the right)
 
 --------------
 
