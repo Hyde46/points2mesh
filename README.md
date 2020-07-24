@@ -4,7 +4,7 @@
 __points2mesh__ is a novel approach to transform point cloud data into fully-fledged, watertight meshes. Adapted from [pixel2mesh](https://github.com/nywang16/Pixel2Mesh), transforming images to meshes, this deep neural network learns features from unstructured points in three-dimensional space and deforms a basic 3D ellipsoidal shape into the final watertight mesh based on the learned features.
 As the first deep learning-based method to transform point cloud data to watertight meshes while producing competitive results with low inference time, it is a pioneer in its subject-matter. Additionally, a supervised as well as an unsupervised variant is present, even working with super low resoultion of only 256 samples per point cloud, up to 8000 samples.
 
-This DNN was developed as part of a [master thesis](https://github.com/Hyde46/points2mesh/blob/master/thesis.pdf).
+This DNN was developed as part of my [master thesis](https://github.com/Hyde46/points2mesh/blob/master/thesis.pdf).
 
 ![General Structure](resources/general_structure.png)
 
