@@ -6,6 +6,8 @@ As the first deep learning-based method to transform point cloud data to waterti
 
 This DNN was developed with tensorflow 1.x as part of my [master thesis](https://github.com/Hyde46/points2mesh/blob/master/thesis.pdf).
 
+Given this is from 2019, this approach is wildly out of date by now, and many more sophisticated approaches are available 
+
 ![General Structure](resources/general_structure.png)
 
 --------------
